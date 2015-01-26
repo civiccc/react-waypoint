@@ -10,15 +10,15 @@ var scrollNodeTo = function(node, scrollTop) {
   node.dispatchEvent(event);
 };
 
-describe('Waypoint', () => {
-  beforeEach(() => {
+describe('Waypoint', function() {
+  beforeEach(function() {
     // Make _.throttle synchronous
-    spyOn(_, 'throttle').and.callFake((callback) => {
+    spyOn(_, 'throttle').and.callFake(function(callback) {
       return callback;
     });
   });
 
-  beforeEach(() => {
+  beforeEach(function() {
     this.props = {
       onEnter: jasmine.createSpy(),
       onLeave: jasmine.createSpy(),
@@ -35,202 +35,207 @@ describe('Waypoint', () => {
     this.topSpacerHeight = 0;
     this.bottomSpacerHeight = 0;
 
-    this.subject = () => Utils.renderAttached(
-      <div style={this.parentStyle}>
-        <div style={{ height: this.topSpacerHeight }}/>
-        <Waypoint {...this.props} />
-        <div style={{ height: this.bottomSpacerHeight }}/>
-      </div>
-    );
+    var WaypointFactory = React.createFactory(Waypoint);
+    this.subject = function() {
+      return Utils.renderAttached(
+        React.createElement('div', { style: this.parentStyle },
+          [
+            React.createElement('div', { style: { height: this.topSpacerHeight } }),
+            React.createElement(WaypointFactory(this.props)),
+            React.createElement('div', { style: { height: this.bottomSpacerHeight } }),
+          ]
+        )
+      );
+    };
   });
 
-  describe('when the Waypoint is visible on mount', () => {
-    beforeEach(() => {
+  describe('when the Waypoint is visible on mount', function() {
+    beforeEach(function() {
       this.topSpacerHeight = 90;
       this.bottomSpacerHeight = 200;
       this.scrollable = this.subject().getDOMNode();
     });
 
-    it('calls the onEnter handler', () => {
+    it('calls the onEnter handler', function() {
       expect(this.props.onEnter).toHaveBeenCalled();
     });
 
-    it('does not call the onLeave handler', () => {
+    it('does not call the onLeave handler', function() {
       expect(this.props.onLeave).not.toHaveBeenCalled();
     });
 
-    describe('when scrolling while the waypoint is visible', () => {
-      beforeEach(() => {
+    describe('when scrolling while the waypoint is visible', function() {
+      beforeEach(function() {
         scrollNodeTo(this.scrollable, this.topSpacerHeight / 2);
       });
 
-      it('does not call the onEnter handler again', () => {
+      it('does not call the onEnter handler again', function() {
         expect(this.props.onEnter.calls.count()).toBe(1);
       });
 
-      it('does not call the onLeave handler', () => {
+      it('does not call the onLeave handler', function() {
         expect(this.props.onLeave).not.toHaveBeenCalled();
       });
 
-      describe('when scrolling past it', () => {
-        beforeEach(() => {
+      describe('when scrolling past it', function() {
+        beforeEach(function() {
           scrollNodeTo(this.scrollable, this.topSpacerHeight + 10);
         });
 
-        it('the onLeave handler is called', () => {
+        it('the onLeave handler is called', function() {
           expect(this.props.onLeave).toHaveBeenCalled();
         });
 
-        it('does not call the onEnter handler', () => {
+        it('does not call the onEnter handler', function() {
           expect(this.props.onEnter.calls.count()).toBe(1);
         });
       });
     });
   });
 
-  describe('when the Waypoint is below the bottom', () => {
-    beforeEach(() => {
+  describe('when the Waypoint is below the bottom', function() {
+    beforeEach(function() {
       this.topSpacerHeight = 200;
     });
 
-    it('does not call the onEnter handler on mount', () => {
+    it('does not call the onEnter handler on mount', function() {
       this.subject();
       expect(this.props.onEnter).not.toHaveBeenCalled();
     });
 
-    it('does not call the onLeave handler on mount', () => {
+    it('does not call the onLeave handler on mount', function() {
       this.subject();
       expect(this.props.onLeave).not.toHaveBeenCalled();
     });
 
-    describe('when scrolling down just below the threshold', () => {
-      beforeEach(() => {
+    describe('when scrolling down just below the threshold', function() {
+      beforeEach(function() {
         scrollNodeTo(this.subject().getDOMNode(), 99);
       });
 
-      it('does not call the onEnter handler', () => {
+      it('does not call the onEnter handler', function() {
         expect(this.props.onEnter).not.toHaveBeenCalled();
       });
 
-      it('does not call the onLeave handler', () => {
+      it('does not call the onLeave handler', function() {
         expect(this.props.onLeave).not.toHaveBeenCalled();
       });
     });
 
-    describe('when scrolling down past the threshold', () => {
-      beforeEach(() => {
+    describe('when scrolling down past the threshold', function() {
+      beforeEach(function() {
         scrollNodeTo(this.subject().getDOMNode(), 100);
       });
 
-      it('calls the onEnter handler', () => {
+      it('calls the onEnter handler', function() {
         expect(this.props.onEnter).toHaveBeenCalled();
       });
 
-      it('does not call the onLeave handler', () => {
+      it('does not call the onLeave handler', function() {
         expect(this.props.onLeave).not.toHaveBeenCalled();
       });
     });
 
-    describe('with a non-zero threshold', () => {
-      beforeEach(() => {
+    describe('with a non-zero threshold', function() {
+      beforeEach(function() {
         this.props.threshold = 0.1;
       });
 
-      describe('when scrolling down just below the threshold', () => {
-        beforeEach(() => {
+      describe('when scrolling down just below the threshold', function() {
+        beforeEach(function() {
           scrollNodeTo(this.subject().getDOMNode(), 89);
         });
 
-        it('does not call the onEnter handler', () => {
+        it('does not call the onEnter handler', function() {
           expect(this.props.onEnter).not.toHaveBeenCalled();
         });
 
-        it('does not call the onLeave handler', () => {
+        it('does not call the onLeave handler', function() {
           expect(this.props.onLeave).not.toHaveBeenCalled();
         });
       });
 
-      describe('when scrolling down past the threshold', () => {
-        beforeEach(() => {
+      describe('when scrolling down past the threshold', function() {
+        beforeEach(function() {
           scrollNodeTo(this.subject().getDOMNode(), 90);
         });
 
-        it('calls the onEnter handler', () => {
+        it('calls the onEnter handler', function() {
           expect(this.props.onEnter).toHaveBeenCalled();
         });
 
-        it('does not call the onLeave handler', () => {
+        it('does not call the onLeave handler', function() {
           expect(this.props.onLeave).not.toHaveBeenCalled();
         });
       });
     });
   });
 
-  describe('when the Waypoint is above the top', () => {
-    beforeEach(() => {
+  describe('when the Waypoint is above the top', function() {
+    beforeEach(function() {
       this.topSpacerHeight = 200;
       this.bottomSpacerHeight = 200;
       this.scrollable = this.subject().getDOMNode();
       scrollNodeTo(this.scrollable, 400);
     });
 
-    it('does not call the onEnter handler', () => {
+    it('does not call the onEnter handler', function() {
       expect(this.props.onEnter).not.toHaveBeenCalled();
     });
 
-    it('does not call the onLeave handler', () => {
+    it('does not call the onLeave handler', function() {
       expect(this.props.onLeave).not.toHaveBeenCalled();
     });
 
-    describe('when scrolling up not past the threshold', () => {
-      beforeEach(() => {
+    describe('when scrolling up not past the threshold', function() {
+      beforeEach(function() {
         scrollNodeTo(this.scrollable, 201);
       });
 
-      it('does not call the onEnter handler', () => {
+      it('does not call the onEnter handler', function() {
         expect(this.props.onEnter).not.toHaveBeenCalled();
       });
 
-      it('does not call the onLeave handler', () => {
+      it('does not call the onLeave handler', function() {
         expect(this.props.onLeave).not.toHaveBeenCalled();
       });
     });
 
-    describe('when scrolling up past the threshold', () => {
-      beforeEach(() => {
+    describe('when scrolling up past the threshold', function() {
+      beforeEach(function() {
         scrollNodeTo(this.scrollable, 200);
       });
 
-      it('calls the onEnter handler', () => {
+      it('calls the onEnter handler', function() {
         expect(this.props.onEnter).toHaveBeenCalled();
       });
 
-      it('does not call the onLeave handler', () => {
+      it('does not call the onLeave handler', function() {
         expect(this.props.onLeave).not.toHaveBeenCalled();
       });
 
-      describe('when scrolling up past the waypoint', () => {
-        beforeEach(() => {
+      describe('when scrolling up past the waypoint', function() {
+        beforeEach(function() {
           scrollNodeTo(this.scrollable, 99);
         });
 
-        it('calls the onLeave handler', () => {
+        it('calls the onLeave handler', function() {
           expect(this.props.onLeave).toHaveBeenCalled();
         });
 
-        it('does not call the onEnter handler again', () => {
+        it('does not call the onEnter handler again', function() {
           expect(this.props.onEnter.calls.count()).toBe(1);
         });
       });
     });
   });
 
-  describe('when the scrollable parent does not have positioning', () => {
-    beforeEach(() => {
+  describe('when the scrollable parent does not have positioning', function() {
+    beforeEach(function() {
       delete this.parentStyle.position;
     });
 
-    it('throws an error', () => {
+    it('throws an error', function() {
       expect(this.subject).toThrow();
     });
   });
