@@ -3,10 +3,11 @@
 A React component to execute a function whenever you scroll to an element.
 
 Compare to [jQuery-Waypoints][jquery-waypoints] and [Waypoints][waypoints],
-except this little library grooves the React way.
+except this little library grooves the [React][react] way.
 
 [jquery-waypoints]: https://github.com/imakewebthings/jquery-waypoints
 [waypoints]: https://github.com/imakewebthings/waypoints
+[react]: https://github.com/facebook/react
 
 ##Usage
 
