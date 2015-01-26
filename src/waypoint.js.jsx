@@ -1,0 +1,149 @@
+var React = require('react');
+
+var PropTypes = React.PropTypes;
+
+/**
+ * Calls a function when you scroll to the element.
+ */
+var Waypoint = React.createClass({
+  propTypes: {
+    onEnter: PropTypes.func,
+    onLeave: PropTypes.func,
+    // threshold is percentage of the height of the visible part of the
+    // scrollable parent (e.g. 0.1)
+    threshold: PropTypes.number,
+  },
+
+  wasVisible: false,
+
+  /**
+   * @return {Object}
+   */
+  getDefaultProps: function() {
+    return {
+      threshold: 0.1,
+      onEnter: function() {
+        return undefined;
+      },
+      onLeave: function() {
+        return undefined;
+      },
+    };
+  },
+
+  componentDidMount: function() {
+    this.scrollableParent = this._findScrollableParent();
+    this.scrollableParent.addEventListener('scroll', this._handleScroll);
+    this.scrollableParent.addEventListener('resize', this._handleScroll);
+    this._handleScroll();
+  },
+
+  componentDidUpdate: function() {
+    // The element may have moved.
+    this._handleScroll();
+  },
+
+  componentWillUnmount: function() {
+    this.scrollableParent.removeEventListener('scroll', this._handleScroll);
+    this.scrollableParent.removeEventListener('resize', this._handleScroll);
+  },
+
+  /**
+   * Traverses up the DOM to find a parent container which has an overflow style
+   * that allows for scrolling.
+   *
+   * @return {Object} the closest parent element with an overflow style that
+   *   allows for scrolling. If none is found, the `window` object is returned
+   *   as a fallback.
+   */
+  _findScrollableParent: function() {
+    var node = this.getDOMNode();
+
+    while (node.parentElement) {
+      node = node.parentElement;
+
+      var style = window.getComputedStyle(node);
+      var overflowY = style.getPropertyValue('overflow-y');
+      if (overflowY === 'auto' || overflowY === 'scroll') {
+        // GOTCHA: this will not work correctly if the overflow is set to
+        // inherit.
+        return node;
+      }
+    }
+
+    // A scrollable parent element was not found, which means that we need to do
+    // stuff on window.
+    return window;
+  },
+
+  _handleScroll: function() {
+    var isVisible = this._isVisible();
+
+    if (this.wasVisible === isVisible) {
+      // No change since last trigger
+      return;
+    }
+
+    if (isVisible) {
+      this.props.onEnter();
+    } else {
+      this.props.onLeave();
+    }
+
+    this.wasVisible = isVisible;
+  },
+
+  /**
+   * @param {Object} node
+   * @return {Number}
+   */
+  _distanceToTopOfScrollableParent: function(node) {
+    if (this.scrollableParent !== window && !node.offsetParent) {
+      throw new Error(
+        'The scrollable parent of Waypoint needs to have positioning to ' +
+        'properly determine position of Waypoint (e.g. `position: relative;`)'
+      );
+    }
+
+    if (node.offsetParent === this.scrollableParent || !node.offsetParent) {
+      return node.offsetTop;
+    } else {
+      return node.offsetTop + this._distanceToTopOfScrollableParent(node.offsetParent);
+    }
+  },
+
+  /**
+   * @return {boolean} true if scrolled down almost to the end of the scrollable
+   *   parent element.
+   */
+  _isVisible: function() {
+    var waypointTop = this._distanceToTopOfScrollableParent(this.getDOMNode());
+    var contextHeight, contextScrollTop;
+
+    if (this.scrollableParent === window) {
+      contextHeight = window.innerHeight;
+      contextScrollTop = window.pageYOffset;
+    } else {
+      contextHeight = this.scrollableParent.offsetHeight;
+      contextScrollTop = this.scrollableParent.scrollTop;
+    }
+
+    var thresholdPx = contextHeight * this.props.threshold;
+
+    var isAboveBottom = contextScrollTop + contextHeight >= waypointTop - thresholdPx;
+    var isBelowTop    = contextScrollTop <= waypointTop + thresholdPx;
+
+    return isAboveBottom && isBelowTop;
+  },
+
+  /**
+   * @return {Object}
+   */
+  render: function() {
+    // We need an element that we can locate in the DOM to determine where it is
+    // rendered relative to the top of its context.
+    return React.createElement('span');
+  }
+});
+
+module.exports = Waypoint;
