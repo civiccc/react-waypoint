@@ -15,7 +15,11 @@ var Waypoint = require('react-waypoint');
 ```
 
 ```javascript
-<Waypoint onEnter={this._handleWaypoint} threshold={0.2} />
+<Waypoint
+  onEnter={this._handleWaypointEnter}
+  onLeave={this._handleWaypointLeave}
+  threshold={0.2}
+/>
 ```
 
 ## Prop types
