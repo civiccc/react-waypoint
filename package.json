@@ -21,9 +21,7 @@
     "onscroll"
   ],
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/brigade/react-waypoint/issues"
-  },
+  "bugs": "https://github.com/brigade/react-waypoint/issues",
   "homepage": "https://github.com/brigade/react-waypoint",
   "peerDependencies": {
     "react": "0.12.x"
