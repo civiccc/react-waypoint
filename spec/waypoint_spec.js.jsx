@@ -12,13 +12,6 @@ var scrollNodeTo = function(node, scrollTop) {
 
 describe('Waypoint', function() {
   beforeEach(function() {
-    // Make _.throttle synchronous
-    spyOn(_, 'throttle').and.callFake(function(callback) {
-      return callback;
-    });
-  });
-
-  beforeEach(function() {
     this.props = {
       onEnter: jasmine.createSpy(),
       onLeave: jasmine.createSpy(),
