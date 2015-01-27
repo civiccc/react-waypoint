@@ -1,7 +1,6 @@
 var React = require('react');
 var Utils = require('support/utils');
 var Waypoint = require('components/waypoint');
-var _ = require('underscore');
 
 var scrollNodeTo = function(node, scrollTop) {
   node.scrollTop = scrollTop;
