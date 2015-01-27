@@ -20,6 +20,6 @@
   },
   "homepage": "https://github.com/brigade/react-waypoint",
   "peerDependencies": {
-    "react": "^0.12.2"
+    "react": "0.12.x"
   }
 }
