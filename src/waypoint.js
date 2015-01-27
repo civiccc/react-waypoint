@@ -55,8 +55,8 @@ var Waypoint = React.createClass({
   _findScrollableParent: function() {
     var node = this.getDOMNode();
 
-    while (node.parentElement) {
-      node = node.parentElement;
+    while (node.parentNode) {
+      node = node.parentNode;
 
       var style = window.getComputedStyle(node);
       var overflowY = style.getPropertyValue('overflow-y') ||
