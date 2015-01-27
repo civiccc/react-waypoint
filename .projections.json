@@ -1,0 +1,10 @@
+{
+  "src/*.js": {
+    "alternate": "spec/{}_spec.js",
+    "type": "source"
+  },
+  "spec/*_spec.js": {
+    "alternate": "src/{}.js",
+    "type": "test"
+  }
+}
