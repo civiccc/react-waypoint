@@ -1,5 +1,8 @@
 # React-Waypoint
 
+[![npm version](https://badge.fury.io/js/react-waypoint.svg)](http://badge.fury.io/js/react-waypoint)
+[![bower version](https://badge.fury.io/bo/react-waypoint.svg)](http://badge.fury.io/bo/react-waypoint)
+
 A React component to execute a function whenever you scroll to an element.
 
 Compare to [Waypoints][waypoints], except this little library grooves the
