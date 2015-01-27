@@ -19,7 +19,7 @@
     "url": "https://github.com/brigade/react-waypoint/issues"
   },
   "homepage": "https://github.com/brigade/react-waypoint",
-  "dependencies": {
+  "peerDependencies": {
     "react": "^0.12.2"
   }
 }
