@@ -3,6 +3,7 @@
 .jshintrc
 .overcommit.yml
 .projections.json
+CHANGELOG.md
 bower.json
 karma.conf.js
 tests.webpack.js
