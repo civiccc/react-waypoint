@@ -1,0 +1,8 @@
+.jscsrc
+.jshintignore
+.jshintrc
+.overcommit.yml
+.projections.json
+karma.conf.js
+tests.webpack.js
+webpack.conf.js
