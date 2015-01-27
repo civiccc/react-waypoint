@@ -8,6 +8,20 @@ Compare to [Waypoints][waypoints], except this little library grooves the
 [waypoints]: https://github.com/imakewebthings/waypoints
 [react]: https://github.com/facebook/react
 
+## Installation
+
+### npm
+
+```bash
+npm install react-waypoint --save
+```
+
+### Bower
+
+```bash
+bower install react-waypoint --save
+```
+
 ## Usage
 
 ```javascript
