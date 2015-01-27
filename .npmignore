@@ -3,6 +3,7 @@
 .jshintrc
 .overcommit.yml
 .projections.json
+bower.json
 karma.conf.js
 tests.webpack.js
 webpack.conf.js

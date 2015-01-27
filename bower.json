@@ -20,12 +20,12 @@
   "license": "MIT",
   "ignore": [
     "**/.*",
-    "node_modules",
     "bower_components",
-    "*/*-test.js",
     "karma.conf.js",
+    "node_modules",
     "package.json",
-    "webpack.conf.js",
-    "tests.webpack.js"
+    "spec",
+    "tests.webpack.js",
+    "webpack.conf.js"
   ]
 }
