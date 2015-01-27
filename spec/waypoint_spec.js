@@ -27,15 +27,12 @@ describe('Waypoint', function() {
     this.topSpacerHeight = 0;
     this.bottomSpacerHeight = 0;
 
-    var WaypointFactory = React.createFactory(Waypoint);
     this.subject = function() {
       return Utils.renderAttached(
         React.createElement('div', { style: this.parentStyle },
-          [
-            React.createElement('div', { style: { height: this.topSpacerHeight } }),
-            React.createElement(WaypointFactory(this.props)),
-            React.createElement('div', { style: { height: this.bottomSpacerHeight } }),
-          ]
+          React.createElement('div', { style: { height: this.topSpacerHeight } }),
+          React.createElement(Waypoint, this.props),
+          React.createElement('div', { style: { height: this.bottomSpacerHeight } })
         )
       );
     };
