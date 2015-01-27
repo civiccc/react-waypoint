@@ -14,7 +14,7 @@ var Waypoint = React.createClass({
     threshold: PropTypes.number,
   },
 
-  wasVisible: false,
+  _wasVisible: false,
 
   /**
    * @return {Object}
@@ -75,7 +75,7 @@ var Waypoint = React.createClass({
   _handleScroll: function() {
     var isVisible = this._isVisible();
 
-    if (this.wasVisible === isVisible) {
+    if (this._wasVisible === isVisible) {
       // No change since last trigger
       return;
     }
@@ -86,7 +86,7 @@ var Waypoint = React.createClass({
       this.props.onLeave();
     }
 
-    this.wasVisible = isVisible;
+    this._wasVisible = isVisible;
   },
 
   /**
