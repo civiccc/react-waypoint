@@ -61,8 +61,6 @@ var Waypoint = React.createClass({
       var style = window.getComputedStyle(node);
       var overflowY = style.getPropertyValue('overflow-y');
       if (overflowY === 'auto' || overflowY === 'scroll') {
-        // GOTCHA: this will not work correctly if the overflow is set to
-        // inherit.
         return node;
       }
     }
