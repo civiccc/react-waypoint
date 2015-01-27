@@ -1,4 +1,4 @@
-#React-Waypoint
+# React-Waypoint
 
 A React component to execute a function whenever you scroll to an element.
 
@@ -8,7 +8,7 @@ Compare to [Waypoints][waypoints], except this little library grooves the
 [waypoints]: https://github.com/imakewebthings/waypoints
 [react]: https://github.com/facebook/react
 
-##Usage
+## Usage
 
 ```javascript
 var Waypoint = require('react-waypoint');
@@ -18,7 +18,7 @@ var Waypoint = require('react-waypoint');
 <Waypoint onEnter={this._handleWaypoint} threshold={0.2} />
 ```
 
-##Prop types
+## Prop types
 
 ```javascript
   propTypes: {
@@ -29,7 +29,7 @@ var Waypoint = require('react-waypoint');
   },
 ```
 
-##Credits
+## Credits
 
 Credit to [trotzig][trotzig-github] and [lencioni][lencioni-github] for writing
 this component, and the [Brigade team][brigade-github] for open sourcing it.
@@ -42,7 +42,7 @@ Thanks to the creator of the original Waypoints library,
 [brigade-github]: https://github.com/brigade/
 [imakewebthings-github]: https://github.com/imakewebthings
 
-##License
+## License
 
 [MIT][mit-license]
 
