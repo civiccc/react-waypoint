@@ -15,13 +15,13 @@
   "author": "Brigade Engineering",
   "contributors": [
     {
-      name: "Henric Trotzig"
+      "name": "Henric Trotzig"
     },
     {
-      name: "Joe Lencioni"
+      "name": "Joe Lencioni"
     },
     {
-      name: "Flarnie Marchan"
+      "name": "Flarnie Marchan"
     }
   ],
   "license": "MIT",
