@@ -12,11 +12,17 @@
   "scripts": {
     "test": "./node_modules/.bin/jshint . && ./node_modules/.bin/jscs . && ./node_modules/.bin/karma start"
   },
-  "authors": [
-    "Brigade Engineering",
-    "Flarnie Marchan",
-    "Henric Trotzig",
-    "Joe Lencioni"
+  "author": "Brigade Engineering",
+  "contributors": [
+    {
+      name: "Henric Trotzig"
+    },
+    {
+      name: "Joe Lencioni"
+    },
+    {
+      name: "Flarnie Marchan"
+    }
   ],
   "license": "MIT",
   "peerDependencies": {
