@@ -22,12 +22,8 @@ var Waypoint = React.createClass({
   getDefaultProps: function() {
     return {
       threshold: 0.1,
-      onEnter: function() {
-        return undefined;
-      },
-      onLeave: function() {
-        return undefined;
-      },
+      onEnter: function() {},
+      onLeave: function() {},
     };
   },
 
