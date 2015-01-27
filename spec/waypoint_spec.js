@@ -1,6 +1,12 @@
 var React = require('react');
-var Utils = require('support/utils');
-var Waypoint = require('components/waypoint');
+var Waypoint = require('../src/waypoint');
+
+var renderAttached = function(component) {
+  var div = document.createElement('div');
+  document.documentElement.appendChild(div);
+  var renderedComponent = React.render(component, div);
+  return renderedComponent;
+};
 
 var scrollNodeTo = function(node, scrollTop) {
   node.scrollTop = scrollTop;
@@ -28,7 +34,7 @@ describe('Waypoint', function() {
     this.bottomSpacerHeight = 0;
 
     this.subject = function() {
-      return Utils.renderAttached(
+      return renderAttached(
         React.createElement('div', { style: this.parentStyle },
           React.createElement('div', { style: { height: this.topSpacerHeight } }),
           React.createElement(Waypoint, this.props),
