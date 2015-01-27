@@ -59,7 +59,9 @@ var Waypoint = React.createClass({
       node = node.parentElement;
 
       var style = window.getComputedStyle(node);
-      var overflowY = style.getPropertyValue('overflow-y');
+      var overflowY = style.getPropertyValue('overflow-y') ||
+        style.getPropertyValue('overflow');
+
       if (overflowY === 'auto' || overflowY === 'scroll') {
         return node;
       }
