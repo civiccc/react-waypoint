@@ -2,16 +2,22 @@
   "name": "react-waypoint",
   "version": "0.1.0",
   "description": "A React component to execute a function whenever you scroll to an element.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/brigade/react-waypoint.git"
+  },
+  "homepage": "https://github.com/brigade/react-waypoint",
+  "bugs": "https://github.com/brigade/react-waypoint/issues",
   "authors": [
     "Brigade Engineering",
     "Flarnie Marchan",
     "Henric Trotzig",
     "Joe Lencioni"
   ],
-  "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/brigade/react-waypoint.git"
+  "license": "MIT",
+  "peerDependencies": {
+    "react": "0.12.x"
   },
   "keywords": [
     "react",
@@ -19,11 +25,5 @@
     "react-component",
     "scroll",
     "onscroll"
-  ],
-  "license": "MIT",
-  "bugs": "https://github.com/brigade/react-waypoint/issues",
-  "homepage": "https://github.com/brigade/react-waypoint",
-  "peerDependencies": {
-    "react": "0.12.x"
-  }
+  ]
 }
