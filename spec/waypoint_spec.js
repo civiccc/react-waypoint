@@ -11,7 +11,7 @@ var renderAttached = function(component) {
 var scrollNodeTo = function(node, scrollTop) {
   node.scrollTop = scrollTop;
   var event = document.createEvent('Event');
-  event.initEvent('scroll');
+  event.initEvent('scroll', false, false);
   node.dispatchEvent(event);
 };
 
