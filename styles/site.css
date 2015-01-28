@@ -1,0 +1,16 @@
+.header {
+  background-color: #9c27b0;
+  color: #fff;
+  padding: 1.5em;
+}
+
+.main-content {
+  padding: 1.5em;
+}
+
+@media (min-width: 700px) {
+  .main-content {
+    width: 80%;
+    margin: 0 auto;
+  }
+}
