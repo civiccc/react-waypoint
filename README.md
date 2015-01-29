@@ -11,8 +11,11 @@ scroll, or docking elements to the viewport on scroll.
 Inspired by [Waypoints][waypoints], except this little library grooves the
 [React][react] way.
 
+[Demo page][demo-page]
+
 [waypoints]: https://github.com/imakewebthings/waypoints
 [react]: https://github.com/facebook/react
+[demo-page]: http://brigade.github.io/react-waypoint/
 
 ## Installation
 
