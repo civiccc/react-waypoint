@@ -4,7 +4,9 @@
 [![bower version](https://badge.fury.io/bo/react-waypoint.svg)](http://badge.fury.io/bo/react-waypoint)
 [![Build Status](https://travis-ci.org/brigade/react-waypoint.svg?branch=master)](https://travis-ci.org/brigade/react-waypoint)
 
-A React component to execute a function whenever you scroll to an element.
+A React component to execute a function whenever you scroll to an element. Works
+in all containers that can scroll, including the window.
+
 React Waypoint can be used to build features like lazy loading content, infinite
 scroll, or docking elements to the viewport on scroll.
 
