@@ -40,8 +40,14 @@ var Waypoint = React.createClass({
   },
 
   componentWillUnmount: function() {
-    this.scrollableParent.removeEventListener('scroll', this._handleScroll);
-    this.scrollableParent.removeEventListener('resize', this._handleScroll);
+    if (this.scrollableParent) {
+      // At the time of unmounting, the scrollable parent might no longer exist.
+      // Guarding against this prevents the following error:
+      //
+      //   Cannot read property 'removeEventListener' of undefined
+      this.scrollableParent.removeEventListener('scroll', this._handleScroll);
+      this.scrollableParent.removeEventListener('resize', this._handleScroll);
+    }
   },
 
   /**
