@@ -1,15 +1,21 @@
 var React = require('react');
 var Waypoint = require('../src/waypoint');
 
+var div;
+
 var renderAttached = function(component) {
-  var div = document.createElement('div');
+  div = document.createElement('div');
   document.documentElement.appendChild(div);
   var renderedComponent = React.render(component, div);
   return renderedComponent;
 };
 
 var scrollNodeTo = function(node, scrollTop) {
-  node.scrollTop = scrollTop;
+  if (node === window) {
+    window.scroll(0, scrollTop);
+  } else {
+    node.scrollTop = scrollTop;
+  }
   var event = document.createEvent('Event');
   event.initEvent('scroll', false, false);
   node.dispatchEvent(event);
@@ -42,6 +48,12 @@ describe('Waypoint', function() {
         )
       );
     };
+  });
+
+  afterEach(function() {
+    if (div) {
+      React.unmountComponentAtNode(div);
+    }
   });
 
   describe('when the Waypoint is visible on mount', function() {
@@ -245,8 +257,8 @@ describe('Waypoint', function() {
       this.parentStyle = {};
 
       // Make the spacers large enough to make the Waypoint render off-screen
-      this.topSpacerHeight = 4000;
-      this.bottomSpacerHeight = 4000;
+      this.topSpacerHeight = window.innerHeight + 1000;
+      this.bottomSpacerHeight = 1000;
     });
 
     it('does not fire the onEnter handler on mount', function() {
@@ -256,7 +268,7 @@ describe('Waypoint', function() {
     describe('when the Waypoint is in view', function() {
       beforeEach(function() {
         this.subject();
-        scrollNodeTo(window, 3900);
+        scrollNodeTo(window, this.topSpacerHeight - window.innerHeight / 2);
       });
 
       it('fires the onEnter handler', function() {
