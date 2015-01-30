@@ -49,7 +49,7 @@ var Waypoint = require('react-waypoint');
 
 ###**Example:** [JSFiddle Example][jsfiddle-example]
 
-[jsfiddle-example]: http://jsfiddle.net/L4z5wcx0/4/
+[jsfiddle-example]: http://jsfiddle.net/L4z5wcx0/7/
 
 ## Prop types
 
