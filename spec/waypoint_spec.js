@@ -231,7 +231,33 @@ describe('Waypoint', function() {
     });
 
     it('throws an error', function() {
-      expect(this.subject).toThrow();
+      expect(function() { this.subject(); }.bind(this)).toThrow();
+    });
+  });
+
+  describe('when the window is the scrollable parent', function() {
+    beforeEach(function() {
+      // Make the normal parent non-scrollable
+      this.parentStyle = {};
+
+      // Make the spacers large enough to make the Waypoint render off-screen
+      this.topSpacerHeight = 4000;
+      this.bottomSpacerHeight = 4000;
+    });
+
+    it('does not fire the onEnter handler on mount', function() {
+      expect(this.props.onEnter).not.toHaveBeenCalled();
+    });
+
+    describe('when the Waypoint is in view', function() {
+      beforeEach(function() {
+        this.subject();
+        scrollNodeTo(window, 3900);
+      });
+
+      it('fires the onEnter handler', function() {
+        expect(this.props.onEnter).toHaveBeenCalled();
+      });
     });
   });
 });
