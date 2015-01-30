@@ -1,5 +1,9 @@
 ## master (unreleased)
 
+## 0.3.0
+
+- Fix Waypoints with the window element as their scrollable parent (Firefox only)
+
 ## 0.2.0
 
 - Fix Waypoints with the window element as their scrollable parent
