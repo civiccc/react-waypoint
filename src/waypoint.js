@@ -65,6 +65,11 @@ var Waypoint = React.createClass({
       node = node.parentNode;
 
       var style = window.getComputedStyle(node);
+      if (!style) {
+        // Some nodes will return null for `getComputedStyle`. An example of
+        // that is the `document` node.
+        continue;
+      }
       var overflowY = style.getPropertyValue('overflow-y') ||
         style.getPropertyValue('overflow');
 
