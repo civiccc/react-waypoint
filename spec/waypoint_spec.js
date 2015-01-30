@@ -231,7 +231,11 @@ describe('Waypoint', function() {
     });
 
     it('throws an error', function() {
-      expect(function() { this.subject(); }.bind(this)).toThrow();
+      expect(
+        function() {
+          this.subject();
+        }.bind(this)
+      ).toThrow();
     });
   });
 
