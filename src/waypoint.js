@@ -64,12 +64,12 @@ var Waypoint = React.createClass({
     while (node.parentNode) {
       node = node.parentNode;
 
-      var style = window.getComputedStyle(node);
-      if (!style) {
-        // Some nodes will return null for `getComputedStyle`. An example of
-        // that is the `document` node.
+      if (node === document) {
+        // This particular node does not have a computed style.
         continue;
       }
+
+      var style = window.getComputedStyle(node);
       var overflowY = style.getPropertyValue('overflow-y') ||
         style.getPropertyValue('overflow');
 
