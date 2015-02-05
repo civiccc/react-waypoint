@@ -15,6 +15,7 @@ Inspired by [Waypoints][waypoints], except this little library grooves the
 
 ## Demo
 ![Demo of React Waypoint in action](https://raw.github.com/brigade/react-waypoint/master/react-waypoint-demo.gif)
+
 [View demo page][demo-page]
 
 [waypoints]: https://github.com/imakewebthings/waypoints
