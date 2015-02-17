@@ -1,0 +1,38 @@
+.basic-example {
+  border: solid 1px #cecece;
+  position: relative;
+}
+
+.basic-example__scrollable-parent {
+  max-height: 500px;
+  overflow: scroll;
+  position: relative;
+}
+
+.basic-example__spacer {
+    font-size: 40px;
+    line-height: 200px;
+    text-align: center;
+    color: #ccc;
+}
+
+.basic-example__spacer:before {
+    content: '▼';
+}
+
+.basic-example__waypoint-line {
+    border-top: 1px dashed red;
+}
+
+.basic-example__message {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    background-color: #999;
+    opacity: 0.5;
+    color: #fff;
+    padding: 10px;
+    z-index: 1000;
+}

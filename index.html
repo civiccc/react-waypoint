@@ -11,6 +11,11 @@
   <link rel="stylesheet" href="styles/bootstrap.css">
   <link rel="stylesheet" href="styles/bootstrap-theme.css">
   <link rel="stylesheet" href="styles/site.css">
+  <link rel="stylesheet" href="styles/examples/basic.css">
+  <script type="text/javascript"
+          src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/react-with-addons.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/JSXTransformer.js"></script>
+  <script src="src/waypoint.js"></script>
 </head>
 <body>
 <header class="header">
@@ -28,15 +33,56 @@
   href="https://github.com/facebook/react">React way</a>.</p>
 
   <h2>Example</h2>
+    <pre>
+var PropTypes = React.PropTypes;
 
-  <iframe
-    width="100%"
-    height="300"
-    src="http://jsfiddle.net/L4z5wcx0/7/embedded/result,js,html,css/"
-    allowfullscreen="allowfullscreen"
-    frameborder="0">
-  </iframe>
+var BasicWaypointExample = React.createClass({
+    getInitialState: function() {
+        return {};
+    },
 
+    _setMessage: function(msg) {
+        this.setState({ message: msg });
+    },
+
+    _renderMessage: function() {
+        if (!this.state.message) {
+            return;
+        }
+
+        return (
+            &lt;div className="basic-example__message"&gt;
+                {this.state.message}
+            &lt;/div&gt;
+        );
+    },
+
+    render: function() {
+        return (
+            &lt;div&gt;
+              {this._renderMessage()}
+              &lt;div className="basic-example__spacer" /&gt;
+              &lt;div className="basic-example__spacer" /&gt;
+              &lt;div className="basic-example__spacer" /&gt;
+              &lt;div className="basic-example__spacer" /&gt;
+              &lt;div className="basic-example__spacer" /&gt;
+              &lt;div className="basic-example__waypoint-line"/&gt;
+              &lt;Waypoint
+                  onEnter={this._setMessage.bind(this, 'Waypoint entered')}
+                  onLeave={this._setMessage.bind(this, 'Waypoint left')}
+                  threshold={0}
+              /&gt;
+              &lt;div className="basic-example__spacer" /&gt;
+              &lt;div className="basic-example__spacer" /&gt;
+              &lt;div className="basic-example__spacer" /&gt;
+              &lt;div className="basic-example__spacer" /&gt;
+              &lt;div className="basic-example__spacer" /&gt;
+            &lt;/div&gt;
+        );
+    }
+});
+    </pre>
+    <div id="react-waypoint-basic-example"></div>
   <h2>Documentation</h2>
 
   <h3>Installation</h3>
@@ -79,4 +125,58 @@
   <p><a
      href="https://github.com/brigade/react-waypoint/blob/master/LICENSE">MIT</a></p>
   </main>
+  <script type="text/jsx">
+var PropTypes = React.PropTypes;
+
+var BasicWaypointExample = React.createClass({
+    getInitialState: function() {
+        return {};
+    },
+
+    _setMessage: function(msg) {
+        this.setState({ message: msg });
+    },
+
+    _renderMessage: function() {
+        if (!this.state.message) {
+            return;
+        }
+
+        return (
+            <div className="basic-example__message">
+                {this.state.message}
+            </div>
+        );
+    },
+
+    render: function() {
+        return (
+            <div className="basic-example">
+              {this._renderMessage()}
+              <div className="basic-example__scrollable-parent">
+                <div className="basic-example__spacer" />
+                <div className="basic-example__spacer" />
+                <div className="basic-example__spacer" />
+                <div className="basic-example__spacer" />
+                <div className="basic-example__spacer" />
+                <div className="basic-example__waypoint-line"/>
+                <Waypoint
+                    onEnter={this._setMessage.bind(this, 'Waypoint entered')}
+                    onLeave={this._setMessage.bind(this, 'Waypoint left')}
+                    threshold={0}
+                />
+                <div className="basic-example__spacer" />
+                <div className="basic-example__spacer" />
+                <div className="basic-example__spacer" />
+                <div className="basic-example__spacer" />
+                <div className="basic-example__spacer" />
+              </div>
+            </div>
+        );
+    }
+});
+
+
+React.render(<BasicWaypointExample />, document.getElementById('react-waypoint-basic-example'));
+  </script>
 </body>
