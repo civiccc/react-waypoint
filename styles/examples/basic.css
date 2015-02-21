@@ -25,14 +25,15 @@
 }
 
 .basic-example__message {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    text-align: center;
     background-color: #999;
-    opacity: 0.5;
     color: #fff;
+    left: 0;
+    opacity: 0.5;
     padding: 10px;
+    pointer-events: none;
+    position: absolute;
+    text-align: center;
+    top: 0;
+    width: 100%;
     z-index: 1000;
 }
