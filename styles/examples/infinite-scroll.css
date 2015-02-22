@@ -1,0 +1,62 @@
+.infinite-scroll-example {
+  border: solid 1px blue;
+  position: relative;
+}
+
+.infinite-scroll-example__scrollable-parent {
+  height: 500px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  position: relative;
+  margin: 0 auto;
+  max-width: 580px;
+}
+
+.infinite-scroll-example__loading-message,
+.infinite-scroll-example__count {
+  color: #fff;
+  opacity: 0.5;
+  pointer-events: none;
+  padding: 10px;
+  background-color: #999;
+  position: absolute;
+  z-index: 1000;
+}
+
+.infinite-scroll-example__arrow {
+  opacity: 0.75;
+  color: #000;
+  background-color: #fff;
+  position: absolute;
+  pointer-events: none;
+  bottom: 0;
+  text-align: center;
+  font-size: 40px;
+  line-height: 50px;
+  width: 100%;
+  z-index: 1000;
+}
+
+p.infinite-scroll-example__arrow {
+  /** override the padding added by bootstrap styles **/
+  margin: 0;
+}
+
+.infinite-scroll-example__arrow:before {
+  content: '▼';
+}
+
+.infinite-scroll-example__count {
+  right: 0;
+  top: 0;
+}
+
+.infinite-scroll-example__loading-message {
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.infinite-scroll-example__list-item {
+  max-width: 580px;
+}

@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="styles/bootstrap-theme.css">
   <link rel="stylesheet" href="styles/site.css">
   <link rel="stylesheet" href="styles/examples/basic.css">
+  <link rel="stylesheet" href="styles/examples/infinite-scroll.css">
   <script type="text/javascript"
           src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/react-with-addons.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/JSXTransformer.js"></script>
@@ -32,7 +33,8 @@
   except this little library grooves the <a
   href="https://github.com/facebook/react">React way</a>.</p>
 
-  <h2>Example</h2>
+  <h2>Examples</h2>
+    <h3>Basic Use</h3>
     <div id="react-waypoint-basic-example"></div>
     <pre>
 var PropTypes = React.PropTypes;
@@ -83,6 +85,75 @@ var BasicWaypointExample = React.createClass({
     }
 });
     </pre>
+
+    <h3>Infinite Scroll</h3>
+    <div id="react-waypoint-infinite-scroll-example"></div>
+    <pre>
+var InfiniteScrollExample = React.createClass({
+  _loadMoreItems: function() {
+    this.setState({ loading: true });
+    // Do the fetching of data here with AJAX
+    // In this fake example we just generate more image urls
+    // and set the state of 'loading' to false.
+    // ...
+  },
+
+  getInitialState: function() {
+    var initialItems = [
+      'http://lorempixel.com/output/cats-q-c-640-480-9.jpg',
+      'http://lorempixel.com/output/cats-q-c-640-480-10.jpg',
+      'http://lorempixel.com/output/technics-q-c-640-480-10.jpg',
+    ];
+    return {
+      items: initialItems,
+      loading: false,
+    };
+  },
+
+  _renderItems: function() {
+    return this.state.items.map(function(imageUrl, index) {
+      return (
+        &lt;img
+          src={imageUrl}
+          alt="CATS AND ROBOTS... "
+          key={index}
+          className="infinite-scroll-example__list-item" /&gt;
+      );
+    });
+  },
+
+  _renderLoadingMessage: function() {
+    if (this.state.loading) {
+      return (
+        &lt;p className="infinite-scroll-example__loading-message"&gt;
+          Loading...
+        &lt;/p&gt;
+      );
+    }
+  },
+
+  render: function() {
+    return (
+      &lt;div className="infinite-scroll-example"&gt;
+        &lt;p className="infinite-scroll-example__count"&gt;
+          Items Loaded: {this.state.items.length}
+        &lt;/p&gt;
+        {this._renderLoadingMessage()}
+        &lt;div className="infinite-scroll-example__scrollable-parent"&gt;
+          {this._renderItems()}
+          &lt;Waypoint
+              onEnter={this._loadMoreItems}
+              threshold={2.0}
+          /&gt;
+        &lt;/div&gt;
+        &lt;p className="infinite-scroll-example__arrow" /&gt;
+      &lt;/div&gt;
+    );
+  }
+});
+    </pre>
+
+
   <h2>Documentation</h2>
 
   <h3>Installation</h3>
@@ -178,5 +249,112 @@ var BasicWaypointExample = React.createClass({
 
 
 React.render(<BasicWaypointExample />, document.getElementById('react-waypoint-basic-example'));
+  </script>
+
+  <script type="text/jsx">
+/**
+ * Randomly return either a cat or machine image url
+ * @return {string}
+ */
+var currentIndex = 0;
+var generateItem = function() {
+  var chooseCat = Math.floor(Math.random() * 2);
+  var ind = (currentIndex % 10) + 1;
+  console.log('ind is ', ind);
+  var newImage = (chooseCat) ?
+    'http://lorempixel.com/output/cats-q-c-640-480-' + ind + '.jpg':
+    'http://lorempixel.com/output/technics-q-c-640-480-' + ind + '.jpg';
+  currentIndex++;
+  return newImage;
+}
+
+var InfiniteScrollExample = React.createClass({
+  componentWillMount: function() {
+    this.waitTime = 2; // wait two seconds
+    this.numItems = 3; // add three items
+  },
+
+  _loadMoreItems: function() {
+    this.setState({ loading: true });
+    // fake an async. ajax call with setTimeout
+    window.setTimeout(function() {
+      // add data
+      var currentItems = this.state.items;
+      for (var i = 0; i < this.numItems; i++) {
+        currentItems.push(generateItem());
+      }
+      this.setState({
+        items: currentItems,
+        loading: false,
+      });
+    }.bind(this), this.waitTime * 1000);
+  },
+
+  getInitialState: function() {
+    var initialItems = [
+      'http://lorempixel.com/output/cats-q-c-640-480-9.jpg',
+      'http://lorempixel.com/output/cats-q-c-640-480-10.jpg',
+      'http://lorempixel.com/output/technics-q-c-640-480-10.jpg',
+    ];
+    return {
+      items: initialItems,
+      loading: false,
+    };
+  },
+
+  /**
+   * @return {Object}
+   */
+  _renderItems: function() {
+    return this.state.items.map(function(imageUrl, index) {
+      return (
+        <img
+          src={imageUrl}
+          alt="CATS AND ROBOTS... "
+          key={index}
+          className="infinite-scroll-example__list-item" />
+      );
+    });
+  },
+
+  /**
+   * @return {Object}
+   */
+  _renderLoadingMessage: function() {
+    if (this.state.loading) {
+      return (
+        <p className="infinite-scroll-example__loading-message">
+          Loading...
+        </p>
+      );
+    }
+  },
+
+  /**
+   * @return {Object}
+   */
+  render: function() {
+    return (
+      <div className="infinite-scroll-example">
+        <p className="infinite-scroll-example__count">
+          Items Loaded: {this.state.items.length}
+        </p>
+        {this._renderLoadingMessage()}
+        <div className="infinite-scroll-example__scrollable-parent">
+          {this._renderItems()}
+          <Waypoint
+              onEnter={this._loadMoreItems}
+              threshold={2.0}
+          />
+        </div>
+        <p className="infinite-scroll-example__arrow" />
+      </div>
+    );
+  }
+});
+
+
+React.render(<InfiniteScrollExample />,
+document.getElementById('react-waypoint-infinite-scroll-example'));
   </script>
 </body>
