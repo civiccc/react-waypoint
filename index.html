@@ -221,6 +221,17 @@ var InfiniteScrollExample = React.createClass({
     }
   },
 
+  _renderWaypoint: function() {
+    if (!this.state.loading) {
+      return (
+        <Waypoint
+            onEnter={this._loadMoreItems}
+            threshold={2.0}
+        />
+      );
+    }
+  },
+
   /**
    * @return {Object}
    */
@@ -233,10 +244,7 @@ var InfiniteScrollExample = React.createClass({
         {this._renderLoadingMessage()}
         <div className="infinite-scroll-example__scrollable-parent">
           {this._renderItems()}
-          <Waypoint
-              onEnter={this._loadMoreItems}
-              threshold={2.0}
-          />
+          {this._renderWaypoint()}
         </div>
         <p className="infinite-scroll-example__arrow" />
       </div>
