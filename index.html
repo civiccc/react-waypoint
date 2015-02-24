@@ -269,8 +269,8 @@ var generateItem = function() {
 
 var InfiniteScrollExample = React.createClass({
   componentWillMount: function() {
-    this.waitTime = 2; // wait two seconds
-    this.numItems = 3; // add three items
+    this.secondsToWait = 2;
+    this.itemsToAdd = 3;
   },
 
   _loadMoreItems: function() {
@@ -279,14 +279,14 @@ var InfiniteScrollExample = React.createClass({
     window.setTimeout(function() {
       // add data
       var currentItems = this.state.items;
-      for (var i = 0; i < this.numItems; i++) {
+      for (var i = 0; i < this.itemsToAdd; i++) {
         currentItems.push(generateItem());
       }
       this.setState({
         items: currentItems,
         loading: false,
       });
-    }.bind(this), this.waitTime * 1000);
+    }.bind(this), this.secondsToWait * 1000);
   },
 
   getInitialState: function() {
