@@ -10,30 +10,30 @@
 }
 
 .basic-example__spacer {
-    font-size: 40px;
-    line-height: 200px;
-    text-align: center;
-    color: #ccc;
+  color: #ccc;
+  font-size: 40px;
+  line-height: 200px;
+  text-align: center;
 }
 
 .basic-example__spacer:before {
-    content: '▼';
+  content: '▼';
 }
 
 .basic-example__waypoint-line {
-    border-top: 1px dashed red;
+  border-top: 1px dashed red;
 }
 
 .basic-example__message {
-    background-color: #999;
-    color: #fff;
-    left: 0;
-    opacity: 0.5;
-    padding: 10px;
-    pointer-events: none;
-    position: absolute;
-    text-align: center;
-    top: 0;
-    width: 100%;
-    z-index: 1000;
+  background-color: #999;
+  color: #fff;
+  left: 0;
+  opacity: 0.5;
+  padding: 10px;
+  pointer-events: none;
+  position: absolute;
+  text-align: center;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
 }

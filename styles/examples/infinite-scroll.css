@@ -5,34 +5,34 @@
 
 .infinite-scroll-example__scrollable-parent {
   height: 500px;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  position: relative;
   margin: 0 auto;
   max-width: 580px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  position: relative;
 }
 
 .infinite-scroll-example__loading-message,
 .infinite-scroll-example__count {
+  background-color: #999;
   color: #fff;
   opacity: 0.5;
-  pointer-events: none;
   padding: 10px;
-  background-color: #999;
+  pointer-events: none;
   position: absolute;
   z-index: 1000;
 }
 
 .infinite-scroll-example__arrow {
-  opacity: 0.75;
-  color: #000;
   background-color: #fff;
-  position: absolute;
-  pointer-events: none;
   bottom: 0;
-  text-align: center;
+  color: #000;
   font-size: 40px;
   line-height: 50px;
+  opacity: 0.75;
+  pointer-events: none;
+  position: absolute;
+  text-align: center;
   width: 100%;
   z-index: 1000;
 }
