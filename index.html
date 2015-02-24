@@ -260,7 +260,6 @@ var currentIndex = 0;
 var generateItem = function() {
   var chooseCat = Math.floor(Math.random() * 2);
   var ind = (currentIndex % 10) + 1;
-  console.log('ind is ', ind);
   var newImage = (chooseCat) ?
     'http://lorempixel.com/output/cats-q-c-640-480-' + ind + '.jpg':
     'http://lorempixel.com/output/technics-q-c-640-480-' + ind + '.jpg';
