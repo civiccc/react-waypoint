@@ -1,0 +1,4 @@
+pre:not(.react-example__code) {
+  /* fix border issue because React renders two nested 'pre' tags */
+  border: 1px solid #ccc;;
+}

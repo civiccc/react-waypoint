@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="styles/site.css">
   <link rel="stylesheet" href="styles/examples/basic.css">
   <link rel="stylesheet" href="styles/examples/infinite-scroll.css">
+  <link rel="stylesheet" href="styles/examples/examples.css">
   <script type="text/javascript"
           src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/react-with-addons.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/JSXTransformer.js"></script>
@@ -34,125 +35,7 @@
   href="https://github.com/facebook/react">React way</a>.</p>
 
   <h2>Examples</h2>
-    <h3>Basic Use</h3>
-    <div id="react-waypoint-basic-example"></div>
-    <pre>
-var PropTypes = React.PropTypes;
-
-var BasicWaypointExample = React.createClass({
-    getInitialState: function() {
-        return {};
-    },
-
-    _setMessage: function(msg) {
-        this.setState({ message: msg });
-    },
-
-    _renderMessage: function() {
-        if (!this.state.message) {
-            return;
-        }
-
-        return (
-            &lt;div className="basic-example__message"&gt;
-                {this.state.message}
-            &lt;/div&gt;
-        );
-    },
-
-    render: function() {
-        return (
-            &lt;div&gt;
-              {this._renderMessage()}
-              &lt;div className="basic-example__spacer" /&gt;
-              &lt;div className="basic-example__spacer" /&gt;
-              &lt;div className="basic-example__spacer" /&gt;
-              &lt;div className="basic-example__spacer" /&gt;
-              &lt;div className="basic-example__spacer" /&gt;
-              &lt;div className="basic-example__waypoint-line"/&gt;
-              &lt;Waypoint
-                  onEnter={this._setMessage.bind(this, 'Waypoint entered')}
-                  onLeave={this._setMessage.bind(this, 'Waypoint left')}
-                  threshold={0}
-              /&gt;
-              &lt;div className="basic-example__spacer" /&gt;
-              &lt;div className="basic-example__spacer" /&gt;
-              &lt;div className="basic-example__spacer" /&gt;
-              &lt;div className="basic-example__spacer" /&gt;
-              &lt;div className="basic-example__spacer" /&gt;
-            &lt;/div&gt;
-        );
-    }
-});
-    </pre>
-
-    <h3>Infinite Scroll</h3>
-    <div id="react-waypoint-infinite-scroll-example"></div>
-    <pre>
-var InfiniteScrollExample = React.createClass({
-  _loadMoreItems: function() {
-    this.setState({ loading: true });
-    // Do the fetching of data here with AJAX
-    // In this fake example we just generate more image urls
-    // and set the state of 'loading' to false.
-    // ...
-  },
-
-  getInitialState: function() {
-    var initialItems = [
-      'http://lorempixel.com/output/cats-q-c-640-480-9.jpg',
-      'http://lorempixel.com/output/cats-q-c-640-480-10.jpg',
-      'http://lorempixel.com/output/technics-q-c-640-480-10.jpg',
-    ];
-    return {
-      items: initialItems,
-      loading: false,
-    };
-  },
-
-  _renderItems: function() {
-    return this.state.items.map(function(imageUrl, index) {
-      return (
-        &lt;img
-          src={imageUrl}
-          alt="CATS AND ROBOTS... "
-          key={index}
-          className="infinite-scroll-example__list-item" /&gt;
-      );
-    });
-  },
-
-  _renderLoadingMessage: function() {
-    if (this.state.loading) {
-      return (
-        &lt;p className="infinite-scroll-example__loading-message"&gt;
-          Loading...
-        &lt;/p&gt;
-      );
-    }
-  },
-
-  render: function() {
-    return (
-      &lt;div className="infinite-scroll-example"&gt;
-        &lt;p className="infinite-scroll-example__count"&gt;
-          Items Loaded: {this.state.items.length}
-        &lt;/p&gt;
-        {this._renderLoadingMessage()}
-        &lt;div className="infinite-scroll-example__scrollable-parent"&gt;
-          {this._renderItems()}
-          &lt;Waypoint
-              onEnter={this._loadMoreItems}
-              threshold={2.0}
-          /&gt;
-        &lt;/div&gt;
-        &lt;p className="infinite-scroll-example__arrow" /&gt;
-      &lt;/div&gt;
-    );
-  }
-});
-    </pre>
-
+    <div id="react-waypoint-examples"></div>
 
   <h2>Documentation</h2>
 
@@ -196,62 +79,68 @@ var InfiniteScrollExample = React.createClass({
   <p><a
      href="https://github.com/brigade/react-waypoint/blob/master/LICENSE">MIT</a></p>
   </main>
-  <script type="text/jsx">
+  <script id="basic-example-script" type="text/jsx">
 var PropTypes = React.PropTypes;
 
 var BasicWaypointExample = React.createClass({
-    getInitialState: function() {
-        return {};
-    },
+  /**
+   * @return {Object}
+   */
+  getInitialState: function() {
+    return {};
+  },
 
-    _setMessage: function(msg) {
-        this.setState({ message: msg });
-    },
+  _setMessage: function(msg) {
+    this.setState({ message: msg });
+  },
 
-    _renderMessage: function() {
-        if (!this.state.message) {
-            return;
-        }
-
-        return (
-            <div className="basic-example__message">
-                {this.state.message}
-            </div>
-        );
-    },
-
-    render: function() {
-        return (
-            <div className="basic-example">
-              {this._renderMessage()}
-              <div className="basic-example__scrollable-parent">
-                <div className="basic-example__spacer" />
-                <div className="basic-example__spacer" />
-                <div className="basic-example__spacer" />
-                <div className="basic-example__spacer" />
-                <div className="basic-example__spacer" />
-                <div className="basic-example__waypoint-line"/>
-                <Waypoint
-                    onEnter={this._setMessage.bind(this, 'Waypoint entered')}
-                    onLeave={this._setMessage.bind(this, 'Waypoint left')}
-                    threshold={0}
-                />
-                <div className="basic-example__spacer" />
-                <div className="basic-example__spacer" />
-                <div className="basic-example__spacer" />
-                <div className="basic-example__spacer" />
-                <div className="basic-example__spacer" />
-              </div>
-            </div>
-        );
+  /**
+   * @return {Object}
+   */
+  _renderMessage: function() {
+    if (!this.state.message) {
+      return;
     }
+
+    return (
+      <div className="basic-example__message">
+          {this.state.message}
+      </div>
+    );
+  },
+
+  /**
+   * @return {Object}
+   */
+  render: function() {
+    return (
+      <div className="basic-example">
+        {this._renderMessage()}
+        <div className="basic-example__scrollable-parent">
+          <div className="basic-example__spacer" />
+          <div className="basic-example__spacer" />
+          <div className="basic-example__spacer" />
+          <div className="basic-example__spacer" />
+          <div className="basic-example__spacer" />
+          <div className="basic-example__waypoint-line"/>
+          <Waypoint
+            onEnter={this._setMessage.bind(this, 'Waypoint entered')}
+            onLeave={this._setMessage.bind(this, 'Waypoint left')}
+            threshold={0}
+          />
+          <div className="basic-example__spacer" />
+          <div className="basic-example__spacer" />
+          <div className="basic-example__spacer" />
+          <div className="basic-example__spacer" />
+          <div className="basic-example__spacer" />
+        </div>
+      </div>
+    );
+  }
 });
-
-
-React.render(<BasicWaypointExample />, document.getElementById('react-waypoint-basic-example'));
   </script>
 
-  <script type="text/jsx">
+  <script id="infinite-scroll-example-script" type="text/jsx">
 /**
  * Randomly return either a cat or machine image url
  * @return {string}
@@ -289,6 +178,9 @@ var InfiniteScrollExample = React.createClass({
     }.bind(this), this.secondsToWait * 1000);
   },
 
+  /**
+   * @return {Object}
+   */
   getInitialState: function() {
     var initialItems = [
       'http://lorempixel.com/output/cats-q-c-640-480-9.jpg',
@@ -351,9 +243,66 @@ var InfiniteScrollExample = React.createClass({
     );
   }
 });
+  </script>
 
+  <script type="text/jsx">
+var ExampleDemoAndCode = React.createClass({
+  /**
+   * @param {String} words
+   * @return {String}
+   */
+  _convertToTitle: function(words) {
+    return words.replace(/-|_/g, ' ')
+    .replace(/\b\s?(\S)/g, function(match, group) { return match.toUpperCase(); } );
+  },
 
-React.render(<InfiniteScrollExample />,
-document.getElementById('react-waypoint-infinite-scroll-example'));
+  _renderExampleComponent: function() {
+    if (this.props.exampleName === 'basic') {
+      return (<BasicWaypointExample />);
+    } else if (this.props.exampleName === 'infinite-scroll') {
+      return (<InfiniteScrollExample />);
+    } else {
+      throw new Error('_renderExampleComponent did not recognise this.props.exampleName');
+    }
+  },
+
+  _renderExampleCode: function() {
+    var scriptId = this.props.exampleName + '-example-script';
+    var exampleCodeContent = document.getElementById(scriptId).innerHTML;
+    return (
+      <pre className="react-example__code">
+{exampleCodeContent}
+      </pre>
+    );
+  },
+
+  render: function() {
+    return (
+      <div className="react-example">
+        <h3>{this._convertToTitle(this.props.exampleName)}</h3>
+        {this._renderExampleComponent()}
+        <pre>
+          {this._renderExampleCode()}
+        </pre>
+      </div>
+    );
+  }
+});
+
+var MultipleExamplesAndCode = React.createClass({
+  render: function() {
+    var examples = this.props.exampleNames.map(function(exampleName) {
+      return (<ExampleDemoAndCode exampleName={exampleName} key={exampleName} />);
+    });
+    return (
+      <div className="code-examples">
+        {examples}
+      </div>
+    );
+  }
+});
+
+React.render(<MultipleExamplesAndCode exampleNames={['basic',
+  'infinite-scroll']} />, document.getElementById('react-waypoint-examples'));
   </script>
 </body>
