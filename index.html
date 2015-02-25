@@ -82,7 +82,7 @@
   <script id="basic-example-script" type="text/jsx">
 var PropTypes = React.PropTypes;
 
-var BasicWaypointExample = React.createClass({
+var BasicExample = React.createClass({
   /**
    * @return {Object}
    */
@@ -262,13 +262,15 @@ var ExampleDemoAndCode = React.createClass({
   },
 
   _renderExampleComponent: function() {
-    if (this.props.exampleName === 'basic') {
-      return (<BasicWaypointExample />);
-    } else if (this.props.exampleName === 'infinite-scroll') {
-      return (<InfiniteScrollExample />);
-    } else {
+    var componentName =
+      this._convertToTitle(this.props.exampleName).replace(' ', '') + 'Example';
+    // Component must be defined in the global namespace
+    var componentFunction = window[componentName];
+    if (!componentFunction) {
       throw new Error('_renderExampleComponent did not recognise this.props.exampleName');
     }
+
+    return React.createElement(componentFunction);
   },
 
   _renderExampleCode: function() {
