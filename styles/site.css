@@ -14,3 +14,10 @@
     margin: 0 auto;
   }
 }
+
+pre {
+  /* override bootstrap style to work with React; React creates two nested 'pre'
+   * tags when you use 'pre'
+   */
+  border-width: 0;
+}

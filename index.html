@@ -11,6 +11,13 @@
   <link rel="stylesheet" href="styles/bootstrap.css">
   <link rel="stylesheet" href="styles/bootstrap-theme.css">
   <link rel="stylesheet" href="styles/site.css">
+  <link rel="stylesheet" href="styles/examples/basic.css">
+  <link rel="stylesheet" href="styles/examples/infinite-scroll.css">
+  <link rel="stylesheet" href="styles/examples/examples.css">
+  <script type="text/javascript"
+          src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/react-with-addons.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/react/0.12.2/JSXTransformer.js"></script>
+  <script src="src/waypoint.js"></script>
 </head>
 <body>
 <header class="header">
@@ -27,15 +34,8 @@
   except this little library grooves the <a
   href="https://github.com/facebook/react">React way</a>.</p>
 
-  <h2>Example</h2>
-
-  <iframe
-    width="100%"
-    height="300"
-    src="http://jsfiddle.net/L4z5wcx0/7/embedded/result,js,html,css/"
-    allowfullscreen="allowfullscreen"
-    frameborder="0">
-  </iframe>
+  <h2>Examples</h2>
+    <div id="react-waypoint-examples"></div>
 
   <h2>Documentation</h2>
 
@@ -79,4 +79,237 @@
   <p><a
      href="https://github.com/brigade/react-waypoint/blob/master/LICENSE">MIT</a></p>
   </main>
+  <script id="basic-example-script" type="text/jsx">
+var PropTypes = React.PropTypes;
+
+var BasicExample = React.createClass({
+  /**
+   * @return {Object}
+   */
+  getInitialState: function() {
+    return {};
+  },
+
+  _setMessage: function(msg) {
+    this.setState({ message: msg });
+  },
+
+  /**
+   * @return {Object}
+   */
+  _renderMessage: function() {
+    if (!this.state.message) {
+      return;
+    }
+
+    return (
+      <div className="basic-example__message">
+          {this.state.message}
+      </div>
+    );
+  },
+
+  /**
+   * @return {Object}
+   */
+  render: function() {
+    return (
+      <div className="basic-example">
+        {this._renderMessage()}
+        <div className="basic-example__scrollable-parent">
+          <div className="basic-example__spacer" />
+          <div className="basic-example__spacer" />
+          <div className="basic-example__spacer" />
+          <div className="basic-example__spacer" />
+          <div className="basic-example__spacer" />
+          <div className="basic-example__waypoint-line"/>
+          <Waypoint
+            onEnter={this._setMessage.bind(this, 'Waypoint entered')}
+            onLeave={this._setMessage.bind(this, 'Waypoint left')}
+            threshold={0}
+          />
+          <div className="basic-example__spacer" />
+          <div className="basic-example__spacer" />
+          <div className="basic-example__spacer" />
+          <div className="basic-example__spacer" />
+          <div className="basic-example__spacer" />
+        </div>
+      </div>
+    );
+  }
+});
+  </script>
+
+  <script id="infinite-scroll-example-script" type="text/jsx">
+/**
+ * Randomly return either a cat or machine image url
+ * @return {string}
+ */
+var currentIndex = 0;
+var generateItem = function() {
+  var chooseCat = Math.floor(Math.random() * 2);
+  var ind = (currentIndex % 10) + 1;
+  var newImage = (chooseCat) ?
+    'http://lorempixel.com/output/cats-q-c-640-480-' + ind + '.jpg':
+    'http://lorempixel.com/output/technics-q-c-640-480-' + ind + '.jpg';
+  currentIndex++;
+  return newImage;
+}
+
+var InfiniteScrollExample = React.createClass({
+  _loadMoreItems: function() {
+    var itemsToAdd = 3;
+    var secondsToWait = 2;
+    this.setState({ isLoading: true });
+    // fake an async. ajax call with setTimeout
+    window.setTimeout(function() {
+      // add data
+      var currentItems = this.state.items;
+      for (var i = 0; i < itemsToAdd; i++) {
+        currentItems.push(generateItem());
+      }
+      this.setState({
+        items: currentItems,
+        isLoading: false,
+      });
+    }.bind(this), secondsToWait * 1000);
+  },
+
+  /**
+   * @return {Object}
+   */
+  getInitialState: function() {
+    var initialItems = [
+      'http://lorempixel.com/output/cats-q-c-640-480-9.jpg',
+      'http://lorempixel.com/output/cats-q-c-640-480-10.jpg',
+      'http://lorempixel.com/output/technics-q-c-640-480-10.jpg',
+    ];
+    return {
+      items: initialItems,
+      isLoading: false,
+    };
+  },
+
+  /**
+   * @return {Object}
+   */
+  _renderItems: function() {
+    return this.state.items.map(function(imageUrl, index) {
+      return (
+        <img
+          src={imageUrl}
+          alt="CATS AND ROBOTS... "
+          key={index}
+          className="infinite-scroll-example__list-item" />
+      );
+    });
+  },
+
+  /**
+   * @return {Object}
+   */
+  _renderLoadingMessage: function() {
+    if (this.state.isLoading) {
+      return (
+        <p className="infinite-scroll-example__loading-message">
+          Loading...
+        </p>
+      );
+    }
+  },
+
+  _renderWaypoint: function() {
+    if (!this.state.isLoading) {
+      return (
+        <Waypoint
+          onEnter={this._loadMoreItems}
+          threshold={2.0}
+        />
+      );
+    }
+  },
+
+  /**
+   * @return {Object}
+   */
+  render: function() {
+    return (
+      <div className="infinite-scroll-example">
+        <p className="infinite-scroll-example__count">
+          Items Loaded: {this.state.items.length}
+        </p>
+        {this._renderLoadingMessage()}
+        <div className="infinite-scroll-example__scrollable-parent">
+          {this._renderItems()}
+          {this._renderWaypoint()}
+        </div>
+        <p className="infinite-scroll-example__arrow" />
+      </div>
+    );
+  }
+});
+  </script>
+
+  <script type="text/jsx">
+var ExampleDemoAndCode = React.createClass({
+  /**
+   * @param {String} words
+   * @return {String}
+   */
+  _convertToTitle: function(words) {
+    return words.replace(/-|_/g, ' ')
+    .replace(/\b\s?(\S)/g, function(match, group) { return match.toUpperCase(); } );
+  },
+
+  _renderExampleComponent: function() {
+    var componentName =
+      this._convertToTitle(this.props.exampleName).replace(' ', '') + 'Example';
+    // Component must be defined in the global namespace
+    var componentFunction = window[componentName];
+    if (!componentFunction) {
+      throw new Error('_renderExampleComponent did not recognise this.props.exampleName');
+    }
+
+    return React.createElement(componentFunction);
+  },
+
+  _renderExampleCode: function() {
+    var scriptId = this.props.exampleName + '-example-script';
+    var exampleCodeContent = document.getElementById(scriptId).innerHTML;
+    return (
+      <pre className="react-example__code">
+{exampleCodeContent}
+      </pre>
+    );
+  },
+
+  render: function() {
+    return (
+      <div className="react-example">
+        <h3>{this._convertToTitle(this.props.exampleName)}</h3>
+        {this._renderExampleComponent()}
+        <pre>
+          {this._renderExampleCode()}
+        </pre>
+      </div>
+    );
+  }
+});
+
+var MultipleExamplesAndCode = React.createClass({
+  render: function() {
+    var examples = this.props.exampleNames.map(function(exampleName) {
+      return (<ExampleDemoAndCode exampleName={exampleName} key={exampleName} />);
+    });
+    return (
+      <div className="code-examples">
+        {examples}
+      </div>
+    );
+  }
+});
+
+React.render(<MultipleExamplesAndCode exampleNames={['basic',
+  'infinite-scroll']} />, document.getElementById('react-waypoint-examples'));
+  </script>
 </body>
