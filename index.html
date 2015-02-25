@@ -157,25 +157,22 @@ var generateItem = function() {
 }
 
 var InfiniteScrollExample = React.createClass({
-  componentWillMount: function() {
-    this.secondsToWait = 2;
-    this.itemsToAdd = 3;
-  },
-
   _loadMoreItems: function() {
+    var itemsToAdd = 3;
+    var secondsToWait = 2;
     this.setState({ isLoading: true });
     // fake an async. ajax call with setTimeout
     window.setTimeout(function() {
       // add data
       var currentItems = this.state.items;
-      for (var i = 0; i < this.itemsToAdd; i++) {
+      for (var i = 0; i < itemsToAdd; i++) {
         currentItems.push(generateItem());
       }
       this.setState({
         items: currentItems,
         isLoading: false,
       });
-    }.bind(this), this.secondsToWait * 1000);
+    }.bind(this), secondsToWait * 1000);
   },
 
   /**
