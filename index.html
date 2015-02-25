@@ -163,7 +163,7 @@ var InfiniteScrollExample = React.createClass({
   },
 
   _loadMoreItems: function() {
-    this.setState({ loading: true });
+    this.setState({ isLoading: true });
     // fake an async. ajax call with setTimeout
     window.setTimeout(function() {
       // add data
@@ -173,7 +173,7 @@ var InfiniteScrollExample = React.createClass({
       }
       this.setState({
         items: currentItems,
-        loading: false,
+        isLoading: false,
       });
     }.bind(this), this.secondsToWait * 1000);
   },
@@ -189,7 +189,7 @@ var InfiniteScrollExample = React.createClass({
     ];
     return {
       items: initialItems,
-      loading: false,
+      isLoading: false,
     };
   },
 
@@ -212,7 +212,7 @@ var InfiniteScrollExample = React.createClass({
    * @return {Object}
    */
   _renderLoadingMessage: function() {
-    if (this.state.loading) {
+    if (this.state.isLoading) {
       return (
         <p className="infinite-scroll-example__loading-message">
           Loading...
@@ -222,7 +222,7 @@ var InfiniteScrollExample = React.createClass({
   },
 
   _renderWaypoint: function() {
-    if (!this.state.loading) {
+    if (!this.state.isLoading) {
       return (
         <Waypoint
             onEnter={this._loadMoreItems}
