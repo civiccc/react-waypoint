@@ -46,7 +46,7 @@ var Waypoint = React.createClass({
       //
       //   Cannot read property 'removeEventListener' of undefined
       this.scrollableParent.removeEventListener('scroll', this._handleScroll);
-      this.scrollableParent.removeEventListener('resize', this._handleScroll);
+      window.removeEventListener('resize', this._handleScroll);
     }
   },
 
