@@ -251,6 +251,55 @@ var InfiniteScrollExample = React.createClass({
   </script>
 
   <script type="text/jsx">
+var PropTypes = React.PropTypes;
+
+var BookmarkableHeader = React.createClass({
+  propTypes: {
+    headerType: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+  },
+
+  /**
+   * @return {Object}
+   */
+  _renderLink: function() {
+    return (
+      <a
+        aria-hidden
+        href={'#' + this.props.id} className="bookmarkable-header__symbol"
+      >
+        §
+      </a>
+    );
+  },
+
+  /**
+   * @return {Object}
+   */
+  _renderText: function() {
+    return (
+      <span id={this.props.id} className="bookmarkable-header__text">
+        {this.props.text}
+      </span>
+    );
+  },
+
+  /**
+   * @return {Object}
+   */
+  render: function() {
+    return (
+      React.createElement(
+        this.props.headerType,
+        { className: 'bookmarkable-header' },
+        (this._renderLink()),
+        (this._renderText())
+      )
+    );
+  }
+});
+
 var ExampleDemoAndCode = React.createClass({
   /**
    * @param {String} words
@@ -283,10 +332,19 @@ var ExampleDemoAndCode = React.createClass({
     );
   },
 
+  propTypes: {
+    headerType: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+  },
   render: function() {
     return (
       <div className="react-example">
-        <h3>{this._convertToTitle(this.props.exampleName)}</h3>
+        <BookmarkableHeader
+          headerType="h3"
+          text={this._convertToTitle(this.props.exampleName)}
+          id={this.props.exampleName}
+        />
         {this._renderExampleComponent()}
         <pre>
           {this._renderExampleCode()}
