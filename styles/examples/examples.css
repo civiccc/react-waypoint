@@ -2,3 +2,20 @@ pre:not(.react-example__code) {
   /* fix border issue because React renders two nested 'pre' tags */
   border: 1px solid #ccc;;
 }
+
+.bookmarkable-header {
+  position: relative;
+}
+
+.bookmarkable-header__symbol {
+  display: none;
+  margin-left: -16px;
+  padding-right: 4px;
+  position: absolute;
+  width: 16px;
+}
+
+.bookmarkable-header__symbol:hover,
+.bookmarkable-header:hover > .bookmarkable-header__symbol {
+  display: block;
+}
