@@ -30,7 +30,7 @@ var Waypoint = React.createClass({
   componentDidMount: function() {
     this.scrollableParent = this._findScrollableParent();
     this.scrollableParent.addEventListener('scroll', this._handleScroll);
-    this.scrollableParent.addEventListener('resize', this._handleScroll);
+    window.addEventListener('resize', this._handleScroll);
     this._handleScroll();
   },
 
@@ -46,7 +46,7 @@ var Waypoint = React.createClass({
       //
       //   Cannot read property 'removeEventListener' of undefined
       this.scrollableParent.removeEventListener('scroll', this._handleScroll);
-      this.scrollableParent.removeEventListener('resize', this._handleScroll);
+      window.removeEventListener('resize', this._handleScroll);
     }
   },
 

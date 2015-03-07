@@ -1,5 +1,8 @@
 ## master (unreleased)
 
+- Fix corner case where scrollable parent is not the window and the window
+  resize should trigger a Waypoint callback.
+
 ## 0.3.0
 
 - Fix Waypoints with the window element as their scrollable parent (Firefox only)
