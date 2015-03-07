@@ -9,9 +9,10 @@ pre:not(.react-example__code) {
 
 .bookmarkable-header__symbol {
   display: none;
-  margin-left: -16px;
+  left: -16px;
   padding-right: 4px;
   position: absolute;
+  top: 0;
   width: 16px;
 }
 
