@@ -26,7 +26,7 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "react": "0.12.x"
+    "react": "~0.13.x"
   },
   "devDependencies": {
     "jasmine-core": "^2.1.3",
