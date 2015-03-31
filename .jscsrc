@@ -1,7 +1,8 @@
 {
   "fileExtensions": [".js"],
   "excludeFiles": [
-    "node_modules"
+    "node_modules",
+    "build"
   ],
 
   "requireCurlyBraces": [

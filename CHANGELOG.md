@@ -1,5 +1,10 @@
 ## master (unreleased)
 
+## 1.0.0
+
+- Add 'jsx' syntax to the unbuilt version of the component, and build into
+  'build/ReactWaypoint.js' with webpack.
+
 - Fix corner case where scrollable parent is not the window and the window
   resize should trigger a Waypoint callback.
 
