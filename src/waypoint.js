@@ -1,11 +1,11 @@
-const React = require('react');
+var React = require('react');
 
-const PropTypes = React.PropTypes;
+var PropTypes = React.PropTypes;
 
 /**
  * Calls a function when you scroll to the element.
  */
-const Waypoint = React.createClass({
+var Waypoint = React.createClass({
   propTypes: {
     onEnter: PropTypes.func,
     onLeave: PropTypes.func,
@@ -59,7 +59,7 @@ const Waypoint = React.createClass({
    *   as a fallback.
    */
   _findScrollableParent: function() {
-    let node = this.getDOMNode();
+    var node = this.getDOMNode();
 
     while (node.parentNode) {
       node = node.parentNode;
@@ -69,8 +69,8 @@ const Waypoint = React.createClass({
         continue;
       }
 
-      const style = window.getComputedStyle(node);
-      const overflowY = style.getPropertyValue('overflow-y') ||
+      var style = window.getComputedStyle(node);
+      var overflowY = style.getPropertyValue('overflow-y') ||
         style.getPropertyValue('overflow');
 
       if (overflowY === 'auto' || overflowY === 'scroll') {
@@ -84,7 +84,7 @@ const Waypoint = React.createClass({
   },
 
   _handleScroll: function() {
-    const isVisible = this._isVisible();
+    var isVisible = this._isVisible();
 
     if (this._wasVisible === isVisible) {
       // No change since last trigger
@@ -124,8 +124,8 @@ const Waypoint = React.createClass({
    *   parent element.
    */
   _isVisible: function() {
-    const waypointTop = this._distanceToTopOfScrollableParent(this.getDOMNode());
-    let contextHeight, contextScrollTop;
+    var waypointTop = this._distanceToTopOfScrollableParent(this.getDOMNode());
+    var contextHeight, contextScrollTop;
 
     if (this.scrollableParent === window) {
       contextHeight = window.innerHeight;
@@ -135,10 +135,10 @@ const Waypoint = React.createClass({
       contextScrollTop = this.scrollableParent.scrollTop;
     }
 
-    const thresholdPx = contextHeight * this.props.threshold;
+    var thresholdPx = contextHeight * this.props.threshold;
 
-    const isAboveBottom = contextScrollTop + contextHeight >= waypointTop - thresholdPx;
-    const isBelowTop    = contextScrollTop <= waypointTop + thresholdPx;
+    var isAboveBottom = contextScrollTop + contextHeight >= waypointTop - thresholdPx;
+    var isBelowTop    = contextScrollTop <= waypointTop + thresholdPx;
 
     return isAboveBottom && isBelowTop;
   },
@@ -149,7 +149,7 @@ const Waypoint = React.createClass({
   render: function() {
     // We need an element that we can locate in the DOM to determine where it is
     // rendered relative to the top of its context.
-    return (<span style={{fontSize: 0}} />);
+    return React.createElement('span', { style: { fontSize: 0 } });
   }
 });
 
