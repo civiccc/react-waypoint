@@ -1,3 +1,4 @@
+*.gif
 .jscsrc
 .jshintignore
 .jshintrc
@@ -6,5 +7,7 @@
 CHANGELOG.md
 bower.json
 karma.conf.js
+spec
+src
 tests.webpack.js
 webpack.conf.js
