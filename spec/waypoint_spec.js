@@ -1,5 +1,5 @@
-var React = require('react');
-var Waypoint = require('../src/waypoint');
+var React = require('../node_modules/react/react.js');
+var Waypoint = require('../src/waypoint.jsx');
 
 var div;
 
