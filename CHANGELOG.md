@@ -1,10 +1,14 @@
 ## master (unreleased)
 
+## 1.0.1
+
+- Ignore more files for bower and npm packages
+- Commit the built version for bower package
+
 ## 1.0.0
 
 - Add 'jsx' syntax to the unbuilt version of the component, and build into
   'build/ReactWaypoint.js' with webpack.
-
 - Fix corner case where scrollable parent is not the window and the window
   resize should trigger a Waypoint callback.
 
