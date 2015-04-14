@@ -26,6 +26,18 @@ module.exports = function(config) {
       'tests.webpack.js': ['webpack']
     },
 
+    webpack: {
+      module: {
+        loaders: [
+          {
+            test: /\.jsx?$/,
+            loaders: ['babel-loader?optional=runtime&cacheDirectory=true'],
+            exclude: /node_modules/
+          }
+        ]
+      }
+    },
+
     webpackMiddleware: {
       noInfo: true
     },
