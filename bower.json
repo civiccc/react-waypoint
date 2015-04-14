@@ -1,6 +1,6 @@
 {
   "name": "react-waypoint",
-  "main": "index.js",
+  "main": "build/npm/waypoint.js",
   "version": "1.0.0",
   "homepage": "https://github.com/brigade/react-waypoint",
   "description": "A React component to execute a function whenever you scroll to an element.",
@@ -27,6 +27,9 @@
     "package.json",
     "spec",
     "tests.webpack.js",
-    "webpack.conf.js"
+    "webpack.conf.js",
+    "src",
+    "*.gif",
+    "index.js"
   ]
 }
