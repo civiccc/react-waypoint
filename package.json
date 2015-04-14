@@ -10,7 +10,7 @@
   "homepage": "https://github.com/brigade/react-waypoint",
   "bugs": "https://github.com/brigade/react-waypoint/issues",
   "scripts": {
-    "build-npm": "rm -rf build/npm && mkdir build/npm && babel src/waypoint.jsx --out-file build/npm/waypoint.js",
+    "build-npm": "rm -rf build/npm && mkdir -p build/npm && babel src/waypoint.jsx --out-file build/npm/waypoint.js",
     "test": "./node_modules/.bin/jshint . && ./node_modules/.bin/jscs . && ./node_modules/.bin/karma start",
     "prepublish": "npm run build-npm"
   },
