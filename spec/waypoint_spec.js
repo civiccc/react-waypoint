@@ -1,22 +1,22 @@
-var React = require('../node_modules/react/react.js');
-var Waypoint = require('../src/waypoint.jsx');
+const React = require('../node_modules/react/react.js');
+const Waypoint = require('../src/waypoint.jsx');
 
-var div;
+let div;
 
-var renderAttached = function(component) {
+const renderAttached = function(component) {
   div = document.createElement('div');
   document.documentElement.appendChild(div);
-  var renderedComponent = React.render(component, div);
+  const renderedComponent = React.render(component, div);
   return renderedComponent;
 };
 
-var scrollNodeTo = function(node, scrollTop) {
+const scrollNodeTo = function(node, scrollTop) {
   if (node === window) {
     window.scroll(0, scrollTop);
   } else {
     node.scrollTop = scrollTop;
   }
-  var event = document.createEvent('Event');
+  const event = document.createEvent('Event');
   event.initEvent('scroll', false, false);
   node.dispatchEvent(event);
 };
