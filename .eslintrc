@@ -107,7 +107,6 @@
       -
         prefer:
           returns: return
-        requireParam: false
         requireParamDescription: false
         requireReturn: false
         requireReturnDescription: false
