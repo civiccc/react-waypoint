@@ -5,7 +5,7 @@ let div;
 
 const renderAttached = function(component) {
   div = document.createElement('div');
-  document.documentElement.appendChild(div);
+  document.body.appendChild(div);
   const renderedComponent = React.render(component, div);
   return renderedComponent;
 };
