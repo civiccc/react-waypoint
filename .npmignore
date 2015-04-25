@@ -1,7 +1,6 @@
 *.gif
-.jscsrc
-.jshintignore
-.jshintrc
+.eslintignore
+.eslintrc
 .overcommit.yml
 .projections.json
 CHANGELOG.md
