@@ -42,9 +42,11 @@ describe('Waypoint', function() {
     this.subject = () => {
       return renderAttached(
         React.createElement('div', { style: this.parentStyle },
-          React.createElement('div', { style: { height: this.topSpacerHeight } }),
+          React.createElement(
+            'div', { style: { height: this.topSpacerHeight } }),
           React.createElement(Waypoint, this.props),
-          React.createElement('div', { style: { height: this.bottomSpacerHeight } })
+          React.createElement(
+            'div', { style: { height: this.bottomSpacerHeight } })
         )
       );
     };
