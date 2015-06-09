@@ -83,7 +83,12 @@ const Waypoint = React.createClass({
     return window;
   },
 
-  _handleScroll: function() {
+  /**
+   * @param {Object} event the native scroll event coming from the scrollable
+   *   parent, or resize event coming from the window. Will be undefined if
+   *   called by a React lifecyle method
+   */
+  _handleScroll: function(event) {
     const isVisible = this._isVisible();
 
     if (this._wasVisible === isVisible) {
@@ -92,9 +97,9 @@ const Waypoint = React.createClass({
     }
 
     if (isVisible) {
-      this.props.onEnter();
+      this.props.onEnter.call(this, event);
     } else {
-      this.props.onLeave();
+      this.props.onLeave.call(this, event);
     }
 
     this._wasVisible = isVisible;
