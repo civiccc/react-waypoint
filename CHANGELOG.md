@@ -1,5 +1,7 @@
 ## master (unreleased)
 
+- Add event object and scope to onEnter/onLeave calls
+
 ## 1.0.1
 
 - Ignore more files for bower and npm packages
@@ -14,7 +16,8 @@
 
 ## 0.3.0
 
-- Fix Waypoints with the window element as their scrollable parent (Firefox only)
+- Fix Waypoints with the window element as their scrollable parent (Firefox
+  only)
 
 ## 0.2.0
 
