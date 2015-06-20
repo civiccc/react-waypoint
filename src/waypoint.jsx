@@ -34,11 +34,6 @@ const Waypoint = React.createClass({
     this._handleScroll();
   },
 
-  componentDidUpdate: function() {
-    // The element may have moved.
-    this._handleScroll();
-  },
-
   componentWillUnmount: function() {
     if (this.scrollableParent) {
       // At the time of unmounting, the scrollable parent might no longer exist.
