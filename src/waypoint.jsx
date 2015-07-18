@@ -19,27 +19,27 @@ const Waypoint = React.createClass({
   /**
    * @return {Object}
    */
-  getDefaultProps: function() {
+  getDefaultProps() {
     return {
       threshold: 0,
-      onEnter: function() {},
-      onLeave: function() {},
+      onEnter() {},
+      onLeave() {},
     };
   },
 
-  componentDidMount: function() {
+  componentDidMount() {
     this.scrollableAncestor = this._findScrollableAncestor();
     this.scrollableAncestor.addEventListener('scroll', this._handleScroll);
     window.addEventListener('resize', this._handleScroll);
     this._handleScroll();
   },
 
-  componentDidUpdate: function() {
+  componentDidUpdate() {
     // The element may have moved.
     this._handleScroll();
   },
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     if (this.scrollableAncestor) {
       // At the time of unmounting, the scrollable ancestor might no longer
       // exist. Guarding against this prevents the following error:
@@ -58,7 +58,7 @@ const Waypoint = React.createClass({
    *   allows for scrolling. If none is found, the `window` object is returned
    *   as a fallback.
    */
-  _findScrollableAncestor: function() {
+  _findScrollableAncestor() {
     let node = this.getDOMNode();
 
     while (node.parentNode) {
@@ -88,7 +88,7 @@ const Waypoint = React.createClass({
    *   ancestor, or resize event coming from the window. Will be undefined if
    *   called by a React lifecyle method
    */
-  _handleScroll: function(event) {
+  _handleScroll(event) {
     const isVisible = this._isVisible();
 
     if (this._wasVisible === isVisible) {
@@ -109,7 +109,7 @@ const Waypoint = React.createClass({
    * @param {Object} node
    * @return {Number}
    */
-  _distanceToTopOfScrollableAncestor: function(node) {
+  _distanceToTopOfScrollableAncestor(node) {
     if (this.scrollableAncestor !== window && !node.offsetParent) {
       throw new Error(
         'The scrollable ancestor of Waypoint needs to have positioning to ' +
@@ -120,7 +120,8 @@ const Waypoint = React.createClass({
     if (node.offsetParent === this.scrollableAncestor || !node.offsetParent) {
       return node.offsetTop;
     } else {
-      return node.offsetTop + this._distanceToTopOfScrollableAncestor(node.offsetParent);
+      return node.offsetTop +
+        this._distanceToTopOfScrollableAncestor(node.offsetParent);
     }
   },
 
@@ -128,9 +129,11 @@ const Waypoint = React.createClass({
    * @return {boolean} true if scrolled down almost to the end of the scrollable
    *   ancestor element.
    */
-  _isVisible: function() {
-    const waypointTop = this._distanceToTopOfScrollableAncestor(this.getDOMNode());
-    let contextHeight, contextScrollTop;
+  _isVisible() {
+    const waypointTop =
+      this._distanceToTopOfScrollableAncestor(this.getDOMNode());
+    let contextHeight;
+    let contextScrollTop;
 
     if (this.scrollableAncestor === window) {
       contextHeight = window.innerHeight;
@@ -142,8 +145,9 @@ const Waypoint = React.createClass({
 
     const thresholdPx = contextHeight * this.props.threshold;
 
-    const isAboveBottom = contextScrollTop + contextHeight >= waypointTop - thresholdPx;
-    const isBelowTop    = contextScrollTop <= waypointTop + thresholdPx;
+    const contextBottom = contextScrollTop + contextHeight;
+    const isAboveBottom = contextBottom >= waypointTop - thresholdPx;
+    const isBelowTop = contextScrollTop <= waypointTop + thresholdPx;
 
     return isAboveBottom && isBelowTop;
   },
@@ -151,10 +155,10 @@ const Waypoint = React.createClass({
   /**
    * @return {Object}
    */
-  render: function() {
+  render() {
     // We need an element that we can locate in the DOM to determine where it is
     // rendered relative to the top of its context.
-    return (<span style={{fontSize: 0}} />);
+    return <span style={{fontSize: 0}} />;
   }
 });
 
