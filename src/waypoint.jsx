@@ -1,6 +1,6 @@
 const React = require('react');
 
-const PropTypes = React.PropTypes;
+const { PropTypes } = React;
 
 /**
  * Calls a function when you scroll to the element.
