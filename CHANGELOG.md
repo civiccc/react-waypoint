@@ -2,6 +2,7 @@
 
 - Add event object and scope to onEnter/onLeave calls
 - Allow React 0.14.0-beta peerDependency
+- Always remove window resize event listener
 
 ## 1.0.1
 

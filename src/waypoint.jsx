@@ -14,8 +14,6 @@ const Waypoint = React.createClass({
     threshold: PropTypes.number,
   },
 
-  _wasVisible: false,
-
   /**
    * @return {Object}
    */
@@ -46,9 +44,11 @@ const Waypoint = React.createClass({
       //
       //   Cannot read property 'removeEventListener' of undefined
       this.scrollableAncestor.removeEventListener('scroll', this._handleScroll);
-      window.removeEventListener('resize', this._handleScroll);
     }
+    window.removeEventListener('resize', this._handleScroll);
   },
+
+  _wasVisible: false,
 
   /**
    * Traverses up the DOM to find an ancestor container which has an overflow
