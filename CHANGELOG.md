@@ -1,4 +1,4 @@
-## master (unreleased)
+## 1.0.2
 
 - Add event object and scope to onEnter/onLeave calls
 - Allow React 0.14.0-beta peerDependency
