@@ -59,7 +59,7 @@ const Waypoint = React.createClass({
    *   as a fallback.
    */
   _findScrollableAncestor() {
-    let node = this.getDOMNode();
+    let node = React.findDOMNode(this);
 
     while (node.parentNode) {
       node = node.parentNode;
@@ -131,7 +131,7 @@ const Waypoint = React.createClass({
    */
   _isVisible() {
     const waypointTop =
-      this._distanceToTopOfScrollableAncestor(this.getDOMNode());
+      this._distanceToTopOfScrollableAncestor(React.findDOMNode(this));
     let contextHeight;
     let contextScrollTop;
 
