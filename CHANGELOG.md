@@ -1,3 +1,7 @@
+## master (unreleased)
+
+- Replace `this.getDOMNode()` with `React.findDOMNode(this)`
+
 ## 1.0.2
 
 - Add event object and scope to onEnter/onLeave calls
