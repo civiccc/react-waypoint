@@ -4,6 +4,12 @@ var React = require('react');
 
 var PropTypes = React.PropTypes;
 
+var POSITIONS = {
+  above: 'above',
+  inside: 'inside',
+  below: 'below'
+};
+
 /**
  * Calls a function when you scroll to the element.
  */
@@ -52,8 +58,6 @@ var Waypoint = React.createClass({
     window.removeEventListener('resize', this._handleScroll);
   },
 
-  _wasVisible: false,
-
   /**
    * Traverses up the DOM to find an ancestor container which has an overflow
    * style that allows for scrolling.
@@ -63,7 +67,7 @@ var Waypoint = React.createClass({
    *   as a fallback.
    */
   _findScrollableAncestor: function _findScrollableAncestor() {
-    var node = this.getDOMNode();
+    var node = React.findDOMNode(this);
 
     while (node.parentNode) {
       node = node.parentNode;
@@ -92,20 +96,29 @@ var Waypoint = React.createClass({
    *   called by a React lifecyle method
    */
   _handleScroll: function _handleScroll(event) {
-    var isVisible = this._isVisible();
+    var currentPosition = this._currentPosition();
 
-    if (this._wasVisible === isVisible) {
+    if (this._previousPosition === currentPosition) {
       // No change since last trigger
       return;
     }
 
-    if (isVisible) {
+    if (currentPosition === POSITIONS.inside) {
       this.props.onEnter.call(this, event);
-    } else {
+    } else if (this._previousPosition === POSITIONS.inside) {
       this.props.onLeave.call(this, event);
     }
 
-    this._wasVisible = isVisible;
+    var isRapidScrollDown = this._previousPosition === POSITIONS.below && currentPosition === POSITIONS.above;
+    var isRapidScrollUp = this._previousPosition === POSITIONS.above && currentPosition === POSITIONS.below;
+    if (isRapidScrollDown || isRapidScrollUp) {
+      // If the scroll event isn't fired often enough to occur while the
+      // waypoint was visible, we trigger both callbacks anyway.
+      this.props.onEnter.call(this, event);
+      this.props.onLeave.call(this, event);
+    }
+
+    this._previousPosition = currentPosition;
   },
 
   /**
@@ -128,8 +141,8 @@ var Waypoint = React.createClass({
    * @return {boolean} true if scrolled down almost to the end of the scrollable
    *   ancestor element.
    */
-  _isVisible: function _isVisible() {
-    var waypointTop = this._distanceToTopOfScrollableAncestor(this.getDOMNode());
+  _currentPosition: function _currentPosition() {
+    var waypointTop = this._distanceToTopOfScrollableAncestor(React.findDOMNode(this));
     var contextHeight = undefined;
     var contextScrollTop = undefined;
 
@@ -143,11 +156,18 @@ var Waypoint = React.createClass({
 
     var thresholdPx = contextHeight * this.props.threshold;
 
+    var isBelowTop = contextScrollTop <= waypointTop + thresholdPx;
+    if (!isBelowTop) {
+      return POSITIONS.above;
+    }
+
     var contextBottom = contextScrollTop + contextHeight;
     var isAboveBottom = contextBottom >= waypointTop - thresholdPx;
-    var isBelowTop = contextScrollTop <= waypointTop + thresholdPx;
+    if (!isAboveBottom) {
+      return POSITIONS.below;
+    }
 
-    return isAboveBottom && isBelowTop;
+    return POSITIONS.inside;
   },
 
   /**

@@ -1,4 +1,4 @@
-## master (unreleased)
+## 1.0.3
 
 - Replace `this.getDOMNode()` with `React.findDOMNode(this)`
 - Improve support for scrolling very quickly
