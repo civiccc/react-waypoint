@@ -2,6 +2,12 @@ const React = require('react');
 
 const { PropTypes } = React;
 
+const POSITIONS = {
+  above: 'above',
+  inside: 'inside',
+  below: 'below',
+};
+
 /**
  * Calls a function when you scroll to the element.
  */
@@ -48,8 +54,6 @@ const Waypoint = React.createClass({
     window.removeEventListener('resize', this._handleScroll);
   },
 
-  _wasVisible: false,
-
   /**
    * Traverses up the DOM to find an ancestor container which has an overflow
    * style that allows for scrolling.
@@ -89,20 +93,31 @@ const Waypoint = React.createClass({
    *   called by a React lifecyle method
    */
   _handleScroll(event) {
-    const isVisible = this._isVisible();
+    const currentPosition = this._currentPosition();
 
-    if (this._wasVisible === isVisible) {
+    if (this._previousPosition === currentPosition) {
       // No change since last trigger
       return;
     }
 
-    if (isVisible) {
+    if (currentPosition === POSITIONS.inside) {
       this.props.onEnter.call(this, event);
-    } else {
+    } else if (this._previousPosition === POSITIONS.inside) {
       this.props.onLeave.call(this, event);
     }
 
-    this._wasVisible = isVisible;
+    const isRapidScrollDown = this._previousPosition === POSITIONS.below &&
+                              currentPosition === POSITIONS.above;
+    const isRapidScrollUp =   this._previousPosition === POSITIONS.above &&
+                              currentPosition === POSITIONS.below;
+    if (isRapidScrollDown || isRapidScrollUp) {
+      // If the scroll event isn't fired often enough to occur while the
+      // waypoint was visible, we trigger both callbacks anyway.
+      this.props.onEnter.call(this, event);
+      this.props.onLeave.call(this, event);
+    }
+
+    this._previousPosition = currentPosition;
   },
 
   /**
@@ -129,7 +144,7 @@ const Waypoint = React.createClass({
    * @return {boolean} true if scrolled down almost to the end of the scrollable
    *   ancestor element.
    */
-  _isVisible() {
+  _currentPosition() {
     const waypointTop =
       this._distanceToTopOfScrollableAncestor(React.findDOMNode(this));
     let contextHeight;
@@ -145,11 +160,18 @@ const Waypoint = React.createClass({
 
     const thresholdPx = contextHeight * this.props.threshold;
 
+    const isBelowTop = contextScrollTop <= waypointTop + thresholdPx;
+    if (!isBelowTop) {
+      return POSITIONS.above;
+    }
+
     const contextBottom = contextScrollTop + contextHeight;
     const isAboveBottom = contextBottom >= waypointTop - thresholdPx;
-    const isBelowTop = contextScrollTop <= waypointTop + thresholdPx;
+    if (!isAboveBottom) {
+      return POSITIONS.below;
+    }
 
-    return isAboveBottom && isBelowTop;
+    return POSITIONS.inside;
   },
 
   /**
