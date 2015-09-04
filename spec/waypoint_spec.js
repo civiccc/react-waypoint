@@ -21,7 +21,7 @@ const scrollNodeTo = function(node, scrollTop) {
   node.dispatchEvent(event);
 };
 
-describe('Waypoint', function() {
+describe('<Waypoint>', function() {
   beforeEach(() => {
     this.props = {
       onEnter: jasmine.createSpy(),
