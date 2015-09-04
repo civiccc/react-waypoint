@@ -105,6 +105,10 @@ describe('<Waypoint>', function() {
   describe('when the Waypoint is below the bottom', () => {
     beforeEach(() => {
       this.topSpacerHeight = 200;
+
+      // The bottom spacer needs to be tall enough to force the Waypoint to exit
+      // the viewport when scrolled all the way down.
+      this.bottomSpacerHeight = 3000;
     });
 
     it('does not call the onEnter handler on mount', () => {
@@ -142,6 +146,24 @@ describe('<Waypoint>', function() {
 
       it('does not call the onLeave handler', () => {
         expect(this.props.onLeave).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('when scrolling quickly past the waypoint', () => {
+      // If you scroll really fast, we might not get a scroll event when the
+      // waypoint is in view. We will get a scroll event before going into view
+      // though, and one after. We want to treat this as if the waypoint was
+      // visible for a brief moment, and so we fire both onEnter and onLeave.
+      beforeEach(() => {
+        scrollNodeTo(this.subject().getDOMNode(), 5000);
+      });
+
+      it('calls the onEnter handler', () => {
+        expect(this.props.onEnter).toHaveBeenCalled();
+      });
+
+      it('calls the onLeave handler', () => {
+        expect(this.props.onLeave).toHaveBeenCalled();
       });
     });
 
@@ -185,6 +207,13 @@ describe('<Waypoint>', function() {
       this.topSpacerHeight = 200;
       this.bottomSpacerHeight = 200;
       this.scrollable = this.subject().getDOMNode();
+
+      // Because of how we detect when a Waypoint is scrolled past without any
+      // scroll event fired when it was visible, we need to reset callback
+      // spies.
+      scrollNodeTo(this.scrollable, 400);
+      this.props.onEnter.calls.reset();
+      this.props.onLeave.calls.reset();
       scrollNodeTo(this.scrollable, 400);
     });
 
@@ -235,6 +264,24 @@ describe('<Waypoint>', function() {
         it('does not call the onEnter handler again', () => {
           expect(this.props.onEnter.calls.count()).toBe(1);
         });
+      });
+    });
+
+    describe('when scrolling up quickly past the waypoint', () => {
+      // If you scroll really fast, we might not get a scroll event when the
+      // waypoint is in view. We will get a scroll event before going into view
+      // though, and one after. We want to treat this as if the waypoint was
+      // visible for a brief moment, and so we fire both onEnter and onLeave.
+      beforeEach(() => {
+        scrollNodeTo(this.scrollable, 0);
+      });
+
+      it('calls the onEnter handler', () => {
+        expect(this.props.onEnter).toHaveBeenCalled();
+      });
+
+      it('calls the onLeave handler', () => {
+        expect(this.props.onLeave).toHaveBeenCalled();
       });
     });
   });
