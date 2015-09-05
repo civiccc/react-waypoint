@@ -11,7 +11,7 @@
   "bugs": "https://github.com/brigade/react-waypoint/issues",
   "scripts": {
     "build-npm": "rm -rf build/npm && mkdir -p build/npm && babel src/waypoint.jsx --out-file build/npm/waypoint.js",
-    "test": "./node_modules/.bin/eslint . && ./node_modules/.bin/karma start",
+    "test": "./node_modules/.bin/eslint . --ext .js,.jsx && ./node_modules/.bin/karma start",
     "prepublish": "npm run build-npm"
   },
   "author": "Brigade Engineering",
