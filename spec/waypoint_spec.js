@@ -38,12 +38,14 @@ describe('<Waypoint>', function() {
 
     this.topSpacerHeight = 0;
     this.bottomSpacerHeight = 0;
+    this.contentAbove = undefined;
 
     this.subject = () => {
       return renderAttached(
         React.createElement('div', { style: this.parentStyle },
           React.createElement(
             'div', { style: { height: this.topSpacerHeight } }),
+          this.contentAbove,
           React.createElement(Waypoint, this.props),
           React.createElement(
             'div', { style: { height: this.bottomSpacerHeight } })
@@ -282,6 +284,37 @@ describe('<Waypoint>', function() {
 
       it('calls the onLeave handler', () => {
         expect(this.props.onLeave).toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('when the waypoint is amongst floated elements', () => {
+    beforeEach(() => {
+      this.numberOfRows = 3;
+      this.heightOfOneRow = 500;
+
+      this.contentAbove = [];
+      for (let i = 0; i < this.numberOfRows * 2; i++) {
+        this.contentAbove.push(React.createElement('div', { style: {
+          float: 'left',
+          width: '50%',
+          height: this.heightOfOneRow,
+        }}));
+      }
+      this.contentAbove.push(React.createElement('div', { style: {
+        clear: 'both',
+      }}));
+      this.scrollable = this.subject().getDOMNode();
+    });
+
+    describe('when the waypoint is in view', () => {
+      beforeEach(() => {
+        scrollNodeTo(this.scrollable,
+                     this.heightOfOneRow * this.numberOfRows - 10);
+      });
+
+      it('calls the onEnter handler', () => {
+        expect(this.props.onEnter).toHaveBeenCalled();
       });
     });
   });
