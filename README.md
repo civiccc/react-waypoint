@@ -65,6 +65,23 @@ var Waypoint = require('react-waypoint');
   },
 ```
 
+## Limitations
+
+In this component we make a few assumptions that we believe are generally safe,
+but in some situations might present limitations.
+
+- We determine the scrollable-ness of a node by inspecting its computed
+  overflow-y or overflow property and nothing else. This could mean that a
+  container with this style but that does not actually currently scroll will be
+  considered when performing visibility calculations.
+- We assume that waypoint is rendered within at most one scrollable container.
+  If you render a waypoint in multiple nested scrollable containers, the
+  visibility calculations will likely not be accurate.
+- We also base the visibility calculations on the scroll position of the
+  scrollable container (or `window` if no scrollable container is found). This
+  means that if your scrollable container has a height that is greater than the
+  window, it might trigger `onEnter` unexpectedly.
+
 ## Credits
 
 Credit to [trotzig][trotzig-github] and [lencioni][lencioni-github] for writing
