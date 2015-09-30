@@ -62,7 +62,8 @@ describe('<Waypoint>', function() {
     beforeEach(() => {
       this.topSpacerHeight = 90;
       this.bottomSpacerHeight = 200;
-      this.scrollable = this.subject().getDOMNode();
+      this.parentComponent = this.subject();
+      this.scrollable = this.parentComponent.getDOMNode();
     });
 
     it('calls the onEnter handler', () => {
@@ -71,6 +72,17 @@ describe('<Waypoint>', function() {
 
     it('does not call the onLeave handler', () => {
       expect(this.props.onLeave).not.toHaveBeenCalled();
+    });
+
+    describe('when the waypoint is re-rendered', () => {
+      beforeEach(() => {
+        this.props.onEnter.calls.reset();
+        this.parentComponent.forceUpdate();
+      });
+
+      it('does not call the onEnter callback again', () => {
+        expect(this.props.onEnter).not.toHaveBeenCalled();
+      });
     });
 
     describe('when scrolling while the waypoint is visible', () => {
