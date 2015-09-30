@@ -76,8 +76,8 @@ describe('<Waypoint>', function() {
 
     describe('when the waypoint is re-rendered', () => {
       beforeEach(() => {
-        this.parentComponent.forceUpdate();
         this.props.onEnter.calls.reset();
+        this.parentComponent.forceUpdate();
       });
 
       it('does not call the onEnter callback again', () => {
