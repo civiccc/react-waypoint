@@ -1,8 +1,6 @@
-## master (unreleased)
+## 1.0.4
 
-- Upgrade for use with React 0.14
-- List `react` and `react-dom` as `dependencies` instead of `peerDependency`,
-  for NPM3 compatibility.
+- Bump `react` dependency to 0.14 and add `react-dom` to `peerDependencies`
 
 ## 1.0.3
 
