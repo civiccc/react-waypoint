@@ -75,16 +75,6 @@ describe('<Waypoint>', function() {
       expect(this.props.onLeave).not.toHaveBeenCalled();
     });
 
-    describe('when the waypoint is re-rendered', () => {
-      beforeEach(() => {
-        this.props.onEnter.calls.reset();
-      });
-
-      it('does not call the onEnter callback again', () => {
-        expect(this.props.onEnter).not.toHaveBeenCalled();
-      });
-    });
-
     describe('when scrolling while the waypoint is visible', () => {
       beforeEach(() => {
         scrollNodeTo(this.scrollable, this.topSpacerHeight / 2);
