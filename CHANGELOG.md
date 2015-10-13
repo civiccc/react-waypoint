@@ -1,3 +1,9 @@
+## master (unreleased)
+
+- Upgrade for use with React 0.14
+- List `react` and `react-dom` as `dependencies` instead of `peerDependency`,
+  for NPM3 compatibility.
+
 ## 1.0.3
 
 - Replace `this.getDOMNode()` with `React.findDOMNode(this)`

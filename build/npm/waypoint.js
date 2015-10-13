@@ -1,6 +1,7 @@
 'use strict';
 
 var React = require('react');
+var ReactDOM = require('react-dom');
 
 var PropTypes = React.PropTypes;
 
@@ -67,7 +68,7 @@ var Waypoint = React.createClass({
    *   as a fallback.
    */
   _findScrollableAncestor: function _findScrollableAncestor() {
-    var node = React.findDOMNode(this);
+    var node = ReactDOM.findDOMNode(this);
 
     while (node.parentNode) {
       node = node.parentNode;
@@ -142,7 +143,7 @@ var Waypoint = React.createClass({
    *   ancestor element.
    */
   _currentPosition: function _currentPosition() {
-    var waypointTop = this._distanceToTopOfScrollableAncestor(React.findDOMNode(this));
+    var waypointTop = this._distanceToTopOfScrollableAncestor(ReactDOM.findDOMNode(this));
     var contextHeight = undefined;
     var contextScrollTop = undefined;
 

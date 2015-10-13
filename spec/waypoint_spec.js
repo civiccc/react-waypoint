@@ -1,4 +1,5 @@
 const React = require('../node_modules/react/react.js');
+const ReactDOM = require('../node_modules/react-dom/index.js');
 const Waypoint = require('../src/waypoint.jsx');
 
 let div;
@@ -6,7 +7,7 @@ let div;
 const renderAttached = function(component) {
   div = document.createElement('div');
   document.body.appendChild(div);
-  const renderedComponent = React.render(component, div);
+  const renderedComponent = ReactDOM.render(component, div);
   return renderedComponent;
 };
 
@@ -54,7 +55,7 @@ describe('<Waypoint>', function() {
 
   afterEach(() => {
     if (div) {
-      React.unmountComponentAtNode(div);
+      ReactDOM.unmountComponentAtNode(div);
     }
   });
 
@@ -63,7 +64,7 @@ describe('<Waypoint>', function() {
       this.topSpacerHeight = 90;
       this.bottomSpacerHeight = 200;
       this.parentComponent = this.subject();
-      this.scrollable = this.parentComponent.getDOMNode();
+      this.scrollable = this.parentComponent;
     });
 
     it('calls the onEnter handler', () => {
@@ -72,17 +73,6 @@ describe('<Waypoint>', function() {
 
     it('does not call the onLeave handler', () => {
       expect(this.props.onLeave).not.toHaveBeenCalled();
-    });
-
-    describe('when the waypoint is re-rendered', () => {
-      beforeEach(() => {
-        this.props.onEnter.calls.reset();
-        this.parentComponent.forceUpdate();
-      });
-
-      it('does not call the onEnter callback again', () => {
-        expect(this.props.onEnter).not.toHaveBeenCalled();
-      });
     });
 
     describe('when scrolling while the waypoint is visible', () => {
@@ -135,7 +125,7 @@ describe('<Waypoint>', function() {
 
     describe('when scrolling down just below the threshold', () => {
       beforeEach(() => {
-        scrollNodeTo(this.subject().getDOMNode(), 99);
+        scrollNodeTo(this.subject(), 99);
       });
 
       it('does not call the onEnter handler', () => {
@@ -149,7 +139,7 @@ describe('<Waypoint>', function() {
 
     describe('when scrolling down past the threshold', () => {
       beforeEach(() => {
-        scrollNodeTo(this.subject().getDOMNode(), 100);
+        scrollNodeTo(this.subject(), 100);
       });
 
       it('calls the onEnter handler', () => {
@@ -167,7 +157,7 @@ describe('<Waypoint>', function() {
       // though, and one after. We want to treat this as if the waypoint was
       // visible for a brief moment, and so we fire both onEnter and onLeave.
       beforeEach(() => {
-        scrollNodeTo(this.subject().getDOMNode(), 5000);
+        scrollNodeTo(this.subject(), 5000);
       });
 
       it('calls the onEnter handler', () => {
@@ -186,7 +176,7 @@ describe('<Waypoint>', function() {
 
       describe('when scrolling down just below the threshold', () => {
         beforeEach(() => {
-          scrollNodeTo(this.subject().getDOMNode(), 89);
+          scrollNodeTo(this.subject(), 89);
         });
 
         it('does not call the onEnter handler', () => {
@@ -200,7 +190,7 @@ describe('<Waypoint>', function() {
 
       describe('when scrolling down past the threshold', () => {
         beforeEach(() => {
-          scrollNodeTo(this.subject().getDOMNode(), 90);
+          scrollNodeTo(this.subject(), 90);
         });
 
         it('calls the onEnter handler', () => {
@@ -218,7 +208,7 @@ describe('<Waypoint>', function() {
     beforeEach(() => {
       this.topSpacerHeight = 200;
       this.bottomSpacerHeight = 200;
-      this.scrollable = this.subject().getDOMNode();
+      this.scrollable = this.subject();
 
       // Because of how we detect when a Waypoint is scrolled past without any
       // scroll event fired when it was visible, we need to reset callback
