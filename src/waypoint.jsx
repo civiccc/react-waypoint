@@ -73,7 +73,7 @@ const Waypoint = React.createClass({
         // This particular node does not have a computed style.
         continue;
       }
-      
+
       if (node === document.documentElement) {
         // This particular node does not have a scroll bar, it uses the window.
         continue;
