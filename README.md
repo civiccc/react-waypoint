@@ -50,7 +50,7 @@ var Waypoint = require('react-waypoint');
 />
 ```
 
-###**Example:** [JSFiddle Example][jsfiddle-example]
+### Example: [JSFiddle Example][jsfiddle-example]
 
 [jsfiddle-example]: http://jsfiddle.net/L4z5wcx0/7/
 
