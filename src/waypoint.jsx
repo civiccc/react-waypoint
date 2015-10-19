@@ -74,6 +74,11 @@ const Waypoint = React.createClass({
         continue;
       }
 
+      if (node === document.documentElement) {
+        // This particular node does not have a scroll bar, it uses the window.
+        continue;
+      }
+
       const style = window.getComputedStyle(node);
       const overflowY = style.getPropertyValue('overflow-y') ||
         style.getPropertyValue('overflow');
