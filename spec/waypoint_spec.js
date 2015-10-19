@@ -323,4 +323,22 @@ describe('<Waypoint>', function() {
       });
     });
   });
+
+  describe('when the <html> is the scrollable parent', () => {
+    beforeEach(() => {
+      // Give the <html> an overflow style
+      document.documentElement.style.overflow = 'auto';
+
+      // Make the normal parent non-scrollable
+      this.parentStyle = {};
+    });
+
+    afterEach(() => {
+      delete document.documentElement.style.overflow;
+    });
+
+    it('does not throw an error', () => {
+      expect(this.subject).not.toThrow();
+    });
+  });
 });
