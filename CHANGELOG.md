@@ -1,3 +1,7 @@
+## master (unreleased)
+
+- Prevent error when `<html>` has a scrollable overflow styling
+
 ## 1.0.4
 
 - Bump `react` dependency to 0.14 and add `react-dom` to `peerDependencies`
