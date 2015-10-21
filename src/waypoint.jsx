@@ -19,6 +19,7 @@ const Waypoint = React.createClass({
     // threshold is percentage of the height of the visible part of the
     // scrollable ancestor (e.g. 0.1)
     threshold: PropTypes.number,
+    className: PropTypes.string
   },
 
   /**
@@ -29,6 +30,7 @@ const Waypoint = React.createClass({
       threshold: 0,
       onEnter() {},
       onLeave() {},
+      className: null
     };
   },
 
@@ -186,7 +188,7 @@ const Waypoint = React.createClass({
   render() {
     // We need an element that we can locate in the DOM to determine where it is
     // rendered relative to the top of its context.
-    return <span style={{fontSize: 0}} />;
+    return <span style={{fontSize: 0, className}} />;
   }
 });
 
