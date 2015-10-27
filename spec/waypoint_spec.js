@@ -309,6 +309,7 @@ describe('<Waypoint>', function() {
     });
 
     it('does not fire the onEnter handler on mount', () => {
+      this.subject();
       expect(this.props.onEnter).not.toHaveBeenCalled();
     });
 
