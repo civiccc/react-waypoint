@@ -309,6 +309,7 @@ describe('<Waypoint>', function() {
     });
 
     it('does not fire the onEnter handler on mount', () => {
+      this.subject();
       expect(this.props.onEnter).not.toHaveBeenCalled();
     });
 
@@ -339,6 +340,34 @@ describe('<Waypoint>', function() {
 
     it('does not throw an error', () => {
       expect(this.subject).not.toThrow();
+    });
+  });
+
+  describe('when the waypoint is updated in the onEnter callback', () => {
+    beforeEach(() => {
+      const Wrapper = React.createClass({
+        render() {
+          return React.createElement('div',
+            { style: { margin: window.innerHeight * 2 + 'px 0'} },
+            React.createElement(Waypoint, {
+              onEnter: () => {
+                this.props.onEnter();
+                this.forceUpdate();
+              }
+            })
+          );
+        },
+      });
+
+      this.subject = () => {
+        return renderAttached(React.createElement(Wrapper, this.props));
+      };
+    });
+
+    it('only calls onEnter once', () => {
+      this.subject();
+      scrollNodeTo(window, window.innerHeight);
+      expect(this.props.onEnter.calls.count()).toBe(1);
     });
   });
 });
