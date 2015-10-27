@@ -1,5 +1,9 @@
 ## master (unreleased)
 
+## 1.0.6
+
+- Prevent duplicate onError/onLeave callbacks
+
 ## 1.0.5
 
 - Prevent error when `<html>` has a scrollable overflow styling
