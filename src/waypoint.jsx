@@ -100,21 +100,25 @@ const Waypoint = React.createClass({
    */
   _handleScroll(event) {
     const currentPosition = this._currentPosition();
+    const previousPosition = this._previousPosition;
 
-    if (this._previousPosition === currentPosition) {
+    // Save previous position as early as possible to prevent cycles
+    this._previousPosition = currentPosition;
+
+    if (previousPosition === currentPosition) {
       // No change since last trigger
       return;
     }
 
     if (currentPosition === POSITIONS.inside) {
       this.props.onEnter.call(this, event);
-    } else if (this._previousPosition === POSITIONS.inside) {
+    } else if (previousPosition === POSITIONS.inside) {
       this.props.onLeave.call(this, event);
     }
 
-    const isRapidScrollDown = this._previousPosition === POSITIONS.below &&
+    const isRapidScrollDown = previousPosition === POSITIONS.below &&
                               currentPosition === POSITIONS.above;
-    const isRapidScrollUp =   this._previousPosition === POSITIONS.above &&
+    const isRapidScrollUp =   previousPosition === POSITIONS.above &&
                               currentPosition === POSITIONS.below;
     if (isRapidScrollDown || isRapidScrollUp) {
       // If the scroll event isn't fired often enough to occur while the
@@ -122,8 +126,6 @@ const Waypoint = React.createClass({
       this.props.onEnter.call(this, event);
       this.props.onLeave.call(this, event);
     }
-
-    this._previousPosition = currentPosition;
   },
 
   /**
