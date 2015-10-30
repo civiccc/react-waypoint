@@ -68,7 +68,7 @@ describe('<Waypoint>', function() {
     });
 
     it('calls the onEnter handler', () => {
-      expect(this.props.onEnter).toHaveBeenCalled();
+      expect(this.props.onEnter).toHaveBeenCalledWith(null, null);
     });
 
     it('does not call the onLeave handler', () => {
@@ -94,7 +94,7 @@ describe('<Waypoint>', function() {
         });
 
         it('the onLeave handler is called', () => {
-          expect(this.props.onLeave).toHaveBeenCalled();
+          expect(this.props.onLeave).toHaveBeenCalledWith(jasmine.any(Event), 'above');
         });
 
         it('does not call the onEnter handler', () => {
@@ -143,7 +143,7 @@ describe('<Waypoint>', function() {
       });
 
       it('calls the onEnter handler', () => {
-        expect(this.props.onEnter).toHaveBeenCalled();
+        expect(this.props.onEnter).toHaveBeenCalledWith(jasmine.any(Event), 'below');
       });
 
       it('does not call the onLeave handler', () => {
@@ -161,11 +161,11 @@ describe('<Waypoint>', function() {
       });
 
       it('calls the onEnter handler', () => {
-        expect(this.props.onEnter).toHaveBeenCalled();
+        expect(this.props.onEnter).toHaveBeenCalledWith(jasmine.any(Event), 'below');
       });
 
       it('calls the onLeave handler', () => {
-        expect(this.props.onLeave).toHaveBeenCalled();
+        expect(this.props.onLeave).toHaveBeenCalledWith(jasmine.any(Event), 'above');
       });
     });
 
@@ -194,7 +194,7 @@ describe('<Waypoint>', function() {
         });
 
         it('calls the onEnter handler', () => {
-          expect(this.props.onEnter).toHaveBeenCalled();
+          expect(this.props.onEnter).toHaveBeenCalledWith(jasmine.any(Event), 'below');
         });
 
         it('does not call the onLeave handler', () => {
@@ -247,7 +247,7 @@ describe('<Waypoint>', function() {
       });
 
       it('calls the onEnter handler', () => {
-        expect(this.props.onEnter).toHaveBeenCalled();
+        expect(this.props.onEnter).toHaveBeenCalledWith(jasmine.any(Event), 'above');
       });
 
       it('does not call the onLeave handler', () => {
@@ -260,7 +260,7 @@ describe('<Waypoint>', function() {
         });
 
         it('calls the onLeave handler', () => {
-          expect(this.props.onLeave).toHaveBeenCalled();
+          expect(this.props.onLeave).toHaveBeenCalledWith(jasmine.any(Event), 'below');
         });
 
         it('does not call the onEnter handler again', () => {
@@ -279,11 +279,11 @@ describe('<Waypoint>', function() {
       });
 
       it('calls the onEnter handler', () => {
-        expect(this.props.onEnter).toHaveBeenCalled();
+        expect(this.props.onEnter).toHaveBeenCalledWith(jasmine.any(Event), 'above');
       });
 
       it('calls the onLeave handler', () => {
-        expect(this.props.onLeave).toHaveBeenCalled();
+        expect(this.props.onLeave).toHaveBeenCalledWith(jasmine.any(Event), 'below');
       });
     });
   });
@@ -320,7 +320,7 @@ describe('<Waypoint>', function() {
       });
 
       it('fires the onEnter handler', () => {
-        expect(this.props.onEnter).toHaveBeenCalled();
+        expect(this.props.onEnter).toHaveBeenCalledWith(jasmine.any(Event), 'below');
       });
     });
   });
