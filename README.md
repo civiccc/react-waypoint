@@ -65,7 +65,7 @@ var Waypoint = require('react-waypoint');
      * viewport on initial mount.
      *
      * @param {Event|null} event
-     * @param {'above'|'below'|null} from
+     * @param {Waypoint.above|Waypoint.below|null} from
      */
     onEnter: PropTypes.func,
 
@@ -73,7 +73,7 @@ var Waypoint = require('react-waypoint');
      * Function called when waypoint leaves viewport
      *
      * @param {Event|null} event
-     * @param {'above'|'below'} to
+     * @param {Waypoint.above|Waypoint.below} to
      */
     onLeave: PropTypes.func,
 
