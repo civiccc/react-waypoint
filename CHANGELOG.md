@@ -1,5 +1,10 @@
 ## master (unreleased)
 
+## 1.1.0
+
+- Add second parameter to `onEnter` and `onLeave` callbacks to indicate
+  from which direction the waypoint entered _from_ and _to_ respectively.
+
 ## 1.0.6
 
 - Prevent duplicate onError/onLeave callbacks

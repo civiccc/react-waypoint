@@ -58,10 +58,30 @@ var Waypoint = require('react-waypoint');
 
 ```javascript
   propTypes: {
-    onEnter: PropTypes.func, // function called when waypoint enters viewport
-    onLeave: PropTypes.func, // function called when waypoint leaves viewport
-    threshold: PropTypes.number, // threshold is percentage of the height of
-    // the visible part of the scrollable parent (e.g. 0.1)
+
+    /**
+     * Function called when waypoint enters viewport
+     * Both parameters will be null if the waypoint is in the
+     * viewport on initial mount.
+     *
+     * @param {Event|null} event
+     * @param {'above'|'below'|null} from
+     */
+    onEnter: PropTypes.func,
+
+    /**
+     * Function called when waypoint leaves viewport
+     *
+     * @param {Event|null} event
+     * @param {'above'|'below'} to
+     */
+    onLeave: PropTypes.func,
+
+    /**
+     * Threshold - a percentage of the height of the visible
+     * part of the scrollable parent (e.g. 0.1)
+     */
+    threshold: PropTypes.number
   },
 ```
 
