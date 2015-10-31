@@ -21,6 +21,11 @@ const Waypoint = React.createClass({
     onLeave: PropTypes.func
   },
 
+  statics: {
+    above: POSITIONS.above,
+    below: POSITIONS.below,
+  },
+
   /**
    * @return {Object}
    */
