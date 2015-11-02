@@ -1,6 +1,8 @@
 ## master (unreleased)
 
 - Add statics for edge argument used by `onEnter` and `onLeave`
+- Prevent scroll handler from blowing up if the component is not mounted at the
+  time of execution
 
 ## 1.1.0
 
