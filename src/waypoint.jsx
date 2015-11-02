@@ -104,6 +104,10 @@ const Waypoint = React.createClass({
    *   called by a React lifecyle method
    */
   _handleScroll(event) {
+    if (!this.isMounted()) {
+      return;
+    }
+
     const currentPosition = this._currentPosition();
     const previousPosition = this._previousPosition || null;
 
