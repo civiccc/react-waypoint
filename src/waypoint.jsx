@@ -197,7 +197,7 @@ const Waypoint = React.createClass({
   render() {
     // We need an element that we can locate in the DOM to determine where it is
     // rendered relative to the top of its context.
-    return <span style={{fontSize: 0}} />;
+    return this.props.children || <span style={{fontSize: 0}} />;
   }
 });
 
