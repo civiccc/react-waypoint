@@ -25,6 +25,11 @@ var Waypoint = React.createClass({
     onLeave: PropTypes.func
   },
 
+  statics: {
+    above: POSITIONS.above,
+    below: POSITIONS.below
+  },
+
   /**
    * @return {Object}
    */
@@ -102,6 +107,10 @@ var Waypoint = React.createClass({
    *   called by a React lifecyle method
    */
   _handleScroll: function _handleScroll(event) {
+    if (!this.isMounted()) {
+      return;
+    }
+
     var currentPosition = this._currentPosition();
     var previousPosition = this._previousPosition || null;
 

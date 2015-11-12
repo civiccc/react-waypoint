@@ -1,5 +1,9 @@
 ## master (unreleased)
 
+## 1.1.2
+
+- Fix built version
+
 ## 1.1.1
 
 - Add statics for edge argument used by `onEnter` and `onLeave`
