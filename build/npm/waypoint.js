@@ -22,7 +22,13 @@ var Waypoint = React.createClass({
     // scrollable ancestor (e.g. 0.1)
     threshold: PropTypes.number,
     onEnter: PropTypes.func,
-    onLeave: PropTypes.func
+    onLeave: PropTypes.func,
+    window: PropTypes.bool
+  },
+
+  statics: {
+    above: POSITIONS.above,
+    below: POSITIONS.below
   },
 
   /**
@@ -37,26 +43,32 @@ var Waypoint = React.createClass({
   },
 
   componentDidMount: function componentDidMount() {
-    this.scrollableAncestor = this._findScrollableAncestor();
-    this.scrollableAncestor.addEventListener('scroll', this._handleScroll);
-    window.addEventListener('resize', this._handleScroll);
-    this._handleScroll(null);
+    if (typeof window !== 'undefined') {
+      this.scrollableAncestor = this._findScrollableAncestor();
+      this.scrollableAncestor.addEventListener('scroll', this._handleScroll);
+      window.addEventListener('resize', this._handleScroll);
+      this._handleScroll(null);
+    }
   },
 
   componentDidUpdate: function componentDidUpdate() {
-    // The element may have moved.
-    this._handleScroll(null);
+    if (typeof window !== 'undefined') {
+      // The element may have moved.
+      this._handleScroll(null);
+    }
   },
 
   componentWillUnmount: function componentWillUnmount() {
-    if (this.scrollableAncestor) {
-      // At the time of unmounting, the scrollable ancestor might no longer
-      // exist. Guarding against this prevents the following error:
-      //
-      //   Cannot read property 'removeEventListener' of undefined
-      this.scrollableAncestor.removeEventListener('scroll', this._handleScroll);
+    if (typeof window !== 'undefined') {
+      if (this.scrollableAncestor) {
+        // At the time of unmounting, the scrollable ancestor might no longer
+        // exist. Guarding against this prevents the following error:
+        //
+        //   Cannot read property 'removeEventListener' of undefined
+        this.scrollableAncestor.removeEventListener('scroll', this._handleScroll);
+      }
+      window.removeEventListener('resize', this._handleScroll);
     }
-    window.removeEventListener('resize', this._handleScroll);
   },
 
   /**
@@ -68,6 +80,10 @@ var Waypoint = React.createClass({
    *   as a fallback.
    */
   _findScrollableAncestor: function _findScrollableAncestor() {
+    if (this.props.window) {
+      return window;
+    }
+
     var node = ReactDOM.findDOMNode(this);
 
     while (node.parentNode) {
@@ -102,6 +118,10 @@ var Waypoint = React.createClass({
    *   called by a React lifecyle method
    */
   _handleScroll: function _handleScroll(event) {
+    if (!this.isMounted()) {
+      return;
+    }
+
     var currentPosition = this._currentPosition();
     var previousPosition = this._previousPosition || null;
 
