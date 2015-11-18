@@ -1,5 +1,7 @@
 ## master (unreleased)
 
+- Remove bower support
+
 ## 1.1.2
 
 - Fix built version
