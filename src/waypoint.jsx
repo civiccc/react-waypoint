@@ -74,12 +74,12 @@ const Waypoint = React.createClass({
     while (node.parentNode) {
       node = node.parentNode;
 
-      if (node === document) {
+      if (node.nodeName === '#document') {
         // This particular node does not have a computed style.
         continue;
       }
 
-      if (node === document.documentElement) {
+      if (node.nodeName === 'HTML') {
         // This particular node does not have a scroll bar, it uses the window.
         continue;
       }
