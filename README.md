@@ -81,7 +81,17 @@ var Waypoint = require('react-waypoint');
      * Threshold - a percentage of the height of the visible
      * part of the scrollable parent (e.g. 0.1)
      */
-    threshold: PropTypes.number
+    threshold: PropTypes.number,
+
+    /**
+     * Scrollable Parent - A custom parent to determine if the
+     * target is visible in it. This is useful in cases where
+     * you do not want the immediate scrollable ancestor to be
+     * the container. For example, when your target is in a div
+     * that has overflow auto but you are detecting onEnter based
+     * on the window.
+     */
+    scrollableParent: PropTypes.any
   },
 ```
 
