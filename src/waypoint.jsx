@@ -25,6 +25,11 @@ const Waypoint = React.createClass({
   statics: {
     above: POSITIONS.above,
     below: POSITIONS.below,
+    getWindow: () => {
+      if (typeof window !== 'undefined') {
+        return window;
+      }
+    }
   },
 
   /**
@@ -39,7 +44,8 @@ const Waypoint = React.createClass({
   },
 
   componentDidMount() {
-    if (typeof window === 'undefined') {
+    const window = Waypoint.getWindow();
+    if (!window) {
       return;
     }
 
@@ -50,7 +56,8 @@ const Waypoint = React.createClass({
   },
 
   componentDidUpdate() {
-    if (typeof window === 'undefined') {
+    const window = Waypoint.getWindow();
+    if (!window) {
       return;
     }
 
@@ -59,7 +66,8 @@ const Waypoint = React.createClass({
   },
 
   componentWillUnmount() {
-    if (typeof window === 'undefined') {
+    const window = Waypoint.getWindow();
+    if (!window) {
       return;
     }
 

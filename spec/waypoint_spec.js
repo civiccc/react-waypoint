@@ -380,4 +380,15 @@ describe('<Waypoint>', function() {
       expect(this.props.onEnter.calls.count()).toBe(1);
     });
   });
+
+
+  describe('when window is undefined', () => {
+    beforeEach(() => {
+      spyOn(Waypoint, 'getWindow').and.returnValue(undefined);
+    });
+
+    it('does not throw an error', () => {
+      expect(this.subject).not.toThrow();
+    });
+  });
 });
