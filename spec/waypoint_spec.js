@@ -57,6 +57,7 @@ describe('<Waypoint>', function() {
     if (div) {
       ReactDOM.unmountComponentAtNode(div);
     }
+    scrollNodeTo(window, 0);
   });
 
   describe('when the Waypoint is visible on mount', () => {
@@ -378,6 +379,65 @@ describe('<Waypoint>', function() {
       this.subject();
       scrollNodeTo(window, window.innerHeight);
       expect(this.props.onEnter.calls.count()).toBe(1);
+    });
+  });
+
+  describe('when the <body> itself has a margin', () => {
+    beforeEach(() => {
+      // document.body.style.marginTop = '0px';
+      document.body.style.marginTop = '20px';
+      document.body.style.position = 'relative';
+      // this.topSpacerHeight = 20;
+
+      // Make the spacers large enough to make the Waypoint render off-screen
+      this.bottomSpacerHeight = window.innerHeight + 1000;
+
+      // Make the normal parent non-scrollable
+      this.parentStyle = {};
+
+      this.subject();
+    });
+
+    afterEach(() => {
+      document.body.style.marginTop = '';
+      document.body.style.position = '';
+    });
+
+    it('calls the onEnter handler', () => {
+      expect(this.props.onEnter).toHaveBeenCalledWith(null, null);
+    });
+
+    it('does not call the onLeave handler', () => {
+      expect(this.props.onLeave).not.toHaveBeenCalled();
+    });
+
+    describe('when scrolling while the waypoint is visible', () => {
+      beforeEach(() => {
+        scrollNodeTo(window, 10);
+      });
+
+      it('does not call the onEnter handler again', () => {
+        expect(this.props.onEnter.calls.count()).toBe(1);
+      });
+
+      it('does not call the onLeave handler', () => {
+        expect(this.props.onLeave).not.toHaveBeenCalled();
+      });
+
+      describe('when scrolling past it', () => {
+        beforeEach(() => {
+          scrollNodeTo(window, 25);
+        });
+
+        it('the onLeave handler is called', () => {
+          expect(this.props.onLeave)
+            .toHaveBeenCalledWith(jasmine.any(Event), Waypoint.above);
+        });
+
+        it('does not call the onEnter handler', () => {
+          expect(this.props.onEnter.calls.count()).toBe(1);
+        });
+      });
     });
   });
 });
