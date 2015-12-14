@@ -149,6 +149,11 @@ const Waypoint = React.createClass({
       );
     }
 
+    if (this.scrollableAncestor === window) {
+      const rect = node.getBoundingClientRect();
+      return rect.top + window.pageYOffset - document.documentElement.clientTop;
+    }
+
     if (node.offsetParent === this.scrollableAncestor || !node.offsetParent) {
       return node.offsetTop;
     } else {

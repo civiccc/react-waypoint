@@ -147,6 +147,11 @@ var Waypoint = React.createClass({
       throw new Error('The scrollable ancestor of Waypoint needs to have positioning to ' + 'properly determine position of Waypoint (e.g. `position: relative;`)');
     }
 
+    if (this.scrollableAncestor === window) {
+      var rect = node.getBoundingClientRect();
+      return rect.top + window.pageYOffset - document.documentElement.clientTop;
+    }
+
     if (node.offsetParent === this.scrollableAncestor || !node.offsetParent) {
       return node.offsetTop;
     } else {
