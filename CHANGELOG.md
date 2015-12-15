@@ -2,6 +2,10 @@
 
 - Remove bower support
 
+## 1.1.3
+
+- Calculate proper offset when <html> or <body> has a margin
+
 ## 1.1.2
 
 - Fix built version
