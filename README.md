@@ -50,6 +50,25 @@ var Waypoint = require('react-waypoint');
 />
 ```
 
+A waypoint normally fires `onEnter` and `onLeave` as you are scrolling, but it
+can fire because of other events too:
+
+- When the window is resized
+- When it is mounted (fires `onEnter` if it's visible on the page)
+- When it is updated/re-rendered by its parent
+
+Callbacks will only fire if the new position changed from the last known
+position. Sometimes it's useful to have a waypoint that fires `onEnter` every
+time it is updated as long as it stays visible (e.g. for infinite scroll). You
+can then use a `key` prop to control when a waypoint is reused vs. re-created.
+
+```javascript
+<Waypoint
+  key={cursor}
+  onEnter={this._loadMoreContent}
+/>
+```
+
 ### Example: [JSFiddle Example][jsfiddle-example]
 
 [jsfiddle-example]: http://jsfiddle.net/L4z5wcx0/7/
