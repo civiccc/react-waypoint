@@ -7,45 +7,37 @@ const POSITIONS = {
   below: 'below',
 };
 
+const propTypes = {
+  // threshold is percentage of the height of the visible part of the
+  // scrollable ancestor (e.g. 0.1)
+  threshold: PropTypes.number,
+  onEnter: PropTypes.func,
+  onLeave: PropTypes.func
+};
+
+const defaultProps = {
+  threshold: 0,
+  onEnter() {},
+  onLeave() {},
+};
+
 /**
  * Calls a function when you scroll to the element.
  */
-export default React.createClass({
-  propTypes: {
-    // threshold is percentage of the height of the visible part of the
-    // scrollable ancestor (e.g. 0.1)
-    threshold: PropTypes.number,
-    onEnter: PropTypes.func,
-    onLeave: PropTypes.func
-  },
-
-  statics: {
-    above: POSITIONS.above,
-    below: POSITIONS.below,
-  },
-
-  /**
-   * @return {Object}
-   */
-  getDefaultProps() {
-    return {
-      threshold: 0,
-      onEnter() {},
-      onLeave() {},
-    };
-  },
-
+export default class Waypoint extends React.Component {
   componentDidMount() {
+    this._handleScroll = this._handleScroll.bind(this);
+
     this.scrollableAncestor = this._findScrollableAncestor();
     this.scrollableAncestor.addEventListener('scroll', this._handleScroll);
     window.addEventListener('resize', this._handleScroll);
     this._handleScroll(null);
-  },
+  }
 
   componentDidUpdate() {
     // The element may have moved.
     this._handleScroll(null);
-  },
+  }
 
   componentWillUnmount() {
     if (this.scrollableAncestor) {
@@ -56,7 +48,7 @@ export default React.createClass({
       this.scrollableAncestor.removeEventListener('scroll', this._handleScroll);
     }
     window.removeEventListener('resize', this._handleScroll);
-  },
+  }
 
   /**
    * Traverses up the DOM to find an ancestor container which has an overflow
@@ -94,7 +86,7 @@ export default React.createClass({
     // A scrollable ancestor element was not found, which means that we need to
     // do stuff on window.
     return window;
-  },
+  }
 
   /**
    * @param {Object} event the native scroll event coming from the scrollable
@@ -102,10 +94,6 @@ export default React.createClass({
    *   called by a React lifecyle method
    */
   _handleScroll(event) {
-    if (!this.isMounted()) {
-      return;
-    }
-
     const currentPosition = this._currentPosition();
     const previousPosition = this._previousPosition || null;
 
@@ -133,7 +121,7 @@ export default React.createClass({
       this.props.onEnter.call(this, event, previousPosition);
       this.props.onLeave.call(this, event, currentPosition);
     }
-  },
+  }
 
   /**
    * @param {Object} node
@@ -158,7 +146,7 @@ export default React.createClass({
       return node.offsetTop +
         this._distanceToTopOfScrollableAncestor(node.offsetParent);
     }
-  },
+  }
 
   /**
    * @return {boolean} true if scrolled down almost to the end of the scrollable
@@ -192,7 +180,7 @@ export default React.createClass({
     }
 
     return POSITIONS.inside;
-  },
+  }
 
   /**
    * @return {Object}
@@ -202,4 +190,9 @@ export default React.createClass({
     // rendered relative to the top of its context.
     return <span style={{fontSize: 0}} />;
   }
-});
+}
+
+Waypoint.propTypes = propTypes;
+Waypoint.above = POSITIONS.above;
+Waypoint.below = POSITIONS.below;
+Waypoint.defaultProps = defaultProps;
