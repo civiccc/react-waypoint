@@ -1,7 +1,5 @@
-const React = require('react');
-const ReactDOM = require('react-dom');
-
-const { PropTypes } = React;
+import React, { PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 
 const POSITIONS = {
   above: 'above',
@@ -12,7 +10,7 @@ const POSITIONS = {
 /**
  * Calls a function when you scroll to the element.
  */
-const Waypoint = React.createClass({
+export default React.createClass({
   propTypes: {
     // threshold is percentage of the height of the visible part of the
     // scrollable ancestor (e.g. 0.1)
@@ -205,5 +203,3 @@ const Waypoint = React.createClass({
     return <span style={{fontSize: 0}} />;
   }
 });
-
-module.exports = Waypoint;
