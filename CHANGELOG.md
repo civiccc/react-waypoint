@@ -1,5 +1,10 @@
 ## master (unreleased)
 
+## 1.2.0
+
+- Upgrade Babel from 5 to 6
+- Convert from CommonJS to ES2015 modules
+- Convert from React.createClass to ES2015 class
 - Remove bower support
 
 ## 1.1.3
