@@ -1,7 +1,6 @@
 # React Waypoint
 
 [![npm version](https://badge.fury.io/js/react-waypoint.svg)](http://badge.fury.io/js/react-waypoint)
-[![bower version](https://badge.fury.io/bo/react-waypoint.svg)](http://badge.fury.io/bo/react-waypoint)
 [![Build Status](https://travis-ci.org/brigade/react-waypoint.svg?branch=master)](https://travis-ci.org/brigade/react-waypoint)
 
 A React component to execute a function whenever you scroll to an element. Works
@@ -28,12 +27,6 @@ Inspired by [Waypoints][waypoints], except this little library grooves the
 
 ```bash
 npm install react-waypoint --save
-```
-
-### Bower
-
-```bash
-bower install react-waypoint --save
 ```
 
 ## Usage

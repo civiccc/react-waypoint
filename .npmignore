@@ -4,7 +4,6 @@
 .overcommit.yml
 .projections.json
 CHANGELOG.md
-bower.json
 karma.conf.js
 spec
 src
