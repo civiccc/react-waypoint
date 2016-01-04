@@ -149,8 +149,9 @@ export default class Waypoint extends React.Component {
   }
 
   /**
-   * @return {boolean} true if scrolled down almost to the end of the scrollable
-   *   ancestor element.
+   * @return {string} The current position of the waypoint in relation to the
+   *   visible portion of the scrollable parent. One of `POSITIONS.above`,
+   *   `POSITIONS.below`, or `POSITIONS.inside`.
    */
   _currentPosition() {
     const waypointTop =
