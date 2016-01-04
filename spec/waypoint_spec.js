@@ -1,6 +1,6 @@
-const React = require('../node_modules/react/react.js');
-const ReactDOM = require('../node_modules/react-dom/index.js');
-const Waypoint = require('../src/waypoint.jsx');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Waypoint from '../src/waypoint.jsx';
 
 let div;
 
