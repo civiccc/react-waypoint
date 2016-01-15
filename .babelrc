@@ -1,4 +1,7 @@
 {
-  "plugins": ["transform-react-jsx"],
+  "plugins": [
+    "transform-react-jsx",
+    "add-module-exports"
+  ],
   "presets": ["es2015"]
 }
