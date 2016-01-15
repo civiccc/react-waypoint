@@ -1,5 +1,8 @@
 ## master (unreleased)
 
+## 1.2.1
+- Make bundled waypoint.js easier to import
+
 ## 1.2.0
 
 - Upgrade Babel from 5 to 6
