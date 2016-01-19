@@ -12,13 +12,15 @@ const propTypes = {
   // scrollable ancestor (e.g. 0.1)
   threshold: PropTypes.number,
   onEnter: PropTypes.func,
-  onLeave: PropTypes.func
+  onLeave: PropTypes.func,
+  fireOnRapidScroll: PropTypes.bool
 };
 
 const defaultProps = {
   threshold: 0,
   onEnter() {},
   onLeave() {},
+  fireOnRapidScroll: true
 };
 
 /**
@@ -112,10 +114,10 @@ export default class Waypoint extends React.Component {
     }
 
     const isRapidScrollDown = previousPosition === POSITIONS.below &&
-                              currentPosition === POSITIONS.above;
+      currentPosition === POSITIONS.above;
     const isRapidScrollUp =   previousPosition === POSITIONS.above &&
-                              currentPosition === POSITIONS.below;
-    if (isRapidScrollDown || isRapidScrollUp) {
+      currentPosition === POSITIONS.below;
+    if (this.props.fireOnRapidScroll && (isRapidScrollDown || isRapidScrollUp)) {
       // If the scroll event isn't fired often enough to occur while the
       // waypoint was visible, we trigger both callbacks anyway.
       this.props.onEnter.call(this, event, previousPosition);
