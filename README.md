@@ -40,6 +40,7 @@ var Waypoint = require('react-waypoint');
   onEnter={this._handleWaypointEnter}
   onLeave={this._handleWaypointLeave}
   threshold={0.2}
+  fireOnRapidScroll=true
 />
 ```
 
@@ -93,7 +94,13 @@ can then use a `key` prop to control when a waypoint is reused vs. re-created.
      * Threshold - a percentage of the height of the visible
      * part of the scrollable parent (e.g. 0.1)
      */
-    threshold: PropTypes.number
+    threshold: PropTypes.number,
+
+    /**
+     * FireOnRapidScroll - if the onEnter/onLeave events are to be fired
+     * on rapid scrolling
+     */
+    fireOnRapidScroll: PropTypes.bool
   },
 ```
 
