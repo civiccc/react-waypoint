@@ -15,22 +15,6 @@
     "prepublish": "npm run build-npm"
   },
   "author": "Brigade Engineering",
-  "contributors": [
-    {
-      "name": "Henric Trotzig"
-    },
-    {
-      "name": "Joe Lencioni"
-    },
-    {
-      "name": "Flarnie Marchan"
-    },
-    {
-      "name": "Akshaya Kumar Sharma",
-      "email": "akshayakrsh@gmail.com",
-      "url": "http://www.lordakshaya.com"
-    }
-  ],
   "license": "MIT",
   "peerDependencies": {
     "react": "^0.14.0",
