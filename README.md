@@ -39,8 +39,6 @@ var Waypoint = require('react-waypoint');
 <Waypoint
   onEnter={this._handleWaypointEnter}
   onLeave={this._handleWaypointLeave}
-  threshold={0.2}
-  fireOnRapidScroll=true
 />
 ```
 
