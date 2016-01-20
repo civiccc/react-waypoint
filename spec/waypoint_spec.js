@@ -141,16 +141,35 @@ describe('<Waypoint>', function() {
 
     describe('when scrolling down past the threshold', () => {
       beforeEach(() => {
-        scrollNodeTo(this.subject(), 100);
+        this.scrollDown = () => scrollNodeTo(this.subject(), 100);
       });
 
       it('calls the onEnter handler', () => {
+        this.scrollDown();
         expect(this.props.onEnter)
           .toHaveBeenCalledWith(jasmine.any(Event), Waypoint.below);
       });
 
       it('does not call the onLeave handler', () => {
+        this.scrollDown();
         expect(this.props.onLeave).not.toHaveBeenCalled();
+      });
+
+      describe('when `fireOnRapidScroll` is disabled', () => {
+        beforeEach(() => {
+          this.props.fireOnRapidScroll = false;
+        });
+
+        it('calls the onEnter handler', () => {
+          this.scrollDown();
+          expect(this.props.onEnter)
+            .toHaveBeenCalledWith(jasmine.any(Event), Waypoint.below);
+        });
+
+        it('does not call the onLeave handler', () => {
+          this.scrollDown();
+          expect(this.props.onLeave).not.toHaveBeenCalled();
+        });
       });
     });
 
@@ -160,17 +179,35 @@ describe('<Waypoint>', function() {
       // though, and one after. We want to treat this as if the waypoint was
       // visible for a brief moment, and so we fire both onEnter and onLeave.
       beforeEach(() => {
-        scrollNodeTo(this.subject(), 5000);
+        this.scrollQuicklyPast = () => scrollNodeTo(this.subject(), 5000);
       });
 
       it('calls the onEnter handler', () => {
+        this.scrollQuicklyPast();
         expect(this.props.onEnter)
           .toHaveBeenCalledWith(jasmine.any(Event), Waypoint.below);
       });
 
       it('calls the onLeave handler', () => {
+        this.scrollQuicklyPast();
         expect(this.props.onLeave)
           .toHaveBeenCalledWith(jasmine.any(Event), Waypoint.above);
+      });
+
+      describe('when `fireOnRapidScroll` is disabled', () => {
+        beforeEach(() => {
+          this.props.fireOnRapidScroll = false;
+        });
+
+        it('does not call the onEnter handler', () => {
+          this.scrollQuicklyPast();
+          expect(this.props.onEnter).not.toHaveBeenCalled();
+        });
+
+        it('does not call the onLeave handler', () => {
+          this.scrollQuicklyPast();
+          expect(this.props.onLeave).not.toHaveBeenCalled();
+        });
       });
     });
 
