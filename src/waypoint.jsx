@@ -29,8 +29,7 @@ const defaultProps = {
  */
 export default class Waypoint extends React.Component {
   componentDidMount() {
-    const window = Waypoint.getWindow();
-    if (!window) {
+    if (!Waypoint.getWindow()) {
       return;
     }
 
@@ -42,8 +41,7 @@ export default class Waypoint extends React.Component {
   }
 
   componentDidUpdate() {
-    const window = Waypoint.getWindow();
-    if (!window) {
+    if (!Waypoint.getWindow()) {
       return;
     }
 
@@ -52,8 +50,7 @@ export default class Waypoint extends React.Component {
   }
 
   componentWillUnmount() {
-    const window = Waypoint.getWindow();
-    if (!window) {
+    if (!Waypoint.getWindow()) {
       return;
     }
 
