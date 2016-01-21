@@ -419,6 +419,16 @@ describe('<Waypoint>', function() {
     });
   });
 
+  describe('when window is undefined', () => {
+    beforeEach(() => {
+      spyOn(Waypoint, 'getWindow').and.returnValue(undefined);
+    });
+
+    it('does not throw an error', () => {
+      expect(this.subject).not.toThrow();
+    });
+  });
+
   describe('when the <body> itself has a margin', () => {
     beforeEach(() => {
       // document.body.style.marginTop = '0px';

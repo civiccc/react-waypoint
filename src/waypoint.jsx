@@ -13,7 +13,8 @@ const propTypes = {
   threshold: PropTypes.number,
   onEnter: PropTypes.func,
   onLeave: PropTypes.func,
-  fireOnRapidScroll: PropTypes.bool
+  fireOnRapidScroll: PropTypes.bool,
+  scrollableParent: PropTypes.node,
 };
 
 const defaultProps = {
@@ -28,8 +29,12 @@ const defaultProps = {
  */
 export default class Waypoint extends React.Component {
   componentDidMount() {
-    this._handleScroll = this._handleScroll.bind(this);
+    const window = Waypoint.getWindow();
+    if (!window) {
+      return;
+    }
 
+    this._handleScroll = this._handleScroll.bind(this);
     this.scrollableAncestor = this._findScrollableAncestor();
     this.scrollableAncestor.addEventListener('scroll', this._handleScroll);
     window.addEventListener('resize', this._handleScroll);
@@ -37,11 +42,21 @@ export default class Waypoint extends React.Component {
   }
 
   componentDidUpdate() {
+    const window = Waypoint.getWindow();
+    if (!window) {
+      return;
+    }
+
     // The element may have moved.
     this._handleScroll(null);
   }
 
   componentWillUnmount() {
+    const window = Waypoint.getWindow();
+    if (!window) {
+      return;
+    }
+
     if (this.scrollableAncestor) {
       // At the time of unmounting, the scrollable ancestor might no longer
       // exist. Guarding against this prevents the following error:
@@ -61,6 +76,10 @@ export default class Waypoint extends React.Component {
    *   as a fallback.
    */
   _findScrollableAncestor() {
+    if (this.props.scrollableParent) {
+      return this.props.scrollableParent;
+    }
+
     let node = ReactDOM.findDOMNode(this);
 
     while (node.parentNode) {
@@ -198,4 +217,9 @@ export default class Waypoint extends React.Component {
 Waypoint.propTypes = propTypes;
 Waypoint.above = POSITIONS.above;
 Waypoint.below = POSITIONS.below;
+Waypoint.getWindow = () => {
+  if (typeof window !== 'undefined') {
+    return window;
+  }
+};
 Waypoint.defaultProps = defaultProps;
