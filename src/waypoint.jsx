@@ -28,6 +28,13 @@ const defaultProps = {
  * Calls a function when you scroll to the element.
  */
 export default class Waypoint extends React.Component {
+  componentWillMount() {
+    if (this.props.scrollableParent) {
+      throw new Error('The `scrollableParent` prop has changed name ' +
+                      'to `scrollableAncestor`.');
+    }
+  }
+
   componentDidMount() {
     if (!Waypoint.getWindow()) {
       return;
