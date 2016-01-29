@@ -14,7 +14,7 @@ const propTypes = {
   onEnter: PropTypes.func,
   onLeave: PropTypes.func,
   fireOnRapidScroll: PropTypes.bool,
-  scrollableParent: PropTypes.any,
+  scrollableAncestor: PropTypes.any,
 };
 
 const defaultProps = {
@@ -73,8 +73,8 @@ export default class Waypoint extends React.Component {
    *   as a fallback.
    */
   _findScrollableAncestor() {
-    if (this.props.scrollableParent) {
-      return this.props.scrollableParent;
+    if (this.props.scrollableAncestor) {
+      return this.props.scrollableAncestor;
     }
 
     let node = ReactDOM.findDOMNode(this);

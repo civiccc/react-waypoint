@@ -95,14 +95,14 @@ can then use a `key` prop to control when a waypoint is reused vs. re-created.
     threshold: PropTypes.number,
 
     /**
-     * Scrollable Parent - A custom parent to determine if the
+     * Scrollable Ancestor - A custom ancestor to determine if the
      * target is visible in it. This is useful in cases where
      * you do not want the immediate scrollable ancestor to be
      * the container. For example, when your target is in a div
      * that has overflow auto but you are detecting onEnter based
      * on the window.
      */
-    scrollableParent: PropTypes.any,
+    scrollableAncestor: PropTypes.any,
 
     /**
      * FireOnRapidScroll - if the onEnter/onLeave events are to be fired

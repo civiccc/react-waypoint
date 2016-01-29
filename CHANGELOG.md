@@ -1,4 +1,5 @@
 ## master (unreleased)
+- Rename `scrollableParent` prop to `scrollableAncestor`
 
 ## 1.2.1
 - Make bundled waypoint.js easier to import
