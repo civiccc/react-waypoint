@@ -14,7 +14,7 @@ const propTypes = {
   onEnter: PropTypes.func,
   onLeave: PropTypes.func,
   fireOnRapidScroll: PropTypes.bool,
-  scrollableParent: PropTypes.node,
+  scrollableParent: PropTypes.any,
 };
 
 const defaultProps = {
