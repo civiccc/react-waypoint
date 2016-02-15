@@ -14,7 +14,7 @@ const propTypes = {
   onEnter: PropTypes.func,
   onLeave: PropTypes.func,
   fireOnRapidScroll: PropTypes.bool,
-  scrollableParent: PropTypes.any,
+  scrollableAncestor: PropTypes.any,
 };
 
 const defaultProps = {
@@ -28,6 +28,13 @@ const defaultProps = {
  * Calls a function when you scroll to the element.
  */
 export default class Waypoint extends React.Component {
+  componentWillMount() {
+    if (this.props.scrollableParent) { // eslint-disable-line react/prop-types
+      throw new Error('The `scrollableParent` prop has changed name ' +
+                      'to `scrollableAncestor`.');
+    }
+  }
+
   componentDidMount() {
     if (!Waypoint.getWindow()) {
       return;
@@ -73,8 +80,8 @@ export default class Waypoint extends React.Component {
    *   as a fallback.
    */
   _findScrollableAncestor() {
-    if (this.props.scrollableParent) {
-      return this.props.scrollableParent;
+    if (this.props.scrollableAncestor) {
+      return this.props.scrollableAncestor;
     }
 
     let node = ReactDOM.findDOMNode(this);
@@ -133,7 +140,8 @@ export default class Waypoint extends React.Component {
       currentPosition === POSITIONS.above;
     const isRapidScrollUp =   previousPosition === POSITIONS.above &&
       currentPosition === POSITIONS.below;
-    if (this.props.fireOnRapidScroll && (isRapidScrollDown || isRapidScrollUp)) {
+    if (this.props.fireOnRapidScroll &&
+        (isRapidScrollDown || isRapidScrollUp)) {
       // If the scroll event isn't fired often enough to occur while the
       // waypoint was visible, we trigger both callbacks anyway.
       this.props.onEnter.call(this, event, previousPosition);

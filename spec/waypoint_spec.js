@@ -487,4 +487,14 @@ describe('<Waypoint>', function() {
       });
     });
   });
+
+  describe('when using the legacy `scrollableParent` prop', () => {
+    beforeEach(() => {
+      this.props.scrollableParent = window;
+    });
+
+    it('throws a helpful error', () => {
+      expect(this.subject).toThrowError(/changed name to `scrollableAncestor`/);
+    });
+  });
 });
