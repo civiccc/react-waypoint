@@ -335,16 +335,6 @@ describe('<Waypoint>', function() {
     });
   });
 
-  describe('when the scrollable parent does not have positioning', () => {
-    beforeEach(() => {
-      delete this.parentStyle.position;
-    });
-
-    it('throws an error', () => {
-      expect(this.subject).toThrow();
-    });
-  });
-
   describe('when the window is the scrollable parent', () => {
     beforeEach(() => {
       // Make the normal parent non-scrollable
