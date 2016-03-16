@@ -155,7 +155,7 @@ export default class Waypoint extends React.Component {
    */
   _distanceToTopOfScrollableAncestor(node) {
     if (this.scrollableAncestor !== window && !node.offsetParent) {
-      throw new Error(
+      console.warn(
         'The scrollable ancestor of Waypoint needs to have positioning to ' +
         'properly determine position of Waypoint (e.g. `position: relative;`)'
       );
