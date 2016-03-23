@@ -338,10 +338,20 @@ describe('<Waypoint>', function() {
   describe('when the scrollable parent does not have positioning', () => {
     beforeEach(() => {
       delete this.parentStyle.position;
+      this.props.onEnter.calls.reset();
+      this.props.onLeave.calls.reset();
     });
 
-    it('throws an error', () => {
-      expect(this.subject).toThrow();
+    it('does not call handlers to begin with', () => {
+      expect(this.subject).not.toThrow();
+      expect(this.props.onEnter).not.toHaveBeenCalled();
+      expect(this.props.onLeave).not.toHaveBeenCalled();
+    });
+
+    it('does call handlers when node becomes visible', () => {
+      this.parentStyle.position = 'relative';
+      expect(this.subject).not.toThrow();
+      expect(this.props.onEnter).toHaveBeenCalled();
     });
   });
 

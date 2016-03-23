@@ -5,6 +5,7 @@ const POSITIONS = {
   above: 'above',
   inside: 'inside',
   below: 'below',
+  invisible: 'invisible',
 };
 
 const propTypes = {
@@ -155,10 +156,7 @@ export default class Waypoint extends React.Component {
    */
   _distanceToTopOfScrollableAncestor(node) {
     if (this.scrollableAncestor !== window && !node.offsetParent) {
-      throw new Error(
-        'The scrollable ancestor of Waypoint needs to have positioning to ' +
-        'properly determine position of Waypoint (e.g. `position: relative;`)'
-      );
+      return null;
     }
 
     if (this.scrollableAncestor === window) {
@@ -169,8 +167,8 @@ export default class Waypoint extends React.Component {
     if (node.offsetParent === this.scrollableAncestor || !node.offsetParent) {
       return node.offsetTop;
     } else {
-      return node.offsetTop +
-        this._distanceToTopOfScrollableAncestor(node.offsetParent);
+      let nextOffset = this._distanceToTopOfScrollableAncestor(node.offsetParent);
+      return nextOffset === null ? null : node.offsetTop + nextOffset;
     }
   }
 
@@ -182,6 +180,10 @@ export default class Waypoint extends React.Component {
   _currentPosition() {
     const waypointTop =
       this._distanceToTopOfScrollableAncestor(ReactDOM.findDOMNode(this));
+    if (waypointTop === null) {
+      // not visible
+      return POSITIONS.invisible;
+    }
     let contextHeight;
     let contextScrollTop;
 
