@@ -340,8 +340,22 @@ describe('<Waypoint>', function() {
       delete this.parentStyle.position;
     });
 
-    it('throws an error', () => {
-      expect(this.subject).toThrow();
+    it('does not call handlers until node becomes visible', () => {
+      // initial render hidden
+      this.component = this.subject();
+      expect(this.props.onEnter).not.toHaveBeenCalled();
+      expect(this.props.onLeave).not.toHaveBeenCalled();
+      const node = ReactDOM.findDOMNode(this.component);
+
+      // now show it and we should get an onEnter
+      node.style.position = 'relative';
+      scrollNodeTo(this.component, 10);
+      expect(this.props.onEnter).toHaveBeenCalled();
+
+      // now hide and we should see an onLeave
+      node.style.display = 'none';
+      scrollNodeTo(this.component, 20);
+      expect(this.props.onLeave).toHaveBeenCalled();
     });
   });
 
