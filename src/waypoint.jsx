@@ -13,6 +13,7 @@ const propTypes = {
   threshold: PropTypes.number,
   onEnter: PropTypes.func,
   onLeave: PropTypes.func,
+  onPositionChange: PropTypes.func,
   fireOnRapidScroll: PropTypes.bool,
   scrollableAncestor: PropTypes.any,
 };
@@ -21,6 +22,7 @@ const defaultProps = {
   threshold: 0,
   onEnter() {},
   onLeave() {},
+  onPositionChange() {},
   fireOnRapidScroll: true
 };
 
@@ -130,6 +132,9 @@ export default class Waypoint extends React.Component {
       return;
     }
 
+    this.props.onPositionChange.call(this, currentPosition, previousPosition,
+      event);
+
     if (currentPosition === POSITIONS.inside) {
       this.props.onEnter.call(this, event, previousPosition);
     } else if (previousPosition === POSITIONS.inside) {
@@ -222,6 +227,7 @@ export default class Waypoint extends React.Component {
 Waypoint.propTypes = propTypes;
 Waypoint.above = POSITIONS.above;
 Waypoint.below = POSITIONS.below;
+Waypoint.inside = POSITIONS.inside;
 Waypoint.getWindow = () => {
   if (typeof window !== 'undefined') {
     return window;
