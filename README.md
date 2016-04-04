@@ -61,6 +61,17 @@ can then use a `key` prop to control when a waypoint is reused vs. re-created.
 />
 ```
 
+Alternatively, you can also use an `onPositionChange` event to just get
+notified when the waypoint's position (e.g. inside the viewport, above or
+below) has changed.
+
+```javascript
+<Waypoint
+  onPositionChange={this._handlePositionChange}
+/>
+```
+
+
 ### Example: [JSFiddle Example][jsfiddle-example]
 
 [jsfiddle-example]: http://jsfiddle.net/L4z5wcx0/7/
@@ -87,6 +98,15 @@ can then use a `key` prop to control when a waypoint is reused vs. re-created.
      * @param {Waypoint.above|Waypoint.below} to
      */
     onLeave: PropTypes.func,
+
+    /**
+     * Function called when waypoint position changes
+     *
+     * @param {Waypoint.above|Waypoint.below|Waypoint.inside} newPosition
+     * @param {Waypoint.above|Waypoint.below|Waypoint.inside} oldPosition
+     * @param {Event|null} event
+     */
+    onPositionChange: PropTypes.func,
 
     /**
      * Threshold - a percentage of the height of the visible
