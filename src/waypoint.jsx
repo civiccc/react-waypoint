@@ -133,13 +133,17 @@ export default class Waypoint extends React.Component {
       return;
     }
 
-    this.props.onPositionChange.call(this, currentPosition, previousPosition,
-      event);
+    const callbackArg = {
+      currentPosition,
+      previousPosition,
+      event,
+    };
+    this.props.onPositionChange.call(this, callbackArg);
 
     if (currentPosition === POSITIONS.inside) {
-      this.props.onEnter.call(this, event, previousPosition);
+      this.props.onEnter.call(this, callbackArg);
     } else if (previousPosition === POSITIONS.inside) {
-      this.props.onLeave.call(this, event, currentPosition);
+      this.props.onLeave.call(this, callbackArg);
     }
 
     const isRapidScrollDown = previousPosition === POSITIONS.below &&
@@ -150,8 +154,12 @@ export default class Waypoint extends React.Component {
         (isRapidScrollDown || isRapidScrollUp)) {
       // If the scroll event isn't fired often enough to occur while the
       // waypoint was visible, we trigger both callbacks anyway.
-      this.props.onEnter.call(this, event, previousPosition);
-      this.props.onLeave.call(this, event, currentPosition);
+      this.props.onEnter.call(this, Object.assign({}, callbackArg, {
+        currentPosition: POSITIONS.inside
+      }));
+      this.props.onLeave.call(this, Object.assign({}, callbackArg, {
+        previousPosition: POSITIONS.inside
+      }));
     }
   }
 
@@ -231,6 +239,7 @@ Waypoint.propTypes = propTypes;
 Waypoint.above = POSITIONS.above;
 Waypoint.below = POSITIONS.below;
 Waypoint.inside = POSITIONS.inside;
+Waypoint.invisible = POSITIONS.invisible;
 Waypoint.getWindow = () => {
   if (typeof window !== 'undefined') {
     return window;

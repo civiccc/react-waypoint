@@ -83,28 +83,16 @@ below) has changed.
 
     /**
      * Function called when waypoint enters viewport
-     * Both parameters will be null if the waypoint is in the
-     * viewport on initial mount.
-     *
-     * @param {Event|null} event
-     * @param {Waypoint.above|Waypoint.below|null} from
      */
     onEnter: PropTypes.func,
 
     /**
      * Function called when waypoint leaves viewport
-     *
-     * @param {Event|null} event
-     * @param {Waypoint.above|Waypoint.below} to
      */
     onLeave: PropTypes.func,
 
     /**
      * Function called when waypoint position changes
-     *
-     * @param {Waypoint.above|Waypoint.below|Waypoint.inside} newPosition
-     * @param {Waypoint.above|Waypoint.below|Waypoint.inside} oldPosition
-     * @param {Event|null} event
      */
     onPositionChange: PropTypes.func,
 
@@ -125,11 +113,48 @@ below) has changed.
     scrollableAncestor: PropTypes.any,
 
     /**
-     * FireOnRapidScroll - if the onEnter/onLeave events are to be fired
-     * on rapid scrolling
+     * fireOnRapidScroll - if the onEnter/onLeave events are to be fired
+     * on rapid scrolling. This has no effect on onPositionChange -- it will
+     * fire anyway.
      */
     fireOnRapidScroll: PropTypes.bool,
   },
+```
+
+All callbacks (`onEnter`/`onLeave`/`onPositionChange`) receive an object as the
+only argument. That object has the following properties:
+
+- `currentPosition` - the position that the waypoint has at the moment. One
+  of `Waypoint.below`, `Waypoint.above`, `Waypoint.inside`,
+  and `Waypoint.invisible`.
+- `previousPosition` - the position that the waypoint had before. Also one
+  of `Waypoint.below`, `Waypoint.above`, `Waypoint.inside`,
+  and `Waypoint.invisible`.
+- `event` - the native [scroll
+  event](https://developer.mozilla.org/en-US/docs/Web/Events/scroll) that
+  triggered the callback. May be missing if the callback wasn't triggered as
+  the result of a scroll.
+
+If you use [es6 object
+destructuring](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment),
+this means that you can use waypoints in the following way:
+
+```jsx
+<Waypoint onEnter={(previousPosition, currentPosition, event) => {
+    // do something useful!
+  }}
+/>
+```
+
+If you are more familiar with plain old js functions, you'll do something like
+this:
+
+```jsx
+<Waypoint onEnter={function(props) {
+    // here you can use `props.currentPosition`, `props.previousPosition`, and
+    // `props.event`
+  }}
+/>
 ```
 
 ## Limitations
