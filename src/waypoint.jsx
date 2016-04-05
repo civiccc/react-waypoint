@@ -43,11 +43,13 @@ export default class Waypoint extends React.Component {
       return;
     }
 
-    this._handleScroll = this._handleScroll.bind(this);
-    this.scrollableAncestor = this._findScrollableAncestor();
-    this.scrollableAncestor.addEventListener('scroll', this._handleScroll);
-    window.addEventListener('resize', this._handleScroll);
-    this._handleScroll(null);
+    setTimeout(() => {
+      this._handleScroll = this._handleScroll.bind(this);
+      this.scrollableAncestor = this._findScrollableAncestor();
+      this.scrollableAncestor.addEventListener('scroll', this._handleScroll);
+      window.addEventListener('resize', this._handleScroll);
+      this._handleScroll(null);
+    });
   }
 
   componentDidUpdate() {
