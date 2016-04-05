@@ -154,12 +154,16 @@ export default class Waypoint extends React.Component {
         (isRapidScrollDown || isRapidScrollUp)) {
       // If the scroll event isn't fired often enough to occur while the
       // waypoint was visible, we trigger both callbacks anyway.
-      this.props.onEnter.call(this, Object.assign({}, callbackArg, {
-        currentPosition: POSITIONS.inside
-      }));
-      this.props.onLeave.call(this, Object.assign({}, callbackArg, {
-        previousPosition: POSITIONS.inside
-      }));
+      this.props.onEnter.call(this, {
+        currentPosition: POSITIONS.inside,
+        previousPosition,
+        event,
+      });
+      this.props.onLeave.call(this, {
+        currentPosition,
+        previousPosition: POSITIONS.inside,
+        event,
+      });
     }
   }
 
