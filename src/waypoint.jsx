@@ -250,3 +250,4 @@ Waypoint.getWindow = () => {
   }
 };
 Waypoint.defaultProps = defaultProps;
+Waypoint.displayName = 'Waypoint';
