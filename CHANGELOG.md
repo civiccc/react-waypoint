@@ -1,7 +1,36 @@
 ## master (unreleased)
+
+
+
+## 2.0.1
+
+- Add React 15 support
+
+## 2.0.0
+
+- Breaking: Unify arguments passed to callbacks
+- Add `displayName`
+
+## 1.3.1
+
+- Handle invisible waypoint parents
+- Add `onPositionChange`
+
+## 1.3.0
+
 - Rename `scrollableParent` prop to `scrollableAncestor`
 
+## 1.2.3
+
+- Simplify `getWindow` usage
+- Allow any `scrollableParent`
+
+## 1.2.2
+
+- Add `fireOnRapidScroll` prop
+
 ## 1.2.1
+
 - Make bundled waypoint.js easier to import
 
 ## 1.2.0
