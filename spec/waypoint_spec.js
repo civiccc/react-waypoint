@@ -25,9 +25,9 @@ const scrollNodeTo = function(node, scrollTop) {
 describe('<Waypoint>', function() {
   beforeEach(() => {
     this.props = {
-      onEnter: jasmine.createSpy(),
-      onLeave: jasmine.createSpy(),
-      onPositionChange: jasmine.createSpy(),
+      onEnter: jasmine.createSpy('onEnter'),
+      onLeave: jasmine.createSpy('onLeave'),
+      onPositionChange: jasmine.createSpy('onPositionChange'),
       threshold: 0,
     };
 
@@ -519,6 +519,11 @@ describe('<Waypoint>', function() {
   describe('when the scrollable parent does not have positioning', () => {
     beforeEach(() => {
       delete this.parentStyle.position;
+      this.topSpacerHeight = 200;
+
+      // The bottom spacer needs to be tall enough to force the Waypoint to exit
+      // the viewport when scrolled all the way down.
+      this.bottomSpacerHeight = 3000;
     });
 
     it('does not call handlers until node becomes visible', () => {
@@ -530,23 +535,28 @@ describe('<Waypoint>', function() {
 
       // now show it and we should get an onEnter
       node.style.position = 'relative';
-      scrollNodeTo(this.component, 10);
+      scrollNodeTo(this.component, 100);
       expect(this.props.onEnter).
         toHaveBeenCalledWith({
           currentPosition: Waypoint.inside,
-          previousPosition: Waypoint.invisible,
+          previousPosition: Waypoint.below,
           event: jasmine.any(Event),
         });
+    });
+  });
 
-      // now hide and we should see an onLeave
+  describe('when the scrollable parent is not displayed', () => {
+    it('calls the onLeave handler', () => {
+      this.component = this.subject();
+      const node = ReactDOM.findDOMNode(this.component);
       node.style.display = 'none';
-      scrollNodeTo(this.component, 20);
+      scrollNodeTo(this.component, 0);
       expect(this.props.onLeave).
-        toHaveBeenCalledWith({
-          currentPosition: Waypoint.invisible,
-          previousPosition: Waypoint.inside,
-          event: jasmine.any(Event),
-        });
+      toHaveBeenCalledWith({
+        currentPosition: Waypoint.invisible,
+        previousPosition: Waypoint.inside,
+        event: jasmine.any(Event),
+      });
     });
   });
 
