@@ -201,7 +201,7 @@ export default class Waypoint extends React.Component {
       return Waypoint.below;
     }
 
-    if (contextScrollTop > waypointTop + thresholdPx) {
+    if (waypointTop + thresholdPx < contextScrollTop) {
       return Waypoint.above;
     }
 
