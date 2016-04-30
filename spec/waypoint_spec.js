@@ -516,35 +516,6 @@ describe('<Waypoint>', function() {
     });
   });
 
-  describe('when the scrollable parent does not have positioning', () => {
-    beforeEach(() => {
-      delete this.parentStyle.position;
-      this.topSpacerHeight = 200;
-
-      // The bottom spacer needs to be tall enough to force the Waypoint to exit
-      // the viewport when scrolled all the way down.
-      this.bottomSpacerHeight = 3000;
-    });
-
-    it('does not call handlers until node becomes visible', () => {
-      // initial render hidden
-      this.component = this.subject();
-      expect(this.props.onEnter).not.toHaveBeenCalled();
-      expect(this.props.onLeave).not.toHaveBeenCalled();
-      const node = ReactDOM.findDOMNode(this.component);
-
-      // now show it and we should get an onEnter
-      node.style.position = 'relative';
-      scrollNodeTo(this.component, 100);
-      expect(this.props.onEnter).
-        toHaveBeenCalledWith({
-          currentPosition: Waypoint.inside,
-          previousPosition: Waypoint.below,
-          event: jasmine.any(Event),
-        });
-    });
-  });
-
   describe('when the scrollable parent is not displayed', () => {
     it('calls the onLeave handler', () => {
       this.component = this.subject();
