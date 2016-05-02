@@ -168,65 +168,44 @@ export default class Waypoint extends React.Component {
   }
 
   /**
-   * @param {Object} node
-   * @return {Number}
-   */
-  _distanceToTopOfScrollableAncestor(node) {
-    if (this.scrollableAncestor !== window && !node.offsetParent) {
-      return null;
-    }
-
-    if (this.scrollableAncestor === window) {
-      const rect = node.getBoundingClientRect();
-      return rect.top + window.pageYOffset - document.documentElement.clientTop;
-    }
-
-    if (node.offsetParent === this.scrollableAncestor || !node.offsetParent) {
-      return node.offsetTop;
-    } else {
-      const nextOffset =
-        this._distanceToTopOfScrollableAncestor(node.offsetParent);
-      return nextOffset === null ? null : node.offsetTop + nextOffset;
-    }
-  }
-
-  /**
    * @return {string} The current position of the waypoint in relation to the
    *   visible portion of the scrollable parent. One of `POSITIONS.above`,
    *   `POSITIONS.below`, or `POSITIONS.inside`.
    */
   _currentPosition() {
-    const waypointTop =
-      this._distanceToTopOfScrollableAncestor(ReactDOM.findDOMNode(this));
-    if (waypointTop === null) {
-      // not visible
-      return POSITIONS.invisible;
-    }
+    const waypointTop = ReactDOM.findDOMNode(this).getBoundingClientRect().top;
     let contextHeight;
     let contextScrollTop;
-
     if (this.scrollableAncestor === window) {
       contextHeight = window.innerHeight;
-      contextScrollTop = window.pageYOffset;
+      contextScrollTop = 0;
     } else {
       contextHeight = this.scrollableAncestor.offsetHeight;
-      contextScrollTop = this.scrollableAncestor.scrollTop;
+      contextScrollTop = ReactDOM
+        .findDOMNode(this.scrollableAncestor)
+        .getBoundingClientRect().top;
     }
-
     const thresholdPx = contextHeight * this.props.threshold;
-
-    const isBelowTop = contextScrollTop <= waypointTop + thresholdPx;
-    if (!isBelowTop) {
-      return POSITIONS.above;
-    }
-
     const contextBottom = contextScrollTop + contextHeight;
-    const isAboveBottom = contextBottom >= waypointTop - thresholdPx;
-    if (!isAboveBottom) {
-      return POSITIONS.below;
+
+    if (contextHeight === 0) {
+      return Waypoint.invisible;
     }
 
-    return POSITIONS.inside;
+    if (contextScrollTop <= waypointTop + thresholdPx &&
+        waypointTop - thresholdPx <= contextBottom) {
+      return Waypoint.inside;
+    }
+
+    if (contextBottom < waypointTop - thresholdPx) {
+      return Waypoint.below;
+    }
+
+    if (waypointTop + thresholdPx < contextScrollTop) {
+      return Waypoint.above;
+    }
+
+    return Waypoint.invisible;
   }
 
   /**
