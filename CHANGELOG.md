@@ -1,6 +1,8 @@
 ## master (unreleased)
 
+## 2.0.2
 
+- Improved position calculation
 
 ## 2.0.1
 
