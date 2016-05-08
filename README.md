@@ -140,7 +140,7 @@ destructuring](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Op
 this means that you can use waypoints in the following way:
 
 ```jsx
-<Waypoint onEnter={(previousPosition, currentPosition, event) => {
+<Waypoint onEnter={({ previousPosition, currentPosition, event }) => {
     // do something useful!
   }}
 />
