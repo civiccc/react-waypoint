@@ -1,8 +1,8 @@
 {
   "name": "react-waypoint",
-  "version": "2.0.2",
+  "version": "3.0.0",
   "description": "A React component to execute a function whenever you scroll to an element.",
-  "main": "build/npm/waypoint.js",
+  "main": "build/npm/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/brigade/react-waypoint.git"
@@ -10,7 +10,7 @@
   "homepage": "https://github.com/brigade/react-waypoint",
   "bugs": "https://github.com/brigade/react-waypoint/issues",
   "scripts": {
-    "build-npm": "rm -rf build/npm && mkdir -p build/npm && babel src/waypoint.jsx --out-file build/npm/waypoint.js",
+    "build-npm": "rimraf build/npm && babel src/ -d build/npm/",
     "test": "./node_modules/.bin/eslint . --ext .js,.jsx && ./node_modules/.bin/karma start",
     "prepublish": "npm run build-npm"
   },
@@ -40,7 +40,8 @@
     "karma-webpack": "^1.7.0",
     "react": "^15.0.0",
     "react-dom": "^15.0.0",
-    "webpack": "^1.5.3"
+    "webpack": "^1.5.3",
+    "rimraf": "^2.5.2"
   },
   "keywords": [
     "react",
