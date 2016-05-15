@@ -176,7 +176,9 @@ const waypoint = Component => {
      *   `POSITIONS.below`, or `POSITIONS.inside`.
      */
     _currentPosition() {
-      const waypointTop = this._DOMNode.getBoundingClientRect().top;
+      const waypointRect = this._DOMNode.getBoundingClientRect();
+      const waypointHeight = waypointRect.height;
+      const waypointTop = waypointRect.top + waypointHeight / 2;
 
       let contextHeight;
       let contextScrollTop;
@@ -191,16 +193,23 @@ const waypoint = Component => {
           .getBoundingClientRect().top;
       }
 
+      if (waypointHeight > contextHeight / 2) {
+        contextScrollTop = (contextHeight / 2) - (waypointHeight / 2);
+        contextHeight = waypointHeight;
+      } else {
+        contextScrollTop = contextScrollTop + waypointHeight / 2;
+        contextHeight = contextHeight - waypointHeight;
+      }
+
       const thresholdPx = contextHeight * this.props.threshold;
-      const nodeHeight = this._DOMNode.getBoundingClientRect().height;
       const contextBottom = contextScrollTop + contextHeight;
 
       if (contextHeight === 0) {
         return Waypoint.invisible;
       }
 
-      if (contextScrollTop <= waypointTop + nodeHeight + thresholdPx &&
-        waypointTop - thresholdPx <= contextBottom) {
+      if (contextScrollTop <= waypointTop + thresholdPx &&
+          waypointTop - thresholdPx <= contextBottom) {
         return Waypoint.inside;
       }
 
@@ -228,11 +237,7 @@ const waypoint = Component => {
   Waypoint.below = POSITIONS.below;
   Waypoint.inside = POSITIONS.inside;
   Waypoint.invisible = POSITIONS.invisible;
-  Waypoint.getWindow = () => {
-    if (typeof window !== 'undefined') {
-      return window;
-    }
-  };
+  Waypoint.getWindow = () => typeof window !== 'undefined';
   Waypoint.defaultProps = defaultProps;
 
   return Waypoint;
