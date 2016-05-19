@@ -165,7 +165,14 @@ var waypoint = function waypoint(Component) {
     }, {
       key: '_handleScroll',
       value: function _handleScroll(event) {
-        var currentPosition = this._currentPosition();
+        var waypointTop = _reactDom2.default.findDOMNode(this).getBoundingClientRect().top;
+
+        var _scrollableAncestorHe = this._scrollableAncestorHeightTop();
+
+        var contextScrollTop = _scrollableAncestorHe.contextScrollTop;
+        var contextHeight = _scrollableAncestorHe.contextHeight;
+
+        var currentPosition = this._currentPosition(waypointTop, contextScrollTop, contextHeight);
         var previousPosition = this._previousPosition || null;
 
         // Save previous position as early as possible to prevent cycles
@@ -177,6 +184,9 @@ var waypoint = function waypoint(Component) {
         }
 
         var callbackArg = {
+          waypointTop: waypointTop,
+          contextScrollTop: contextScrollTop,
+          contextHeight: contextHeight,
           currentPosition: currentPosition,
           previousPosition: previousPosition,
           event: event
@@ -206,6 +216,20 @@ var waypoint = function waypoint(Component) {
           });
         }
       }
+    }, {
+      key: '_scrollableAncestorHeightTop',
+      value: function _scrollableAncestorHeightTop() {
+        var contextHeight = void 0;
+        var contextScrollTop = void 0;
+        if (this.scrollableAncestor === window) {
+          contextHeight = window.innerHeight;
+          contextScrollTop = 0;
+        } else {
+          contextHeight = this.scrollableAncestor.offsetHeight;
+          contextScrollTop = _reactDom2.default.findDOMNode(this.scrollableAncestor).getBoundingClientRect().top;
+        }
+        return { contextScrollTop: contextScrollTop, contextHeight: contextHeight };
+      }
 
       /**
        * @return {string} The current position of the waypoint in relation to the
@@ -215,29 +239,7 @@ var waypoint = function waypoint(Component) {
 
     }, {
       key: '_currentPosition',
-      value: function _currentPosition() {
-        var waypointRect = this._DOMNode.getBoundingClientRect();
-        var waypointHeight = waypointRect.height;
-        var waypointTop = waypointRect.top + waypointHeight / 2;
-
-        var contextHeight = void 0;
-        var contextScrollTop = void 0;
-
-        if (this.scrollableAncestor === window) {
-          contextHeight = window.innerHeight;
-          contextScrollTop = 0;
-        } else {
-          contextHeight = this.scrollableAncestor.offsetHeight;
-          contextScrollTop = _reactDom2.default.findDOMNode(this.scrollableAncestor).getBoundingClientRect().top;
-        }
-
-        if (waypointHeight > contextHeight / 2) {
-          contextScrollTop = contextHeight / 2 - waypointHeight / 2;
-          contextHeight = waypointHeight;
-        } else {
-          contextScrollTop = contextScrollTop + waypointHeight / 2;
-          contextHeight = contextHeight - waypointHeight;
-        }
+      value: function _currentPosition(waypointTop, contextScrollTop, contextHeight) {
 
         var thresholdPx = contextHeight * this.props.threshold;
         var contextBottom = contextScrollTop + contextHeight;
@@ -281,7 +283,7 @@ var waypoint = function waypoint(Component) {
   Waypoint.inside = POSITIONS.inside;
   Waypoint.invisible = POSITIONS.invisible;
   Waypoint.getWindow = function () {
-    return typeof window !== 'undefined' && window;
+    return typeof window !== 'undefined';
   };
   Waypoint.defaultProps = defaultProps;
 

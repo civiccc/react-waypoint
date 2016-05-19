@@ -125,7 +125,9 @@ const waypoint = Component => {
      *   called by a React lifecyle method
      */
     _handleScroll(event) {
-      const currentPosition = this._currentPosition();
+      const waypointTop = ReactDOM.findDOMNode(this).getBoundingClientRect().top;
+      const { contextScrollTop, contextHeight } = this._scrollableAncestorHeightTop();
+      const currentPosition = this._currentPosition(waypointTop, contextScrollTop, contextHeight);
       const previousPosition = this._previousPosition || null;
 
       // Save previous position as early as possible to prevent cycles
@@ -137,6 +139,9 @@ const waypoint = Component => {
       }
 
       const callbackArg = {
+        waypointTop,
+        contextScrollTop,
+        contextHeight,
         currentPosition,
         previousPosition,
         event,
@@ -170,19 +175,9 @@ const waypoint = Component => {
       }
     }
 
-    /**
-     * @return {string} The current position of the waypoint in relation to the
-     *   visible portion of the scrollable parent. One of `POSITIONS.above`,
-     *   `POSITIONS.below`, or `POSITIONS.inside`.
-     */
-    _currentPosition() {
-      const waypointRect = this._DOMNode.getBoundingClientRect();
-      const waypointHeight = waypointRect.height;
-      const waypointTop = waypointRect.top + waypointHeight / 2;
-
+    _scrollableAncestorHeightTop() {
       let contextHeight;
       let contextScrollTop;
-
       if (this.scrollableAncestor === window) {
         contextHeight = window.innerHeight;
         contextScrollTop = 0;
@@ -192,14 +187,15 @@ const waypoint = Component => {
           .findDOMNode(this.scrollableAncestor)
           .getBoundingClientRect().top;
       }
+      return { contextScrollTop, contextHeight };
+    }
 
-      if (waypointHeight > contextHeight / 2) {
-        contextScrollTop = (contextHeight / 2) - (waypointHeight / 2);
-        contextHeight = waypointHeight;
-      } else {
-        contextScrollTop = contextScrollTop + waypointHeight / 2;
-        contextHeight = contextHeight - waypointHeight;
-      }
+    /**
+     * @return {string} The current position of the waypoint in relation to the
+     *   visible portion of the scrollable parent. One of `POSITIONS.above`,
+     *   `POSITIONS.below`, or `POSITIONS.inside`.
+     */
+    _currentPosition(waypointTop, contextScrollTop, contextHeight) {
 
       const thresholdPx = contextHeight * this.props.threshold;
       const contextBottom = contextScrollTop + contextHeight;
