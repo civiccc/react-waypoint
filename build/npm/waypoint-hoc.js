@@ -183,11 +183,6 @@ var waypoint = function waypoint(Component) {
         // Save previous position as early as possible to prevent cycles
         this._previousPosition = currentPosition;
 
-        if (previousPosition === currentPosition) {
-          // No change since last trigger
-          return;
-        }
-
         var callbackArg = {
           waypointTop: waypointTop,
           contextScrollTop: contextScrollTop,
@@ -198,6 +193,11 @@ var waypoint = function waypoint(Component) {
         };
 
         this.setState({ scrolled: callbackArg });
+
+        if (previousPosition === currentPosition) {
+          // No change since last trigger
+          return;
+        }
 
         this.props.onPositionChange.call(this, callbackArg);
 
