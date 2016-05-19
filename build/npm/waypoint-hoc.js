@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = require('react');
@@ -57,10 +59,14 @@ var waypoint = function waypoint(Component) {
   var Waypoint = function (_React$Component) {
     _inherits(_waypoint, _React$Component);
 
-    function _waypoint() {
+    function _waypoint(props) {
       _classCallCheck(this, _waypoint);
 
-      return _possibleConstructorReturn(this, Object.getPrototypeOf(_waypoint).apply(this, arguments));
+      var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(_waypoint).call(this, props));
+
+      _this.state = {};
+      _this._handleScroll = _this._handleScroll.bind(_this);
+      return _this;
     }
 
     _createClass(_waypoint, [{
@@ -79,7 +85,6 @@ var waypoint = function waypoint(Component) {
         }
 
         this._DOMNode = _reactDom2.default.findDOMNode(this);
-        this._handleScroll = this._handleScroll.bind(this);
         this.scrollableAncestor = this._findScrollableAncestor();
         this.scrollableAncestor.addEventListener('scroll', this._handleScroll);
         window.addEventListener('resize', this._handleScroll);
@@ -191,6 +196,9 @@ var waypoint = function waypoint(Component) {
           previousPosition: previousPosition,
           event: event
         };
+
+        this.setState({ scrolled: callbackArg });
+
         this.props.onPositionChange.call(this, callbackArg);
 
         if (currentPosition === POSITIONS.inside) {
@@ -270,7 +278,7 @@ var waypoint = function waypoint(Component) {
     }, {
       key: 'render',
       value: function render() {
-        return _react2.default.createElement(Component, this.props);
+        return _react2.default.createElement(Component, _extends({}, this.props, { _scrolled: this.state.scrolled }));
       }
     }]);
 

@@ -33,6 +33,12 @@ const defaultProps = {
 
 const waypoint = Component => {
   const Waypoint = class _waypoint extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {};
+      this._handleScroll = this._handleScroll.bind(this);
+    }
+
     componentWillMount() {
       if (this.props.scrollableParent) { // eslint-disable-line react/prop-types
         throw new Error('The `scrollableParent` prop has changed name ' +
@@ -46,7 +52,6 @@ const waypoint = Component => {
       }
 
       this._DOMNode = ReactDOM.findDOMNode(this);
-      this._handleScroll = this._handleScroll.bind(this);
       this.scrollableAncestor = this._findScrollableAncestor();
       this.scrollableAncestor.addEventListener('scroll', this._handleScroll);
       window.addEventListener('resize', this._handleScroll);
@@ -146,6 +151,9 @@ const waypoint = Component => {
         previousPosition,
         event,
       };
+
+      this.setState({ scrolled: callbackArg });
+
       this.props.onPositionChange.call(this, callbackArg);
 
       if (currentPosition === POSITIONS.inside) {
@@ -224,7 +232,7 @@ const waypoint = Component => {
      * @return {Object}
      */
     render() {
-      return <Component {...this.props}/>;
+      return <Component {...this.props} _scrolled={this.state.scrolled}/>;
     }
   }
 
