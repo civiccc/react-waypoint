@@ -35,8 +35,7 @@ const waypoint = Component => {
   const Waypoint = class _waypoint extends React.Component {
     constructor(props) {
       super(props);
-      this.state = {};
-      this._handleScroll = this._handleScroll.bind(this);
+      this.state = { scrolled: {} };
     }
 
     componentWillMount() {
@@ -53,18 +52,24 @@ const waypoint = Component => {
 
       this._DOMNode = ReactDOM.findDOMNode(this);
       this.scrollableAncestor = this._findScrollableAncestor();
+      this._handleScroll = this._handleScroll.bind(this);
       this.scrollableAncestor.addEventListener('scroll', this._handleScroll);
       window.addEventListener('resize', this._handleScroll);
       this._handleScroll(null);
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps, prevState) {
       if (!Waypoint.getWindow()) {
         return;
       }
 
-      // The element may have moved.
-      this._handleScroll(null);
+      const { waypointTop: prevWaypointTop } = prevState.scrolled;
+      const { waypointTop: currentWaypointTop } = this.state.scrolled;
+
+      if (prevWaypointTop !== currentWaypointTop) {
+        // The element may have moved.
+        this._handleScroll(null);
+      }
     }
 
     componentWillUnmount() {

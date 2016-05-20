@@ -64,8 +64,7 @@ var waypoint = function waypoint(Component) {
 
       var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(_waypoint).call(this, props));
 
-      _this.state = {};
-      _this._handleScroll = _this._handleScroll.bind(_this);
+      _this.state = { scrolled: {} };
       return _this;
     }
 
@@ -86,19 +85,26 @@ var waypoint = function waypoint(Component) {
 
         this._DOMNode = _reactDom2.default.findDOMNode(this);
         this.scrollableAncestor = this._findScrollableAncestor();
+        this._handleScroll = this._handleScroll.bind(this);
         this.scrollableAncestor.addEventListener('scroll', this._handleScroll);
         window.addEventListener('resize', this._handleScroll);
         this._handleScroll(null);
       }
     }, {
       key: 'componentDidUpdate',
-      value: function componentDidUpdate() {
+      value: function componentDidUpdate(prevProps, prevState) {
         if (!Waypoint.getWindow()) {
           return;
         }
 
-        // The element may have moved.
-        this._handleScroll(null);
+        var prevWaypointTop = prevState.scrolled.waypointTop;
+        var currentWaypointTop = this.state.scrolled.waypointTop;
+
+
+        if (prevWaypointTop !== currentWaypointTop) {
+          // The element may have moved.
+          this._handleScroll(null);
+        }
       }
     }, {
       key: 'componentWillUnmount',
