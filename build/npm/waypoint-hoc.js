@@ -218,6 +218,11 @@ var waypoint = function waypoint(Component) {
           });
         }
       }
+
+      /**
+       * @return {Object} `height` and `top` of scrollable ancestor Rect.
+       */
+
     }, {
       key: '_scrollableAncestorHeightTop',
       value: function _scrollableAncestorHeightTop() {
