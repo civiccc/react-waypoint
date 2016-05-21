@@ -38,13 +38,6 @@ const waypoint = Component => {
       this.state = { scrolled: {} };
     }
 
-    componentWillMount() {
-      if (this.props.scrollableParent) { // eslint-disable-line react/prop-types
-        throw new Error('The `scrollableParent` prop has changed name ' +
-          'to `scrollableAncestor`.');
-      }
-    }
-
     componentDidMount() {
       if (!Waypoint.getWindow()) {
         return;
@@ -63,10 +56,7 @@ const waypoint = Component => {
         return;
       }
 
-      const { waypointTop: prevWaypointTop } = prevState.scrolled;
-      const { waypointTop: currentWaypointTop } = this.state.scrolled;
-
-      if (prevWaypointTop !== currentWaypointTop) {
+      if (prevState.scrolled === this.state.scrolled) {
         // The element may have moved.
         this._handleScroll(null);
       }
@@ -135,9 +125,9 @@ const waypoint = Component => {
      *   called by a React lifecyle method
      */
     _handleScroll(event) {
-      const waypointTop = ReactDOM.findDOMNode(this).getBoundingClientRect().top;
-      const { contextScrollTop, contextHeight } = this._scrollableAncestorHeightTop();
-      const currentPosition = this._currentPosition(waypointTop, contextScrollTop, contextHeight);
+      const waypointTop = this._DOMNode.getBoundingClientRect().top;
+      const { contextHeight, contextScrollTop } = this._scrollableAncestorHeightTop();
+      const currentPosition = this._currentPosition(waypointTop, { contextHeight, contextScrollTop });
       const previousPosition = this._previousPosition || null;
 
       // Save previous position as early as possible to prevent cycles
@@ -145,8 +135,8 @@ const waypoint = Component => {
 
       const callbackArg = {
         waypointTop,
-        contextScrollTop,
         contextHeight,
+        contextScrollTop,
         currentPosition,
         previousPosition,
         event,
@@ -200,7 +190,7 @@ const waypoint = Component => {
           .findDOMNode(this.scrollableAncestor)
           .getBoundingClientRect().top;
       }
-      return { contextScrollTop, contextHeight };
+      return { contextHeight, contextScrollTop };
     }
 
     /**
@@ -208,7 +198,7 @@ const waypoint = Component => {
      *   visible portion of the scrollable parent. One of `POSITIONS.above`,
      *   `POSITIONS.below`, or `POSITIONS.inside`.
      */
-    _currentPosition(waypointTop, contextScrollTop, contextHeight) {
+    _currentPosition(waypointTop, { contextHeight, contextScrollTop }) {
 
       const thresholdPx = contextHeight * this.props.threshold;
       const contextBottom = contextScrollTop + contextHeight;

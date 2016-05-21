@@ -69,14 +69,6 @@ var waypoint = function waypoint(Component) {
     }
 
     _createClass(_waypoint, [{
-      key: 'componentWillMount',
-      value: function componentWillMount() {
-        if (this.props.scrollableParent) {
-          // eslint-disable-line react/prop-types
-          throw new Error('The `scrollableParent` prop has changed name ' + 'to `scrollableAncestor`.');
-        }
-      }
-    }, {
       key: 'componentDidMount',
       value: function componentDidMount() {
         if (!Waypoint.getWindow()) {
@@ -97,11 +89,7 @@ var waypoint = function waypoint(Component) {
           return;
         }
 
-        var prevWaypointTop = prevState.scrolled.waypointTop;
-        var currentWaypointTop = this.state.scrolled.waypointTop;
-
-
-        if (prevWaypointTop !== currentWaypointTop) {
+        if (prevState.scrolled === this.state.scrolled) {
           // The element may have moved.
           this._handleScroll(null);
         }
@@ -176,14 +164,14 @@ var waypoint = function waypoint(Component) {
     }, {
       key: '_handleScroll',
       value: function _handleScroll(event) {
-        var waypointTop = _reactDom2.default.findDOMNode(this).getBoundingClientRect().top;
+        var waypointTop = this._DOMNode.getBoundingClientRect().top;
 
         var _scrollableAncestorHe = this._scrollableAncestorHeightTop();
 
-        var contextScrollTop = _scrollableAncestorHe.contextScrollTop;
         var contextHeight = _scrollableAncestorHe.contextHeight;
+        var contextScrollTop = _scrollableAncestorHe.contextScrollTop;
 
-        var currentPosition = this._currentPosition(waypointTop, contextScrollTop, contextHeight);
+        var currentPosition = this._currentPosition(waypointTop, { contextHeight: contextHeight, contextScrollTop: contextScrollTop });
         var previousPosition = this._previousPosition || null;
 
         // Save previous position as early as possible to prevent cycles
@@ -191,8 +179,8 @@ var waypoint = function waypoint(Component) {
 
         var callbackArg = {
           waypointTop: waypointTop,
-          contextScrollTop: contextScrollTop,
           contextHeight: contextHeight,
+          contextScrollTop: contextScrollTop,
           currentPosition: currentPosition,
           previousPosition: previousPosition,
           event: event
@@ -242,7 +230,7 @@ var waypoint = function waypoint(Component) {
           contextHeight = this.scrollableAncestor.offsetHeight;
           contextScrollTop = _reactDom2.default.findDOMNode(this.scrollableAncestor).getBoundingClientRect().top;
         }
-        return { contextScrollTop: contextScrollTop, contextHeight: contextHeight };
+        return { contextHeight: contextHeight, contextScrollTop: contextScrollTop };
       }
 
       /**
@@ -253,7 +241,10 @@ var waypoint = function waypoint(Component) {
 
     }, {
       key: '_currentPosition',
-      value: function _currentPosition(waypointTop, contextScrollTop, contextHeight) {
+      value: function _currentPosition(waypointTop, _ref) {
+        var contextHeight = _ref.contextHeight;
+        var contextScrollTop = _ref.contextScrollTop;
+
 
         var thresholdPx = contextHeight * this.props.threshold;
         var contextBottom = contextScrollTop + contextHeight;
