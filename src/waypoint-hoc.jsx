@@ -178,6 +178,9 @@ const waypoint = Component => {
       }
     }
 
+    /**
+     * @return {Object} `height` and `top` of scrollable ancestor Rect.
+     */
     _scrollableAncestorHeightTop() {
       let contextHeight;
       let contextScrollTop;
