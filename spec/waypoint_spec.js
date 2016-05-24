@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Waypoint from '../src/waypoint.jsx';
+import Waypoint from '../';
 
 let div;
 

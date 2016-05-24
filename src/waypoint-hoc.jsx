@@ -72,7 +72,8 @@ const waypoint = Component => {
         // exist. Guarding against this prevents the following error:
         //
         //   Cannot read property 'removeEventListener' of undefined
-        this.scrollableAncestor.removeEventListener('scroll', this._handleScroll);
+        this.scrollableAncestor.removeEventListener('scroll',
+          this._handleScroll);
       }
       window.removeEventListener('resize', this._handleScroll);
     }
@@ -101,7 +102,8 @@ const waypoint = Component => {
         }
 
         if (node === document.documentElement) {
-          // This particular node does not have a scroll bar, it uses the window.
+          // This particular node does not have a scroll bar,
+          // it uses the window.
           continue;
         }
 
@@ -114,8 +116,8 @@ const waypoint = Component => {
         }
       }
 
-      // A scrollable ancestor element was not found, which means that we need to
-      // do stuff on window.
+      // A scrollable ancestor element was not found,
+      // which means that we need to do stuff on window.
       return window;
     }
 
@@ -126,8 +128,14 @@ const waypoint = Component => {
      */
     _handleScroll(event) {
       const waypointTop = this._DOMNode.getBoundingClientRect().top;
-      const { contextHeight, contextScrollTop } = this._scrollableAncestorHeightTop();
-      const currentPosition = this._currentPosition(waypointTop, { contextHeight, contextScrollTop });
+      const {
+        contextHeight,
+        contextScrollTop
+      } = this._scrollableAncestorHeightTop();
+      const currentPosition = this._currentPosition(waypointTop, {
+        contextHeight,
+        contextScrollTop
+      });
       const previousPosition = this._previousPosition || null;
 
       // Save previous position as early as possible to prevent cycles
@@ -197,12 +205,12 @@ const waypoint = Component => {
     }
 
     /**
+     * @param {number} waypointTop - Rect Top of DOM Component
      * @return {string} The current position of the waypoint in relation to the
      *   visible portion of the scrollable parent. One of `POSITIONS.above`,
      *   `POSITIONS.below`, or `POSITIONS.inside`.
      */
     _currentPosition(waypointTop, { contextHeight, contextScrollTop }) {
-
       const thresholdPx = contextHeight * this.props.threshold;
       const contextBottom = contextScrollTop + contextHeight;
 
@@ -232,7 +240,7 @@ const waypoint = Component => {
     render() {
       return <Component {...this.props} _scrolled={this.state.scrolled}/>;
     }
-  }
+  };
 
   Waypoint.propTypes = propTypes;
   Waypoint.above = POSITIONS.above;
@@ -243,6 +251,6 @@ const waypoint = Component => {
   Waypoint.defaultProps = defaultProps;
 
   return Waypoint;
-}
+};
 
 export default waypoint;
