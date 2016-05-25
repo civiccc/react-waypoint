@@ -16,6 +16,10 @@ var _reactDom = require('react-dom');
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
+var _lodash = require('lodash.throttle');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -39,7 +43,9 @@ var propTypes = {
   onLeave: _react.PropTypes.func,
   onPositionChange: _react.PropTypes.func,
   fireOnRapidScroll: _react.PropTypes.bool,
-  scrollableAncestor: _react.PropTypes.any
+  scrollableAncestor: _react.PropTypes.any,
+  // throttle handleScroll (e.g. 100 ms)
+  throttle: _react.PropTypes.number
 };
 
 var defaultProps = {
@@ -48,7 +54,8 @@ var defaultProps = {
   onLeave: function onLeave() {},
   onPositionChange: function onPositionChange() {},
 
-  fireOnRapidScroll: true
+  fireOnRapidScroll: true,
+  throttle: 0
 };
 
 /**
@@ -65,6 +72,7 @@ var waypoint = function waypoint(Component) {
       var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(_waypoint).call(this, props));
 
       _this.state = { scrolled: {} };
+      _this._handleScroll = (_this.props.throttle ? (0, _lodash2.default)(_this._handleScroll, _this.props.throttle) : _this._handleScroll).bind(_this);
       return _this;
     }
 
@@ -77,7 +85,6 @@ var waypoint = function waypoint(Component) {
 
         this._DOMNode = _reactDom2.default.findDOMNode(this);
         this.scrollableAncestor = this._findScrollableAncestor();
-        this._handleScroll = this._handleScroll.bind(this);
         this.scrollableAncestor.addEventListener('scroll', this._handleScroll);
         window.addEventListener('resize', this._handleScroll);
         this._handleScroll(null);
@@ -138,7 +145,8 @@ var waypoint = function waypoint(Component) {
           }
 
           if (node === document.documentElement) {
-            // This particular node does not have a scroll bar, it uses the window.
+            // This particular node does not have a scroll bar,
+            // it uses the window.
             continue;
           }
 
@@ -150,8 +158,8 @@ var waypoint = function waypoint(Component) {
           }
         }
 
-        // A scrollable ancestor element was not found, which means that we need to
-        // do stuff on window.
+        // A scrollable ancestor element was not found,
+        // which means that we need to do stuff on window.
         return window;
       }
 
@@ -171,7 +179,10 @@ var waypoint = function waypoint(Component) {
         var contextHeight = _scrollableAncestorHe.contextHeight;
         var contextScrollTop = _scrollableAncestorHe.contextScrollTop;
 
-        var currentPosition = this._currentPosition(waypointTop, { contextHeight: contextHeight, contextScrollTop: contextScrollTop });
+        var currentPosition = this._currentPosition(waypointTop, {
+          contextHeight: contextHeight,
+          contextScrollTop: contextScrollTop
+        });
         var previousPosition = this._previousPosition || null;
 
         // Save previous position as early as possible to prevent cycles
@@ -239,6 +250,7 @@ var waypoint = function waypoint(Component) {
       }
 
       /**
+       * @param {number} waypointTop - Rect Top of DOM Component
        * @return {string} The current position of the waypoint in relation to the
        *   visible portion of the scrollable parent. One of `POSITIONS.above`,
        *   `POSITIONS.below`, or `POSITIONS.inside`.
@@ -249,7 +261,6 @@ var waypoint = function waypoint(Component) {
       value: function _currentPosition(waypointTop, _ref) {
         var contextHeight = _ref.contextHeight;
         var contextScrollTop = _ref.contextScrollTop;
-
 
         var thresholdPx = contextHeight * this.props.threshold;
         var contextBottom = contextScrollTop + contextHeight;

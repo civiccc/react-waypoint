@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
+import throttle from 'lodash.throttle';
 
 const POSITIONS = {
   above: 'above',
@@ -17,6 +18,8 @@ const propTypes = {
   onPositionChange: PropTypes.func,
   fireOnRapidScroll: PropTypes.bool,
   scrollableAncestor: PropTypes.any,
+  // throttle handleScroll (e.g. 100 ms)
+  throttle: PropTypes.number
 };
 
 const defaultProps = {
@@ -24,7 +27,8 @@ const defaultProps = {
   onEnter() {},
   onLeave() {},
   onPositionChange() {},
-  fireOnRapidScroll: true
+  fireOnRapidScroll: true,
+  throttle: 0
 };
 
 /**
@@ -36,6 +40,9 @@ const waypoint = Component => {
     constructor(props) {
       super(props);
       this.state = { scrolled: {} };
+      this._handleScroll = (this.props.throttle ?
+        throttle(this._handleScroll, this.props.throttle) :
+        this._handleScroll).bind(this);
     }
 
     componentDidMount() {
@@ -45,7 +52,6 @@ const waypoint = Component => {
 
       this._DOMNode = ReactDOM.findDOMNode(this);
       this.scrollableAncestor = this._findScrollableAncestor();
-      this._handleScroll = this._handleScroll.bind(this);
       this.scrollableAncestor.addEventListener('scroll', this._handleScroll);
       window.addEventListener('resize', this._handleScroll);
       this._handleScroll(null);
