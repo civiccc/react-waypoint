@@ -24,6 +24,7 @@ const scrollNodeTo = function(node, scrollTop) {
 
 describe('<Waypoint>', function() {
   beforeEach(() => {
+    spyOn(console, 'log');
     this.props = {
       onEnter: jasmine.createSpy('onEnter'),
       onLeave: jasmine.createSpy('onLeave'),
@@ -61,12 +62,28 @@ describe('<Waypoint>', function() {
     scrollNodeTo(window, 0);
   });
 
+  describe('when called with debug=true', () => {
+    beforeEach(() => {
+      this.props.debug = true;
+    });
+
+    it('logs to the console', () => {
+      this.subject();
+      expect(console.log).toHaveBeenCalled(); // eslint-disable-line no-console
+    });
+  });
+
   describe('when the Waypoint is visible on mount', () => {
     beforeEach(() => {
       this.topSpacerHeight = 90;
       this.bottomSpacerHeight = 200;
       this.parentComponent = this.subject();
       this.scrollable = this.parentComponent;
+    });
+
+    it('does not log to the console', () => {
+      expect(console.log) // eslint-disable-line no-console
+        .not.toHaveBeenCalled();
     });
 
     it('calls the onEnter handler', () => {

@@ -9,6 +9,7 @@ const POSITIONS = {
 };
 
 const propTypes = {
+  debug: PropTypes.bool,
   // threshold is percentage of the height of the visible part of the
   // scrollable ancestor (e.g. 0.1)
   threshold: PropTypes.number,
@@ -26,6 +27,10 @@ const defaultProps = {
   onPositionChange() {},
   fireOnRapidScroll: true
 };
+
+function debugLog() {
+  console.log(arguments); // eslint-disable-line no-console
+}
 
 /**
  * Calls a function when you scroll to the element.
@@ -45,6 +50,9 @@ export default class Waypoint extends React.Component {
 
     this._handleScroll = this._handleScroll.bind(this);
     this.scrollableAncestor = this._findScrollableAncestor();
+    if (this.props.debug) {
+      debugLog('scrollableAncestor', this.scrollableAncestor);
+    }
     this.scrollableAncestor.addEventListener('scroll', this._handleScroll);
     window.addEventListener('resize', this._handleScroll);
     this._handleScroll(null);
@@ -124,6 +132,10 @@ export default class Waypoint extends React.Component {
   _handleScroll(event) {
     const currentPosition = this._currentPosition();
     const previousPosition = this._previousPosition || null;
+    if (this.props.debug) {
+      debugLog('currentPosition', currentPosition);
+      debugLog('previousPosition', previousPosition);
+    }
 
     // Save previous position as early as possible to prevent cycles
     this._previousPosition = currentPosition;
@@ -184,6 +196,11 @@ export default class Waypoint extends React.Component {
       contextScrollTop = ReactDOM
         .findDOMNode(this.scrollableAncestor)
         .getBoundingClientRect().top;
+    }
+    if (this.props.debug) {
+      debugLog('waypoint top', waypointTop);
+      debugLog('scrollableAncestor height', contextHeight);
+      debugLog('scrollableAncestor scrollTop', contextScrollTop);
     }
     const thresholdPx = contextHeight * this.props.threshold;
     const contextBottom = contextScrollTop + contextHeight;

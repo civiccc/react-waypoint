@@ -118,6 +118,12 @@ below) has changed.
      * fire anyway.
      */
     fireOnRapidScroll: PropTypes.bool,
+
+    /**
+     * Use this prop to get debug information in the console log. This slows
+     * things down significantly, so it should only be used during development.
+     */
+    debug: PropTypes.bool,
   },
 ```
 
