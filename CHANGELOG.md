@@ -1,5 +1,9 @@
 ## master (unreleased)
 
+## 2.0.3
+
+- Added `debug` prop
+
 ## 2.0.2
 
 - Improved position calculation
