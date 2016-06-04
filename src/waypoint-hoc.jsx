@@ -54,6 +54,7 @@ const waypoint = Component => {
       this.scrollableAncestor = this._findScrollableAncestor();
       this.scrollableAncestor.addEventListener('scroll', this._handleScroll);
       window.addEventListener('resize', this._handleScroll);
+
       this._handleScroll(null);
     }
 
@@ -180,11 +181,17 @@ const waypoint = Component => {
         // If the scroll event isn't fired often enough to occur while the
         // waypoint was visible, we trigger both callbacks anyway.
         this.props.onEnter.call(this, {
+          waypointTop,
+          contextHeight,
+          contextScrollTop,
           currentPosition: POSITIONS.inside,
           previousPosition,
           event,
         });
         this.props.onLeave.call(this, {
+          waypointTop,
+          contextHeight,
+          contextScrollTop,
           currentPosition,
           previousPosition: POSITIONS.inside,
           event,
