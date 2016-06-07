@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import throttle from 'lodash.throttle';
 
-const POSITIONS = {
+export const POSITIONS = {
   above: 'above',
   inside: 'inside',
   below: 'below',
@@ -13,10 +13,6 @@ const propTypes = {
   // threshold is percentage of the height of the visible part of the
   // scrollable ancestor (e.g. 0.1)
   threshold: PropTypes.number,
-  onEnter: PropTypes.func,
-  onLeave: PropTypes.func,
-  onPositionChange: PropTypes.func,
-  fireOnRapidScroll: PropTypes.bool,
   scrollableAncestor: PropTypes.any,
   // throttle handleScroll (e.g. 100 ms)
   throttle: PropTypes.number
@@ -24,10 +20,6 @@ const propTypes = {
 
 const defaultProps = {
   threshold: 0,
-  onEnter() {},
-  onLeave() {},
-  onPositionChange() {},
-  fireOnRapidScroll: true,
   throttle: 0
 };
 
@@ -148,7 +140,7 @@ const waypoint = Component => {
       // Save previous position as early as possible to prevent cycles
       this._previousPosition = currentPosition;
 
-      const callbackArg = {
+      const scrolled = {
         waypointTop,
         contextHeight,
         contextScrollTop,
@@ -157,46 +149,7 @@ const waypoint = Component => {
         event,
       };
 
-      this.setState({ scrolled: callbackArg });
-
-      if (previousPosition === currentPosition) {
-        // No change since last trigger
-        return;
-      }
-
-      this.props.onPositionChange.call(this, callbackArg);
-
-      if (currentPosition === POSITIONS.inside) {
-        this.props.onEnter.call(this, callbackArg);
-      } else if (previousPosition === POSITIONS.inside) {
-        this.props.onLeave.call(this, callbackArg);
-      }
-
-      const isRapidScrollDown = previousPosition === POSITIONS.below &&
-        currentPosition === POSITIONS.above;
-      const isRapidScrollUp = previousPosition === POSITIONS.above &&
-        currentPosition === POSITIONS.below;
-      if (this.props.fireOnRapidScroll &&
-        (isRapidScrollDown || isRapidScrollUp)) {
-        // If the scroll event isn't fired often enough to occur while the
-        // waypoint was visible, we trigger both callbacks anyway.
-        this.props.onEnter.call(this, {
-          waypointTop,
-          contextHeight,
-          contextScrollTop,
-          currentPosition: POSITIONS.inside,
-          previousPosition,
-          event,
-        });
-        this.props.onLeave.call(this, {
-          waypointTop,
-          contextHeight,
-          contextScrollTop,
-          currentPosition,
-          previousPosition: POSITIONS.inside,
-          event,
-        });
-      }
+      this.setState({ scrolled });
     }
 
     /**
