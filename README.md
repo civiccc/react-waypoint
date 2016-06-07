@@ -163,6 +163,21 @@ this:
 />
 ```
 
+### Troubleshooting
+If your waypoint isn't working the way you expect it to, there are a few ways
+you can debug your setup.
+
+OPTION 1: Add the `debug={true}` prop to your waypoint. When you do, you'll see console
+logs informing you about the internals of the waypoint.
+
+OPTION 2: Clone and modify the project locally.
+- clone this repo
+- add `console.log` or breakpoints where you think it would be useful.
+- build the `waypoint.js` file:
+  `babel src/waypoint.jsx --out-file build/npm/waypoint.js`
+- `npm link` in the react-waypoint repo.
+- `npm link react-waypoint` in your project.
+
 ## Limitations
 
 In this component we make a few assumptions that we believe are generally safe,
