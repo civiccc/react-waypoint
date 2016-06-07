@@ -173,10 +173,9 @@ logs informing you about the internals of the waypoint.
 OPTION 2: Clone and modify the project locally.
 - clone this repo
 - add `console.log` or breakpoints where you think it would be useful.
-- build the `waypoint.js` file:
-  `babel src/waypoint.jsx --out-file build/npm/waypoint.js`
 - `npm link` in the react-waypoint repo.
 - `npm link react-waypoint` in your project.
+- if needed rebuild react-waypoint module: `npm run build-npm`
 
 ## Limitations
 
