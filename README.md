@@ -124,6 +124,15 @@ below) has changed.
      * things down significantly, so it should only be used during development.
      */
     debug: PropTypes.bool,
+
+    /**
+     * Throttle scroll handler.
+     * If more performance tweaks needed many rapid scroll events can be droped.
+     * Some use-cases don´t need fire on rapid scrolling.
+     * User must provide a `throttle/debounce` like function, Ex:
+     *  [lodash.throttle](https://www.npmjs.com/package/lodash.throttle)
+     */
+    throttleHandler: PropTypes.func,
   },
 ```
 
@@ -162,6 +171,9 @@ this:
   }}
 />
 ```
+
+
+
 
 ### Troubleshooting
 If your waypoint isn't working the way you expect it to, there are a few ways

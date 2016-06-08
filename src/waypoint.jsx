@@ -18,6 +18,8 @@ const propTypes = {
   onPositionChange: PropTypes.func,
   fireOnRapidScroll: PropTypes.bool,
   scrollableAncestor: PropTypes.any,
+  // throttle Scroll handler (e.g. 100 ms)
+  throttleHandler: PropTypes.func
 };
 
 const defaultProps = {
@@ -25,7 +27,10 @@ const defaultProps = {
   onEnter() {},
   onLeave() {},
   onPositionChange() {},
-  fireOnRapidScroll: true
+  fireOnRapidScroll: true,
+  throttleHandler(handler) {
+    return handler;
+  }
 };
 
 function debugLog() {
@@ -47,8 +52,8 @@ export default class Waypoint extends React.Component {
     if (!Waypoint.getWindow()) {
       return;
     }
-
-    this._handleScroll = this._handleScroll.bind(this);
+    this._handleScroll = this.props.throttleHandler(this._handleScroll)
+      .bind(this);
     this.scrollableAncestor = this._findScrollableAncestor();
     if (this.props.debug) {
       debugLog('scrollableAncestor', this.scrollableAncestor);
