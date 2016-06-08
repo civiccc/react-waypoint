@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
+import throttle from 'lodash.throttle';
 
 const POSITIONS = {
   above: 'above',
@@ -18,6 +19,8 @@ const propTypes = {
   onPositionChange: PropTypes.func,
   fireOnRapidScroll: PropTypes.bool,
   scrollableAncestor: PropTypes.any,
+  // throttle Scroll handler (e.g. 100 ms)
+  throttle: PropTypes.number
 };
 
 const defaultProps = {
@@ -25,7 +28,8 @@ const defaultProps = {
   onEnter() {},
   onLeave() {},
   onPositionChange() {},
-  fireOnRapidScroll: true
+  fireOnRapidScroll: true,
+  throttle: 0
 };
 
 function debugLog() {
@@ -36,6 +40,13 @@ function debugLog() {
  * Calls a function when you scroll to the element.
  */
 export default class Waypoint extends React.Component {
+  constructor(props) {
+    super(props);
+    this._handleScroll = (this.props.throttle ?
+      throttle(this._handleScroll, this.props.throttle) :
+      this._handleScroll).bind(this);
+  }
+
   componentWillMount() {
     if (this.props.scrollableParent) { // eslint-disable-line react/prop-types
       throw new Error('The `scrollableParent` prop has changed name ' +
@@ -48,7 +59,6 @@ export default class Waypoint extends React.Component {
       return;
     }
 
-    this._handleScroll = this._handleScroll.bind(this);
     this.scrollableAncestor = this._findScrollableAncestor();
     if (this.props.debug) {
       debugLog('scrollableAncestor', this.scrollableAncestor);

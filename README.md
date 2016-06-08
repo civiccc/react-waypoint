@@ -124,6 +124,15 @@ below) has changed.
      * things down significantly, so it should only be used during development.
      */
     debug: PropTypes.bool,
+
+    /**
+     * Throttle scroll handler specified milliseconds.
+     * If more performance tweaks needed many rapid scroll events can be droped.
+     * Some use-cases don´t need fire on rapid scrolling. 100ms is a widely
+     * recommended value.
+     * Default value is 0(not throttle)
+     */
+    throttle: PropTypes.number,
   },
 ```
 
