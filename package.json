@@ -50,8 +50,5 @@
     "react-component",
     "scroll",
     "onscroll"
-  ],
-  "dependencies": {
-    "lodash.throttle": "^4.0.1"
-  }
+  ]
 }
