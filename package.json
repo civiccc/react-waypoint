@@ -10,8 +10,8 @@
   "homepage": "https://github.com/brigade/react-waypoint",
   "bugs": "https://github.com/brigade/react-waypoint/issues",
   "scripts": {
-    "build-npm": "rm -rf build/npm && mkdir -p build/npm && babel src/waypoint.jsx --out-file build/npm/waypoint.js",
-    "test": "./node_modules/.bin/eslint . --ext .js,.jsx && ./node_modules/.bin/karma start",
+    "build-npm": "rimraf build/npm && mkdirp build/npm && babel src/waypoint.jsx --out-file build/npm/waypoint.js",
+    "test": "eslint . --ext .js,.jsx && karma start",
     "prepublish": "npm run build-npm"
   },
   "author": "Brigade Engineering",
@@ -40,6 +40,8 @@
     "karma-webpack": "^1.7.0",
     "react": "^15.0.0",
     "react-dom": "^15.0.0",
+    "rimraf": "^2.5.2",
+    "mkdirp": "^0.5.1",
     "webpack": "^1.5.3"
   },
   "keywords": [
