@@ -755,4 +755,29 @@ describe('<Waypoint>', function() {
       expect(this.subject).toThrowError(/changed name to `scrollableAncestor`/);
     });
   });
+
+  describe('with a throttleHandler that delays execution', () => {
+    beforeEach(() => {
+      this.props.throttleHandler = (scrollHandler) => {
+        return () => setTimeout(scrollHandler, 1);
+      };
+      scrollNodeTo(this.subject(), 100);
+    });
+
+    afterEach((done) => {
+      // We need to keep the component mounted for a little while
+      setTimeout(done);
+    });
+
+    it('does not call the onEnter handler immediately', () => {
+      expect(this.props.onEnter).not.toHaveBeenCalled();
+    });
+
+    it('calls the onEnter handler after the delay', (done) => {
+      setTimeout(() => {
+        expect(this.props.onEnter).toHaveBeenCalled();
+        done();
+      }, 2);
+    });
+  });
 });

@@ -124,6 +124,13 @@ below) has changed.
      * things down significantly, so it should only be used during development.
      */
     debug: PropTypes.bool,
+
+    /**
+     * The `throttleHandler` prop provides a way to throttle scroll callbacks
+     * to increase performance. See the section on "Throttling" for details on
+     * how to use it.
+     */
+    throttleHandler: PropTypes.func,
   },
 ```
 
@@ -163,7 +170,46 @@ this:
 />
 ```
 
-### Troubleshooting
+## Throttling
+By default, waypoints will trigger on every scroll event. In most cases, this
+works just fine. But if you find yourself wanting to tweak the scrolling
+performance, the `throttleHandler` prop can come in handy. You pass in a
+function that returns a different (throttled) version of the function passed
+in. Here's an example using
+[lodash.throttle](https://www.npmjs.com/package/lodash.throttle):
+
+```jsx
+import throttle from 'lodash.throttle';
+
+<Waypoint throttleHandler={(scrollHandler) => lodashThrottle(scrollHandler, 100)} />
+```
+
+The argument passed in to the throttle handler function, `scrollHandler`, is
+waypoint's internal scroll handler. The `throttleHandler` is only invoked once
+during the lifetime of a waypoint (when the waypoint is mounted).
+
+To prevent errors coming from the fact that the scroll handler can be called
+after the waypoint is unmounted, it's a good idea to cancel the throttle
+function on unmount:
+
+```jsx
+import throttle from 'lodash.throttle';
+
+let throttledHandler;
+
+<Waypoint throttleHandler={(scrollHandler) => {
+    throttledHandler = lodashThrottle(scrollHandler, 100);
+    return throttledHandler;
+  }}
+  ref={function(component) {
+    if (!component) {
+      throttledHandler.cancel()
+    }
+  }}
+/>
+```
+
+## Troubleshooting
 If your waypoint isn't working the way you expect it to, there are a few ways
 you can debug your setup.
 
