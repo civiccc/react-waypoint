@@ -18,7 +18,6 @@ const propTypes = {
   onPositionChange: PropTypes.func,
   fireOnRapidScroll: PropTypes.bool,
   scrollableAncestor: PropTypes.any,
-  // throttle Scroll handler (e.g. 100 ms)
   throttleHandler: PropTypes.func
 };
 
