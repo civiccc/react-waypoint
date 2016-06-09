@@ -126,9 +126,9 @@ below) has changed.
     debug: PropTypes.bool,
 
     /**
-     * The `throttleHandler` prop provides a way to throttle scroll callbacks
-     * to increase performance. See the section on "Throttling" for details on
-     * how to use it.
+     * The `throttleHandler` prop provides a callback that throttle internal
+     * scroll handler to increase performance.
+     * See the section on "Throttling" for details on how to use it.
      */
     throttleHandler: PropTypes.func,
   },
@@ -181,7 +181,7 @@ in. Here's an example using
 ```jsx
 import throttle from 'lodash.throttle';
 
-<Waypoint throttleHandler={(scrollHandler) => lodashThrottle(scrollHandler, 100)} />
+<Waypoint throttleHandler={(scrollHandler) => throttle(scrollHandler, 100)} />
 ```
 
 The argument passed in to the throttle handler function, `scrollHandler`, is
@@ -198,12 +198,12 @@ import throttle from 'lodash.throttle';
 let throttledHandler;
 
 <Waypoint throttleHandler={(scrollHandler) => {
-    throttledHandler = lodashThrottle(scrollHandler, 100);
+    throttledHandler = throttle(scrollHandler, 100);
     return throttledHandler;
   }}
   ref={function(component) {
     if (!component) {
-      throttledHandler.cancel()
+      throttledHandler.cancel();
     }
   }}
 />
