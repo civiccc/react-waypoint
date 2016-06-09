@@ -52,7 +52,8 @@ export default class Waypoint extends React.Component {
     if (!Waypoint.getWindow()) {
       return;
     }
-    this._handleScroll = this.props.throttleHandler(this._handleScroll.bind(this));
+    this._handleScroll = this.props.throttleHandler(
+      this._handleScroll.bind(this));
     this.scrollableAncestor = this._findScrollableAncestor();
     if (this.props.debug) {
       debugLog('scrollableAncestor', this.scrollableAncestor);

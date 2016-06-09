@@ -758,10 +758,15 @@ describe('<Waypoint>', function() {
 
   describe('with a throttleHandler that delays execution', () => {
     beforeEach(() => {
-      this.props.throttleHandler = (scrollHandler) => () =>
-        setTimeout(scrollHandler, 1);
-    //  scrollNodeTo(this.subject(), 100);
-      scrollNodeTo(window, 100);
+      this.props.throttleHandler = (scrollHandler) => {
+        return () => setTimeout(scrollHandler, 1);
+      };
+      scrollNodeTo(this.subject(), 100);
+    });
+
+    afterEach((done) => {
+      // We need to keep the component mounted for a little while
+      setTimeout(done);
     });
 
     it('does not call the onEnter handler immediately', () => {
