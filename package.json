@@ -11,7 +11,9 @@
   "bugs": "https://github.com/brigade/react-waypoint/issues",
   "scripts": {
     "build-npm": "rimraf build/npm && mkdirp build/npm && babel src/waypoint.jsx --out-file build/npm/waypoint.js",
-    "test": "eslint . --ext .js,.jsx && karma start",
+    "lint": "eslint . --ext .js,.jsx",
+    "testonly": "karma start",
+    "test": "npm run lint && npm run testonly",
     "prepublish": "npm run build-npm"
   },
   "author": "Brigade Engineering",
@@ -28,9 +30,9 @@
     "babel-plugin-add-module-exports": "^0.1.2",
     "babel-plugin-transform-react-jsx": "^6.0.0",
     "babel-preset-es2015": "^6.0.0",
-    "eslint": "^1.3.1",
-    "eslint-config-brigade": "^1.6.0",
-    "eslint-plugin-react": "^3.3.1",
+    "eslint": "^2.11.1",
+    "eslint-config-brigade": "^2.0.3",
+    "eslint-plugin-react": "^5.1.1",
     "jasmine-core": "^2.1.3",
     "karma": "^0.13.9",
     "karma-chrome-launcher": "^0.2.0",
