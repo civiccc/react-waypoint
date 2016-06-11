@@ -134,7 +134,16 @@ export default class Waypoint extends React.Component {
    *   called by a React lifecyle method
    */
   _handleScroll(event) {
-    const currentPosition = this._currentPosition();
+    const waypointTop = ReactDOM.findDOMNode(this)
+      .getBoundingClientRect().top;
+    const {
+      contextHeight,
+      contextScrollTop
+    } = this._scrollableAncestorHeightTop();
+    const currentPosition = this._currentPosition(waypointTop, {
+      contextHeight,
+      contextScrollTop
+    });
     const previousPosition = this._previousPosition || null;
     if (this.props.debug) {
       debugLog('currentPosition', currentPosition);
@@ -184,12 +193,9 @@ export default class Waypoint extends React.Component {
   }
 
   /**
-   * @return {string} The current position of the waypoint in relation to the
-   *   visible portion of the scrollable parent. One of `POSITIONS.above`,
-   *   `POSITIONS.below`, or `POSITIONS.inside`.
+   * @return {Object} `height` and `top` of scrollable ancestor Rect.
    */
-  _currentPosition() {
-    const waypointTop = ReactDOM.findDOMNode(this).getBoundingClientRect().top;
+  _scrollableAncestorHeightTop() {
     let contextHeight;
     let contextScrollTop;
     if (this.scrollableAncestor === window) {
@@ -201,6 +207,16 @@ export default class Waypoint extends React.Component {
         .findDOMNode(this.scrollableAncestor)
         .getBoundingClientRect().top;
     }
+    return { contextHeight, contextScrollTop };
+  }
+
+  /**
+   * @param {number} waypointTop - Rect Top of DOM Component
+   * @return {string} The current position of the waypoint in relation to the
+   *   visible portion of the scrollable parent. One of `POSITIONS.above`,
+   *   `POSITIONS.below`, or `POSITIONS.inside`.
+   */
+  _currentPosition(waypointTop, { contextHeight, contextScrollTop }) {
     if (this.props.debug) {
       debugLog('waypoint top', waypointTop);
       debugLog('scrollableAncestor height', contextHeight);
