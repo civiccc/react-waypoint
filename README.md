@@ -7,7 +7,7 @@ A React component to execute a function whenever you scroll to an element. Works
 in all containers that can scroll, including the window.
 
 React Waypoint can be used to build features like lazy loading content, infinite
-scroll, or docking elements to the viewport on scroll.
+scroll, scrollspies, or docking elements to the viewport on scroll.
 
 Inspired by [Waypoints][waypoints], except this little library grooves the
 [React][react] way.
