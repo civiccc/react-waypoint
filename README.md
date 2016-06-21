@@ -126,7 +126,7 @@ below) has changed.
     debug: PropTypes.bool,
 
     /**
-     * The `throttleHandler` prop provides a callback that throttle internal
+     * The `throttleHandler` prop provides a function that throttle the internal
      * scroll handler to increase performance.
      * See the section on "Throttling" for details on how to use it.
      */
