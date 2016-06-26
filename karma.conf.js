@@ -28,6 +28,9 @@ module.exports = function(config) {
     },
 
     webpack: {
+      resolve: {
+        extensions: ['', '.js', '.jsx']
+      },
       module: {
         loaders: [
           {
