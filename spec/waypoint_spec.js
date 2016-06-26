@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Waypoint, { POSITIONS } from '..';
+import Waypoint, { POSITIONS } from '../src/index';
 
 let div;
 
