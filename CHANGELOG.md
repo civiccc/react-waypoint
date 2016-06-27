@@ -1,5 +1,9 @@
 ## master (unreleased)
 
+## 3.0.0
+
+- Change `threshold` to `bottomOffset` and `topOffset`
+
 ## 2.0.3
 
 - Added `debug` prop
