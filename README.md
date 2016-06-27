@@ -97,10 +97,26 @@ below) has changed.
     onPositionChange: PropTypes.func,
 
     /**
-     * Threshold - a percentage of the height of the visible
-     * part of the scrollable parent (e.g. 0.1)
+     * `topOffset` can either be a number, in which case its a distance from the
+     * top of the container in pixels, or a string value. Valid string values are
+     * of the form "20px", which is parsed as pixels, or "20%", which is parsed
+     * as a percentage of the height of the containing element.
+     * For instance, if you pass "-20%", and the containing element is 100px tall,
+     * then the waypoint will be triggered when it has been scrolled 20px beyond
+     * the top of the containing element.
      */
-    threshold: PropTypes.number,
+    topOffset: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
+
+    /**
+     * `bottomOffset` is like `topOffset`, but for the bottom of the container.
+     */
+    bottomOffset: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
 
     /**
      * Scrollable Ancestor - A custom ancestor to determine if the
