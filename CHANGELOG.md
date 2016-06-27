@@ -3,6 +3,7 @@
 ## 3.0.0
 
 - Change `threshold` to `bottomOffset` and `topOffset`
+- Add `throttleHandler` prop to allow scrolling to be throttled
 
 ## 2.0.3
 
