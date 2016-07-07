@@ -148,7 +148,8 @@ export default class Waypoint extends React.Component {
    *   called by a React lifecyle method
    */
   _handleScroll(event) {
-    const currentPosition = this._currentPosition();
+    const bounds = this._getBounds();
+    const currentPosition = this._currentPosition(bounds);
     const previousPosition = this._previousPosition || null;
     if (this.props.debug) {
       debugLog('currentPosition', currentPosition);
@@ -167,6 +168,9 @@ export default class Waypoint extends React.Component {
       currentPosition,
       previousPosition,
       event,
+      waypointTop: bounds.waypointTop,
+      viewportTop: bounds.viewportTop,
+      viewportBottom: bounds.viewportBottom,
     };
     this.props.onPositionChange.call(this, callbackArg);
 
@@ -188,11 +192,17 @@ export default class Waypoint extends React.Component {
         currentPosition: POSITIONS.inside,
         previousPosition,
         event,
+        waypointTop: bounds.waypointTop,
+        viewportTop: bounds.viewportTop,
+        viewportBottom: bounds.viewportBottom,
       });
       this.props.onLeave.call(this, {
         currentPosition,
         previousPosition: POSITIONS.inside,
         event,
+        waypointTop: bounds.waypointTop,
+        viewportTop: bounds.viewportTop,
+        viewportBottom: bounds.viewportBottom,
       });
     }
   }
@@ -253,12 +263,7 @@ export default class Waypoint extends React.Component {
     }
   }
 
-  /**
-   * @return {string} The current position of the waypoint in relation to the
-   *   visible portion of the scrollable parent. One of `POSITIONS.above`,
-   *   `POSITIONS.below`, or `POSITIONS.inside`.
-   */
-  _currentPosition() {
+  _getBounds() {
     const waypointTop = ReactDOM.findDOMNode(this).getBoundingClientRect().top;
     let contextHeight;
     let contextScrollTop;
@@ -282,20 +287,35 @@ export default class Waypoint extends React.Component {
     const bottomOffsetPx = this._computeOffsetPixels(bottomOffset, contextHeight);
     const contextBottom = contextScrollTop + contextHeight;
 
-    if (contextHeight === 0) {
+    return {
+      waypointTop,
+      viewportTop: contextScrollTop + topOffsetPx,
+      viewportBottom: contextBottom - bottomOffsetPx,
+    };
+  }
+
+  /**
+   * @param {object} bounds An object with bounds data for the waypoint and
+   *   scrollable parent
+   * @return {string} The current position of the waypoint in relation to the
+   *   visible portion of the scrollable parent. One of `POSITIONS.above`,
+   *   `POSITIONS.below`, or `POSITIONS.inside`.
+   */
+  _currentPosition(bounds) {
+    if (bounds.viewportBottom - bounds.viewportTop === 0) {
       return Waypoint.invisible;
     }
 
-    if (contextScrollTop <= waypointTop - topOffsetPx &&
-        waypointTop + bottomOffsetPx <= contextBottom) {
+    if (bounds.viewportTop <= bounds.waypointTop &&
+        bounds.waypointTop <= bounds.viewportBottom) {
       return Waypoint.inside;
     }
 
-    if (contextBottom < waypointTop + bottomOffsetPx) {
+    if (bounds.viewportBottom < bounds.waypointTop) {
       return Waypoint.below;
     }
 
-    if (waypointTop - topOffsetPx < contextScrollTop) {
+    if (bounds.waypointTop < bounds.viewportTop) {
       return Waypoint.above;
     }
 
