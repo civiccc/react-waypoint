@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import ReactDOM from 'react-dom';
 
 const POSITIONS = {
   above: 'above',
@@ -54,6 +53,12 @@ function debugLog() {
  * Calls a function when you scroll to the element.
  */
 export default class Waypoint extends React.Component {
+  constructor() {
+    super();
+
+    this.refElement = (e) => this._ref = e;
+  }
+
   componentWillMount() {
     if (this.props.scrollableParent) { // eslint-disable-line react/prop-types
       throw new Error('The `scrollableParent` prop has changed name ' +
@@ -113,7 +118,7 @@ export default class Waypoint extends React.Component {
       return this.props.scrollableAncestor;
     }
 
-    let node = ReactDOM.findDOMNode(this);
+    let node = this._ref;
 
     while (node.parentNode) {
       node = node.parentNode;
@@ -264,7 +269,7 @@ export default class Waypoint extends React.Component {
   }
 
   _getBounds() {
-    const waypointTop = ReactDOM.findDOMNode(this).getBoundingClientRect().top;
+    const waypointTop = this._ref.getBoundingClientRect().top;
     let contextHeight;
     let contextScrollTop;
     if (this.scrollableAncestor === window) {
@@ -272,8 +277,7 @@ export default class Waypoint extends React.Component {
       contextScrollTop = 0;
     } else {
       contextHeight = this.scrollableAncestor.offsetHeight;
-      contextScrollTop = ReactDOM
-        .findDOMNode(this.scrollableAncestor)
+      contextScrollTop = this.scrollableAncestor
         .getBoundingClientRect().top;
     }
     if (this.props.debug) {
@@ -328,7 +332,7 @@ export default class Waypoint extends React.Component {
   render() {
     // We need an element that we can locate in the DOM to determine where it is
     // rendered relative to the top of its context.
-    return <span style={{fontSize: 0}} />;
+    return <span ref={this.refElement} style={{fontSize: 0}} />;
   }
 }
 
