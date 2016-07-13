@@ -31,11 +31,15 @@ describe('<Waypoint>', function() {
       onPositionChange: jasmine.createSpy('onPositionChange'),
     };
 
+    this.margin = 10;
+    this.parentHeight = 100;
+
     this.parentStyle = {
-      height: 100,
+      height: this.parentHeight,
       overflow: 'auto',
       position: 'relative',
       width: 100,
+      margin: this.margin, //Normalize the space above the viewport.
     };
 
     this.topSpacerHeight = 0;
@@ -89,7 +93,10 @@ describe('<Waypoint>', function() {
       expect(this.props.onEnter).toHaveBeenCalledWith({
         currentPosition: Waypoint.inside,
         previousPosition: null,
-        event: null
+        event: null,
+        waypointTop: this.margin + this.topSpacerHeight,
+        viewportTop: this.margin,
+        viewportBottom: this.margin + this.parentHeight,
       });
     });
 
@@ -98,7 +105,10 @@ describe('<Waypoint>', function() {
         toHaveBeenCalledWith({
           currentPosition: Waypoint.inside,
           previousPosition: null,
-          event: null
+          event: null,
+          waypointTop: this.margin + this.topSpacerHeight,
+          viewportTop: this.margin,
+          viewportBottom: this.margin + this.parentHeight,
         });
     });
 
@@ -134,6 +144,9 @@ describe('<Waypoint>', function() {
               currentPosition: Waypoint.above,
               previousPosition: Waypoint.inside,
               event: jasmine.any(Event),
+              waypointTop: this.margin - 10,
+              viewportTop: this.margin,
+              viewportBottom: this.margin + this.parentHeight,
             });
         });
 
@@ -147,6 +160,9 @@ describe('<Waypoint>', function() {
               currentPosition: Waypoint.above,
               previousPosition: Waypoint.inside,
               event: jasmine.any(Event),
+              waypointTop: this.margin - 10,
+              viewportTop: this.margin,
+              viewportBottom: this.margin + this.parentHeight,
             });
         });
       });
@@ -179,6 +195,9 @@ describe('<Waypoint>', function() {
           currentPosition: Waypoint.below,
           previousPosition: null,
           event: null,
+          waypointTop: this.margin + this.topSpacerHeight,
+          viewportTop: this.margin,
+          viewportBottom: this.margin + this.parentHeight,
         });
     });
 
@@ -214,6 +233,9 @@ describe('<Waypoint>', function() {
             currentPosition: Waypoint.inside,
             previousPosition: Waypoint.below,
             event: jasmine.any(Event),
+            waypointTop: this.margin + this.topSpacerHeight - 100,
+            viewportTop: this.margin,
+            viewportBottom: this.margin + this.parentHeight,
           });
       });
 
@@ -224,6 +246,9 @@ describe('<Waypoint>', function() {
             currentPosition: Waypoint.inside,
             previousPosition: Waypoint.below,
             event: jasmine.any(Event),
+            waypointTop: this.margin + this.topSpacerHeight - 100,
+            viewportTop: this.margin,
+            viewportBottom: this.margin + this.parentHeight,
           });
       });
 
@@ -244,6 +269,9 @@ describe('<Waypoint>', function() {
               currentPosition: Waypoint.inside,
               previousPosition: Waypoint.below,
               event: jasmine.any(Event),
+              waypointTop: this.margin + this.topSpacerHeight - 100,
+              viewportTop: this.margin,
+              viewportBottom: this.margin + this.parentHeight,
             });
         });
 
@@ -254,6 +282,9 @@ describe('<Waypoint>', function() {
               currentPosition: Waypoint.inside,
               previousPosition: Waypoint.below,
               event: jasmine.any(Event),
+              waypointTop: this.margin + this.topSpacerHeight - 100,
+              viewportTop: this.margin,
+              viewportBottom: this.margin + this.parentHeight,
             });
         });
 
@@ -273,7 +304,7 @@ describe('<Waypoint>', function() {
         this.scrollQuicklyPast = () => {
           this.component = this.subject();
           this.props.onPositionChange.calls.reset();
-          scrollNodeTo(this.component, 5000);
+          scrollNodeTo(this.component, this.topSpacerHeight + this.bottomSpacerHeight);
         };
       });
 
@@ -284,6 +315,9 @@ describe('<Waypoint>', function() {
             currentPosition: Waypoint.inside,
             previousPosition: Waypoint.below,
             event: jasmine.any(Event),
+            waypointTop: this.margin - this.bottomSpacerHeight + this.parentHeight,
+            viewportTop: this.margin,
+            viewportBottom: this.margin + this.parentHeight,
           });
       });
 
@@ -294,6 +328,9 @@ describe('<Waypoint>', function() {
             currentPosition: Waypoint.above,
             previousPosition: Waypoint.inside,
             event: jasmine.any(Event),
+            waypointTop: this.margin - this.bottomSpacerHeight + this.parentHeight,
+            viewportTop: this.margin,
+            viewportBottom: this.margin + this.parentHeight,
           });
       });
 
@@ -304,6 +341,9 @@ describe('<Waypoint>', function() {
             currentPosition: Waypoint.above,
             previousPosition: Waypoint.below,
             event: jasmine.any(Event),
+            waypointTop: this.margin - this.bottomSpacerHeight + this.parentHeight,
+            viewportTop: this.margin,
+            viewportBottom: this.margin + this.parentHeight,
           });
       });
 
@@ -329,6 +369,9 @@ describe('<Waypoint>', function() {
               currentPosition: Waypoint.above,
               previousPosition: Waypoint.below,
               event: jasmine.any(Event),
+              waypointTop: this.margin - this.bottomSpacerHeight + this.parentHeight,
+              viewportTop: this.margin,
+              viewportBottom: this.margin + this.parentHeight,
             });
         });
       });
@@ -353,6 +396,9 @@ describe('<Waypoint>', function() {
                 currentPosition: Waypoint.above,
                 previousPosition: Waypoint.inside,
                 event: jasmine.any(Event),
+                waypointTop: this.margin + this.topSpacerHeight - 211,
+                viewportTop: this.margin + this.parentHeight * -0.1,
+                viewportBottom: this.margin + this.parentHeight,
               });
           });
         });
@@ -398,6 +444,9 @@ describe('<Waypoint>', function() {
                 currentPosition: Waypoint.inside,
                 previousPosition: Waypoint.below,
                 event: jasmine.any(Event),
+                waypointTop: this.margin + this.topSpacerHeight - 90,
+                viewportTop: this.margin,
+                viewportBottom: this.margin + Math.floor(this.parentHeight * 1.1),
               });
           });
 
@@ -411,6 +460,9 @@ describe('<Waypoint>', function() {
                 currentPosition: Waypoint.inside,
                 previousPosition: Waypoint.below,
                 event: jasmine.any(Event),
+                waypointTop: this.margin + this.topSpacerHeight - 90,
+                viewportTop: this.margin,
+                viewportBottom: this.margin + Math.floor(this.parentHeight * 1.1),
               });
           });
         });
@@ -454,6 +506,9 @@ describe('<Waypoint>', function() {
                 currentPosition: Waypoint.inside,
                 previousPosition: Waypoint.below,
                 event: jasmine.any(Event),
+                waypointTop: this.margin + this.topSpacerHeight - 90,
+                viewportTop: this.margin,
+                viewportBottom: this.margin + this.parentHeight + 10,
               });
           });
 
@@ -467,6 +522,9 @@ describe('<Waypoint>', function() {
                 currentPosition: Waypoint.inside,
                 previousPosition: Waypoint.below,
                 event: jasmine.any(Event),
+                waypointTop: this.margin + this.topSpacerHeight - 90,
+                viewportTop: this.margin,
+                viewportBottom: this.margin + this.parentHeight + 10,
               });
           });
         });
@@ -510,6 +568,9 @@ describe('<Waypoint>', function() {
                 currentPosition: Waypoint.inside,
                 previousPosition: Waypoint.below,
                 event: jasmine.any(Event),
+                waypointTop: this.margin + this.topSpacerHeight - 90,
+                viewportTop: this.margin,
+                viewportBottom: this.margin + this.parentHeight + 10,
               });
           });
 
@@ -523,6 +584,9 @@ describe('<Waypoint>', function() {
                 currentPosition: Waypoint.inside,
                 previousPosition: Waypoint.below,
                 event: jasmine.any(Event),
+                waypointTop: this.margin + this.topSpacerHeight - 90,
+                viewportTop: this.margin,
+                viewportBottom: this.margin + this.parentHeight + 10,
               });
           });
         });
@@ -566,6 +630,9 @@ describe('<Waypoint>', function() {
                 currentPosition: Waypoint.inside,
                 previousPosition: Waypoint.below,
                 event: jasmine.any(Event),
+                waypointTop: this.margin + this.topSpacerHeight - 90,
+                viewportTop: this.margin,
+                viewportBottom: this.margin + this.parentHeight + 10,
               });
           });
 
@@ -579,6 +646,9 @@ describe('<Waypoint>', function() {
                 currentPosition: Waypoint.inside,
                 previousPosition: Waypoint.below,
                 event: jasmine.any(Event),
+                waypointTop: this.margin + this.topSpacerHeight - 90,
+                viewportTop: this.margin,
+                viewportBottom: this.margin + this.parentHeight + 10,
               });
           });
         });
@@ -643,6 +713,9 @@ describe('<Waypoint>', function() {
             currentPosition: Waypoint.inside,
             previousPosition: Waypoint.above,
             event: jasmine.any(Event),
+            waypointTop: this.margin + this.topSpacerHeight - 200,
+            viewportTop: this.margin,
+            viewportBottom: this.margin + this.parentHeight,
           });
       });
 
@@ -656,6 +729,9 @@ describe('<Waypoint>', function() {
             currentPosition: Waypoint.inside,
             previousPosition: Waypoint.above,
             event: jasmine.any(Event),
+            waypointTop: this.margin + this.topSpacerHeight - 200,
+            viewportTop: this.margin,
+            viewportBottom: this.margin + this.parentHeight,
           });
       });
 
@@ -671,6 +747,9 @@ describe('<Waypoint>', function() {
               currentPosition: Waypoint.below,
               previousPosition: Waypoint.inside,
               event: jasmine.any(Event),
+              waypointTop: this.margin + this.topSpacerHeight - 99,
+              viewportTop: this.margin,
+              viewportBottom: this.margin + this.parentHeight,
             });
         });
 
@@ -684,6 +763,9 @@ describe('<Waypoint>', function() {
               currentPosition: Waypoint.below,
               previousPosition: Waypoint.inside,
               event: jasmine.any(Event),
+              waypointTop: this.margin + this.topSpacerHeight - 99,
+              viewportTop: this.margin,
+              viewportBottom: this.margin + this.parentHeight,
             });
         });
       });
@@ -704,6 +786,9 @@ describe('<Waypoint>', function() {
             currentPosition: Waypoint.inside,
             previousPosition: Waypoint.above,
             event: jasmine.any(Event),
+            waypointTop: this.margin + this.topSpacerHeight,
+            viewportTop: this.margin,
+            viewportBottom: this.margin + this.parentHeight,
           });
       });
 
@@ -713,6 +798,9 @@ describe('<Waypoint>', function() {
             currentPosition: Waypoint.below,
             previousPosition: Waypoint.inside,
             event: jasmine.any(Event),
+            waypointTop: this.margin + this.topSpacerHeight,
+            viewportTop: this.margin,
+            viewportBottom: this.margin + this.parentHeight,
           });
       });
 
@@ -722,6 +810,9 @@ describe('<Waypoint>', function() {
             currentPosition: Waypoint.below,
             previousPosition: Waypoint.above,
             event: jasmine.any(Event),
+            waypointTop: this.margin + this.topSpacerHeight,
+            viewportTop: this.margin,
+            viewportBottom: this.margin + this.parentHeight,
           });
       });
     });
@@ -738,6 +829,9 @@ describe('<Waypoint>', function() {
         currentPosition: Waypoint.invisible,
         previousPosition: Waypoint.inside,
         event: jasmine.any(Event),
+        waypointTop: 0,
+        viewportTop: 0,
+        viewportBottom: 0,
       });
     });
   });
@@ -745,7 +839,8 @@ describe('<Waypoint>', function() {
   describe('when the window is the scrollable parent', () => {
     beforeEach(() => {
       // Make the normal parent non-scrollable
-      this.parentStyle = {};
+      this.parentStyle.height = 'auto';
+      this.parentStyle.overflow = 'visible';
 
       // Make the spacers large enough to make the Waypoint render off-screen
       this.topSpacerHeight = window.innerHeight + 1000;
@@ -764,6 +859,9 @@ describe('<Waypoint>', function() {
           currentPosition: Waypoint.below,
           previousPosition: null,
           event: null,
+          waypointTop: this.margin + this.topSpacerHeight,
+          viewportTop: 0,
+          viewportBottom: window.innerHeight,
         });
     });
 
@@ -779,6 +877,9 @@ describe('<Waypoint>', function() {
             currentPosition: Waypoint.inside,
             previousPosition: Waypoint.below,
             event: jasmine.any(Event),
+            waypointTop: this.margin + Math.ceil(window.innerHeight / 2),
+            viewportTop: 0,
+            viewportBottom: window.innerHeight,
           });
       });
 
@@ -788,6 +889,9 @@ describe('<Waypoint>', function() {
             currentPosition: Waypoint.inside,
             previousPosition: Waypoint.below,
             event: jasmine.any(Event),
+            waypointTop: this.margin + Math.ceil(window.innerHeight / 2),
+            viewportTop: 0,
+            viewportBottom: window.innerHeight,
           });
       });
     });
@@ -799,7 +903,8 @@ describe('<Waypoint>', function() {
       document.documentElement.style.overflow = 'auto';
 
       // Make the normal parent non-scrollable
-      this.parentStyle = {};
+      this.parentStyle.height = 'auto';
+      this.parentStyle.overflow = 'visible';
     });
 
     afterEach(() => {
@@ -876,6 +981,9 @@ describe('<Waypoint>', function() {
           currentPosition: Waypoint.inside,
           previousPosition: null,
           event: null,
+          waypointTop: 20 + this.topSpacerHeight,
+          viewportTop: 0,
+          viewportBottom: window.innerHeight,
         });
     });
 
@@ -889,6 +997,9 @@ describe('<Waypoint>', function() {
           currentPosition: Waypoint.inside,
           previousPosition: null,
           event: null,
+          waypointTop: 20 + this.topSpacerHeight,
+          viewportTop: 0,
+          viewportBottom: window.innerHeight,
         });
     });
 
@@ -921,6 +1032,9 @@ describe('<Waypoint>', function() {
               currentPosition: Waypoint.above,
               previousPosition: Waypoint.inside,
               event: jasmine.any(Event),
+              waypointTop: 20 + this.topSpacerHeight - 25,
+              viewportTop: 0,
+              viewportBottom: window.innerHeight,
             });
         });
 
@@ -934,6 +1048,9 @@ describe('<Waypoint>', function() {
               currentPosition: Waypoint.above,
               previousPosition: Waypoint.inside,
               event: jasmine.any(Event),
+              waypointTop: 20 + this.topSpacerHeight - 25,
+              viewportTop: 0,
+              viewportBottom: window.innerHeight,
             });
         });
       });
