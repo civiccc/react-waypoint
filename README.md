@@ -159,10 +159,19 @@ only argument. That object has the following properties:
 - `previousPosition` - the position that the waypoint had before. Also one
   of `Waypoint.below`, `Waypoint.above`, `Waypoint.inside`,
   and `Waypoint.invisible`.
+
+In most cases, the above two properties should be enough. In some cases
+though, you might find these additional properties useful:
+
 - `event` - the native [scroll
   event](https://developer.mozilla.org/en-US/docs/Web/Events/scroll) that
-  triggered the callback. May be missing if the callback wasn't triggered as
-  the result of a scroll.
+  triggered the callback. May be missing if the callback wasn't triggered
+  as the result of a scroll.
+- `waypointTop` - the waypoint's distance to the top of the viewport.
+- `viewportTop` - the distance from the scrollable ancestor to the
+  viewport top.
+- `viewportBottom` - the distance from the bottom of the scrollable
+  ancestor to the viewport top.
 
 If you use [es6 object
 destructuring](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment),
