@@ -195,6 +195,74 @@ this:
 />
 ```
 
+## Offsets and Boundaries
+
+Two of the Waypoint props are `topOffset` and `bottomOffset`. To appreciate
+what these can do for you, it will help to have an understanding of the
+"boundaries" used by this library. The boundaries of React Waypoint are the top
+and bottom of the element containing your scrollable content ([although this element
+can be configured](#containing-elements-and-scrollableancestor)). When a
+waypoint is within these boundaries, it is considered to be "inside." When a
+waypoint passes beyond these boundaries, then it is "outside." The `onEnter` and
+`onLeave` props are called as an element transitions from being inside to
+outside, or vice versa.
+
+The `topOffset` and `bottomOffset` properties can adjust the placement of these
+boundaries. By default, the offset is `'0px'`. If you specify a positive value,
+then the boundaries will be pushed inward, toward the center of the page. If
+you specify a negative value for an offset, then the boundary will be pushed
+outward from the center of the page.
+
+#### Example Usage
+
+Positive values of the offset props are useful when you have an element that
+overlays your scrollable area. For instance, if your app has a `50px` fixed
+header, then you may want to specify `topOffset='50px'`, so that the
+`onEnter` callback is called when waypoints scroll into view from beneath the
+header.
+
+Negative values of the offset prop could be useful for lazy loading. Imagine if
+you had a lot of large images on a long page, but you didn't want to load them
+all at once. You can use React Waypoint to receive a callback whenever an image
+is a certain distance from the bottom of the page. For instance, by specifying
+`bottomOffset='-200px'`, then your `onEnter` callback would be called when
+the waypoint comes closer than 200 pixels from the bottom edge of the page. By
+placing a waypoint near each image, you could dynamically load them.
+
+There are likely many more use cases for the offsets: be creative! Also, keep in
+mind that there are _two_ boundaries, so there are always _two_ positions when
+the `onLeave` and `onEnter` callback will be called. By using the arguments
+passed to the callbacks, you can determine whether the waypoint has crossed the
+top boundary or the bottom boundary.
+
+## Containing elements and `scrollableAncestor`
+
+React Waypoint positions its [boundaries](#offsets-and-boundaries) based on the
+first scrollable ancestor of the Waypoint.
+
+If that algorithm doesn't work for your use case, then you might find the
+`scrollableAncestor` prop useful. It allows you to specify what the scrollable
+ancestor is. Pass a node as that prop, and the Waypoint will use the scroll
+position of *that* node, rather than its first scrollable ancestor.
+
+#### Example Usage
+
+Sometimes, waypoints that are deeply nested in the DOM tree may need to track
+the scroll position of the page as a whole. If you want to be sure that no other
+scrollable ancestor is used (since, once again, the first scrollable ancestor is
+what the library will use by default), then you can explicitly set the
+`scrollableAncestor` to be the `window` to ensure that no other element is used.
+
+This might look something like:
+
+```jsx
+<Waypoint
+  scrollableAncestor={window}
+  onEnter={this._handleWaypointEnter}
+  onLeave={this._handleWaypointLeave}
+/>
+```
+
 ## Throttling
 By default, waypoints will trigger on every scroll event. In most cases, this
 works just fine. But if you find yourself wanting to tweak the scrolling
