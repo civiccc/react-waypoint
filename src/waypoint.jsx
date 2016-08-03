@@ -53,8 +53,8 @@ function debugLog() {
  * Calls a function when you scroll to the element.
  */
 export default class Waypoint extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.refElement = (e) => this._ref = e;
   }
