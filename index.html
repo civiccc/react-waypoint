@@ -52,7 +52,6 @@
   <pre>&lt;Waypoint
   onEnter={this._handleWaypointEnter}
   onLeave={this._handleWaypointLeave}
-  threshold={0.2}
 /&gt;</pre>
 
   <h3>Prop types</h3>
@@ -60,8 +59,6 @@
   <pre>propTypes: {
     onEnter: PropTypes.func, // function called when waypoint enters viewport
     onLeave: PropTypes.func, // function called when waypoint leaves viewport
-    threshold: PropTypes.number, // threshold is percentage of the height of
-    // the visible part of the scrollable parent (e.g. 0.1)
   },</pre>
 
   <h3>Credits</h3>
@@ -126,7 +123,6 @@ var BasicExample = React.createClass({
           <Waypoint
             onEnter={this._setMessage.bind(this, 'Waypoint entered')}
             onLeave={this._setMessage.bind(this, 'Waypoint left')}
-            threshold={0}
           />
           <div className="basic-example__spacer" />
           <div className="basic-example__spacer" />
@@ -223,7 +219,6 @@ var InfiniteScrollExample = React.createClass({
       return (
         <Waypoint
           onEnter={this._loadMoreItems}
-          threshold={2.0}
         />
       );
     }
