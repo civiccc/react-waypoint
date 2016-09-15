@@ -153,6 +153,10 @@ export default class Waypoint extends React.Component {
    *   called by a React lifecyle method
    */
   _handleScroll(event) {
+    if (!this._ref) {
+      // There's a chance we end up here after the component has been unmounted.
+      return;
+    }
     const bounds = this._getBounds();
     const currentPosition = this._currentPosition(bounds);
     const previousPosition = this._previousPosition || null;
