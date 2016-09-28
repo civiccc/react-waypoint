@@ -7,32 +7,6 @@ const POSITIONS = {
   invisible: 'invisible',
 };
 
-const propTypes = {
-  debug: PropTypes.bool,
-  onEnter: PropTypes.func,
-  onLeave: PropTypes.func,
-  onPositionChange: PropTypes.func,
-  fireOnRapidScroll: PropTypes.bool,
-  scrollableAncestor: PropTypes.any,
-  throttleHandler: PropTypes.func,
-  // `topOffset` can either be a number, in which case its a distance from the
-  // top of the container in pixels, or a string value. Valid string values are
-  // of the form "20px", which is parsed as pixels, or "20%", which is parsed
-  // as a percentage of the height of the containing element.
-  // For instance, if you pass "-20%", and the containing element is 100px tall,
-  // then the waypoint will be triggered when it has been scrolled 20px beyond
-  // the top of the containing element.
-  topOffset: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]),
-  // `bottomOffset` is like `topOffset`, but for the bottom of the container.
-  bottomOffset: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]),
-};
-
 const defaultProps = {
   topOffset: '0px',
   bottomOffset: '0px',
@@ -291,8 +265,10 @@ export default class Waypoint extends React.Component {
     }
 
     const { bottomOffset, topOffset } = this.props;
-    const topOffsetPx = this._computeOffsetPixels(topOffset, contextHeight);
-    const bottomOffsetPx = this._computeOffsetPixels(bottomOffset, contextHeight);
+    const topOffsetPx = this._computeOffsetPixels(
+      topOffset, contextHeight);
+    const bottomOffsetPx = this._computeOffsetPixels(
+      bottomOffset, contextHeight);
     const contextBottom = contextScrollTop + contextHeight;
 
     return {
@@ -340,7 +316,31 @@ export default class Waypoint extends React.Component {
   }
 }
 
-Waypoint.propTypes = propTypes;
+Waypoint.propTypes = {
+  debug: PropTypes.bool,
+  onEnter: PropTypes.func,
+  onLeave: PropTypes.func,
+  onPositionChange: PropTypes.func,
+  fireOnRapidScroll: PropTypes.bool,
+  scrollableAncestor: PropTypes.any,
+  throttleHandler: PropTypes.func,
+  // `topOffset` can either be a number, in which case its a distance from the
+  // top of the container in pixels, or a string value. Valid string values are
+  // of the form "20px", which is parsed as pixels, or "20%", which is parsed
+  // as a percentage of the height of the containing element.
+  // For instance, if you pass "-20%", and the containing element is 100px tall,
+  // then the waypoint will be triggered when it has been scrolled 20px beyond
+  // the top of the containing element.
+  topOffset: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
+  // `bottomOffset` is like `topOffset`, but for the bottom of the container.
+  bottomOffset: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
+};
 Waypoint.above = POSITIONS.above;
 Waypoint.below = POSITIONS.below;
 Waypoint.inside = POSITIONS.inside;
