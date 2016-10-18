@@ -921,7 +921,7 @@ describe('<Waypoint>', function() {
       const Wrapper = React.createClass({
         render() {
           return React.createElement('div',
-            { style: { margin: window.innerHeight * 2 + 'px 0'} },
+            { style: { margin: window.innerHeight * 2 + 'px 0' } },
             React.createElement(Waypoint, {
               onEnter: () => {
                 this.props.onEnter();
