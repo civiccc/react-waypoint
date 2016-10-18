@@ -312,7 +312,7 @@ export default class Waypoint extends React.Component {
   render() {
     // We need an element that we can locate in the DOM to determine where it is
     // rendered relative to the top of its context.
-    return <span ref={this.refElement} style={{fontSize: 0}} />;
+    return <span ref={this.refElement} style={{ fontSize: 0 }} />;
   }
 }
 
