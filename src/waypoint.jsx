@@ -23,6 +23,34 @@ function debugLog() {
   console.log(arguments); // eslint-disable-line no-console
 }
 
+const resizeEventHandlers = {
+  size: 0,
+  index: 0,
+};
+
+function handleResize(event) {
+  resizeEventHandlers.forEach(handler => handler(event));
+}
+
+function addResizeEventListener(listener) {
+  if (resizeEventHandlers.size === 0) {
+    window.addEventListener('resize', handleResize);
+  }
+
+  resizeEventHandlers[resizeEventHandlers.index++] = listener;
+  resizeEventHandlers.size++;
+  return resizeEventHandlers.index;
+}
+
+function removeResizeEventListener(index) {
+  delete resizeEventHandlers[index];
+  resizeEventHandlers.size--;
+
+  if (resizeEventHandlers.size === 0) {
+    window.removeEventListener('resize', handleResize);
+  }
+}
+
 /**
  * Calls a function when you scroll to the element.
  */
@@ -51,7 +79,9 @@ export default class Waypoint extends React.Component {
       debugLog('scrollableAncestor', this.scrollableAncestor);
     }
     this.scrollableAncestor.addEventListener('scroll', this._handleScroll);
-    window.addEventListener('resize', this._handleScroll);
+
+    this.resizeEventListenerId = addResizeEventListener(this._handleScroll);
+
     this._handleScroll(null);
   }
 
@@ -76,7 +106,8 @@ export default class Waypoint extends React.Component {
       //   Cannot read property 'removeEventListener' of undefined
       this.scrollableAncestor.removeEventListener('scroll', this._handleScroll);
     }
-    window.removeEventListener('resize', this._handleScroll);
+
+    removeResizeEventListener(this.resizeEventListenerId);
   }
 
   /**
