@@ -23,31 +23,70 @@ function debugLog() {
   console.log(arguments); // eslint-disable-line no-console
 }
 
-const resizeEventHandlers = {
-  size: 0,
-  index: 0,
-};
-
-function handleResize(event) {
-  resizeEventHandlers.forEach(handler => handler(event));
-}
-
-function addResizeEventListener(listener) {
-  if (resizeEventHandlers.size === 0) {
-    window.addEventListener('resize', handleResize);
+class TargetEventHandlers {
+  constructor(target) {
+    this.target = target;
+    this.events = {};
   }
 
-  resizeEventHandlers[resizeEventHandlers.index++] = listener;
-  resizeEventHandlers.size++;
-  return resizeEventHandlers.index;
+  getEventHandlers(eventName) {
+    if (!this.events[eventName]) {
+      this.events[eventName] = {
+        size: 0,
+        index: 0,
+        handlers: {},
+      };
+    }
+    return this.events[eventName];
+  }
+
+  handleEvent(eventName, event) {
+    const { handlers } = this.getEventHandlers(eventName);
+    Object.keys(handlers).forEach(function(index) {
+      handlers[index](event);
+    });
+  }
+
+  add(eventName, listener) {
+    const eventHandlers = this.getEventHandlers(eventName);
+
+    if (eventHandlers.size === 0) {
+      this.target.addEventListener(eventName, this.handleEvent.bind(this, eventName));
+    }
+
+    eventHandlers.size++;
+    eventHandlers.index++;
+    eventHandlers.handlers[eventHandlers.index] = listener;
+    return eventHandlers.index;
+  }
+
+  delete(eventName, index) {
+    const eventHandlers = this.getEventHandlers(eventName);
+    delete eventHandlers.handlers[index];
+    eventHandlers.size--;
+
+    if (eventHandlers.size === 0) {
+      this.target.removeEventListener(eventName, this.handleEvent.bind(this, eventName));
+    }
+  }
 }
 
-function removeResizeEventListener(index) {
-  delete resizeEventHandlers[index];
-  resizeEventHandlers.size--;
+const EVENT_HANDLERS_KEY = '__react_waypoint_event_handlers__';
 
-  if (resizeEventHandlers.size === 0) {
-    window.removeEventListener('resize', handleResize);
+function addEventListener(target, eventName, listener) {
+  if (!target[EVENT_HANDLERS_KEY]) {
+    target[EVENT_HANDLERS_KEY] = new TargetEventHandlers(target);
+  }
+  return target[EVENT_HANDLERS_KEY].add(eventName, listener);
+}
+
+function removeEventListener(target, eventName, index) {
+  if (target) {
+    // At the time of unmounting, the target might no longer exist. Guarding
+    // against this prevents the following error:
+    //
+    //   Cannot read property 'removeEventListener' of undefined
+    target[EVENT_HANDLERS_KEY].delete(eventName, index);
   }
 }
 
@@ -78,9 +117,18 @@ export default class Waypoint extends React.Component {
     if (this.props.debug) {
       debugLog('scrollableAncestor', this.scrollableAncestor);
     }
-    this.scrollableAncestor.addEventListener('scroll', this._handleScroll);
 
-    this.resizeEventListenerId = addResizeEventListener(this._handleScroll);
+    this.scrollEventListenerId = addEventListener(
+      this.scrollableAncestor,
+      'scroll',
+      this._handleScroll
+    );
+
+    this.resizeEventListenerId = addEventListener(
+      window,
+      'resize',
+      this._handleScroll
+    );
 
     this._handleScroll(null);
   }
@@ -99,15 +147,8 @@ export default class Waypoint extends React.Component {
       return;
     }
 
-    if (this.scrollableAncestor) {
-      // At the time of unmounting, the scrollable ancestor might no longer
-      // exist. Guarding against this prevents the following error:
-      //
-      //   Cannot read property 'removeEventListener' of undefined
-      this.scrollableAncestor.removeEventListener('scroll', this._handleScroll);
-    }
-
-    removeResizeEventListener(this.resizeEventListenerId);
+    removeEventListener(this.scrollableAncestor, 'scroll', this.scrollEventListenerId);
+    removeEventListener(window, 'resize', this.resizeEventListenerId);
   }
 
   /**
