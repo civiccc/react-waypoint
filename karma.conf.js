@@ -69,8 +69,7 @@ module.exports = function(config) {
     browsers: process.env.CONTINUOUS_INTEGRATION === 'true' ?
       ['Firefox'] : ['Chrome'],
 
-    // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: process.env.CONTINUOUS_INTEGRATION === 'true'
+    singleRun: true,
   });
 };
