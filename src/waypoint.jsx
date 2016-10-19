@@ -91,6 +91,91 @@ function removeEventListener(target, eventName, index) {
 }
 
 /**
+ * @param {object} bounds An object with bounds data for the waypoint and
+ *   scrollable parent
+ * @return {string} The current position of the waypoint in relation to the
+ *   visible portion of the scrollable parent. One of `POSITIONS.above`,
+ *   `POSITIONS.below`, or `POSITIONS.inside`.
+ */
+function getCurrentPosition(bounds) {
+  if (bounds.viewportBottom - bounds.viewportTop === 0) {
+    return POSITIONS.invisible;
+  }
+
+  if (bounds.viewportTop <= bounds.waypointTop &&
+      bounds.waypointTop <= bounds.viewportBottom) {
+    return POSITIONS.inside;
+  }
+
+  if (bounds.viewportBottom < bounds.waypointTop) {
+    return POSITIONS.below;
+  }
+
+  if (bounds.waypointTop < bounds.viewportTop) {
+    return POSITIONS.above;
+  }
+
+  return POSITIONS.invisible;
+}
+
+/**
+ * Attempts to parse the offset provided as a prop as a pixel value. If
+ * parsing fails, then `undefined` is returned. Three examples of values that
+ * will be successfully parsed are:
+ * `20`
+ * "20px"
+ * "20"
+ *
+ * @param {string|number} str A string of the form "{number}" or "{number}px",
+ *   or just a number.
+ * @return {number|undefined} The numeric version of `str`. Undefined if `str`
+ *   was neither a number nor string ending in "px".
+ */
+function parseOffsetAsPixels(str) {
+  if (!isNaN(parseFloat(str)) && isFinite(str)) {
+    return parseFloat(str);
+  } else if (str.slice(-2) === 'px') {
+    return parseFloat(str.slice(0, -2));
+  }
+}
+
+/**
+ * Attempts to parse the offset provided as a prop as a percentage. For
+ * instance, if the component has been provided with the string "20%" as
+ * a value of one of the offset props. If the value matches, then it returns
+ * a numeric version of the prop. For instance, "20%" would become `0.2`.
+ * If `str` isn't a percentage, then `undefined` will be returned.
+ *
+ * @param {string} str The value of an offset prop to be converted to a
+ *   number.
+ * @return {number|undefined} The numeric version of `str`. Undefined if `str`
+ *   was not a percentage.
+ */
+function parseOffsetAsPercentage(str) {
+  if (str.slice(-1) === '%') {
+    return parseFloat(str.slice(0, -1)) / 100;
+  }
+}
+
+/**
+ * @param {string|number} offset
+ * @param {number} contextHeight
+ * @return {number} A number representing `offset` converted into pixels.
+ */
+function computeOffsetPixels(offset, contextHeight) {
+  const pixelOffset = parseOffsetAsPixels(offset);
+  if (typeof pixelOffset === 'number') {
+    return pixelOffset;
+  }
+
+  const percentOffset = parseOffsetAsPercentage(offset);
+  if (typeof percentOffset === 'number') {
+    return percentOffset * contextHeight;
+  }
+}
+
+
+/**
  * Calls a function when you scroll to the element.
  */
 export default class Waypoint extends React.Component {
@@ -204,7 +289,7 @@ export default class Waypoint extends React.Component {
       return;
     }
     const bounds = this._getBounds();
-    const currentPosition = this._currentPosition(bounds);
+    const currentPosition = getCurrentPosition(bounds);
     const previousPosition = this._previousPosition || null;
     if (this.props.debug) {
       debugLog('currentPosition', currentPosition);
@@ -262,62 +347,6 @@ export default class Waypoint extends React.Component {
     }
   }
 
-  /**
-   * @param {string|number} offset
-   * @param {number} contextHeight
-   * @return {number} A number representing `offset` converted into pixels.
-   */
-  _computeOffsetPixels(offset, contextHeight) {
-    const pixelOffset = this._parseOffsetAsPixels(offset);
-    if (typeof pixelOffset === 'number') {
-      return pixelOffset;
-    }
-
-    const percentOffset = this._parseOffsetAsPercentage(offset);
-    if (typeof percentOffset === 'number') {
-      return percentOffset * contextHeight;
-    }
-  }
-
-  /**
-   * Attempts to parse the offset provided as a prop as a pixel value. If
-   * parsing fails, then `undefined` is returned. Three examples of values that
-   * will be successfully parsed are:
-   * `20`
-   * "20px"
-   * "20"
-   *
-   * @param {string|number} str A string of the form "{number}" or "{number}px",
-   *   or just a number.
-   * @return {number|undefined} The numeric version of `str`. Undefined if `str`
-   *   was neither a number nor string ending in "px".
-   */
-  _parseOffsetAsPixels(str) {
-    if (!isNaN(parseFloat(str)) && isFinite(str)) {
-      return parseFloat(str);
-    } else if (str.slice(-2) === 'px') {
-      return parseFloat(str.slice(0, -2));
-    }
-  }
-
-  /**
-   * Attempts to parse the offset provided as a prop as a percentage. For
-   * instance, if the component has been provided with the string "20%" as
-   * a value of one of the offset props. If the value matches, then it returns
-   * a numeric version of the prop. For instance, "20%" would become `0.2`.
-   * If `str` isn't a percentage, then `undefined` will be returned.
-   *
-   * @param {string} str The value of an offset prop to be converted to a
-   *   number.
-   * @return {number|undefined} The numeric version of `str`. Undefined if `str`
-   *   was not a percentage.
-   */
-  _parseOffsetAsPercentage(str) {
-    if (str.slice(-1) === '%') {
-      return parseFloat(str.slice(0, -1)) / 100;
-    }
-  }
-
   _getBounds() {
     const waypointTop = this._ref.getBoundingClientRect().top;
     let contextHeight;
@@ -337,10 +366,8 @@ export default class Waypoint extends React.Component {
     }
 
     const { bottomOffset, topOffset } = this.props;
-    const topOffsetPx = this._computeOffsetPixels(
-      topOffset, contextHeight);
-    const bottomOffsetPx = this._computeOffsetPixels(
-      bottomOffset, contextHeight);
+    const topOffsetPx = computeOffsetPixels(topOffset, contextHeight);
+    const bottomOffsetPx = computeOffsetPixels(bottomOffset, contextHeight);
     const contextBottom = contextScrollTop + contextHeight;
 
     return {
@@ -348,34 +375,6 @@ export default class Waypoint extends React.Component {
       viewportTop: contextScrollTop + topOffsetPx,
       viewportBottom: contextBottom - bottomOffsetPx,
     };
-  }
-
-  /**
-   * @param {object} bounds An object with bounds data for the waypoint and
-   *   scrollable parent
-   * @return {string} The current position of the waypoint in relation to the
-   *   visible portion of the scrollable parent. One of `POSITIONS.above`,
-   *   `POSITIONS.below`, or `POSITIONS.inside`.
-   */
-  _currentPosition(bounds) {
-    if (bounds.viewportBottom - bounds.viewportTop === 0) {
-      return Waypoint.invisible;
-    }
-
-    if (bounds.viewportTop <= bounds.waypointTop &&
-        bounds.waypointTop <= bounds.viewportBottom) {
-      return Waypoint.inside;
-    }
-
-    if (bounds.viewportBottom < bounds.waypointTop) {
-      return Waypoint.below;
-    }
-
-    if (bounds.waypointTop < bounds.viewportTop) {
-      return Waypoint.above;
-    }
-
-    return Waypoint.invisible;
   }
 
   /**
