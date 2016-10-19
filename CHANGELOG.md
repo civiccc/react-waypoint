@@ -1,5 +1,36 @@
 ## master (unreleased)
 
+- [Breaking] Use passive event listeners in browsers that support them. This
+  will break any Waypoint event handler that was calling
+  `event.preventDefault()`.
+- Initialize fewer event listeners.
+
+## 3.1.3
+
+- Avoid warnings from React about calling PropTypes directly (#119).
+
+## 3.1.2
+
+This version contains a fix for errors of the following kind:
+
+```
+Unable to get property 'getBoundingClientRect' of undefined or null reference
+```
+
+## 3.1.1
+
+- Fix passing props to super class, to make react-waypoint compatible with [preact](https://github.com/developit/preact) (thanks @kamotos!)
+
+## 3.1.0
+
+New properties have been added to the `onEnter`/`onLeave`/`onPositionChange`
+callbacks:
+
+- `waypointTop` - the waypoint's distance to the top of the viewport.
+- `viewportTop` - the distance from the scrollable ancestor to the viewport top.
+- `viewportBottom` - the distance from the bottom of the scrollable ancestor to
+  the viewport top.
+
 ## 3.0.0
 
 - Change `threshold` to `bottomOffset` and `topOffset`
