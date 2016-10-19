@@ -19,6 +19,34 @@ const defaultProps = {
   }
 };
 
+const CAN_USE_DOM = !!(
+  (typeof window !== 'undefined' &&
+  window.document && window.document.createElement)
+);
+
+// Adapted from Modernizr
+// https://github.com/Modernizr/Modernizr/blob/5eea7e2a/feature-detects/dom/passiveeventlisteners.js#L26-L35
+function canUsePassiveEventListener() {
+  if (!CAN_USE_DOM) {
+    return false;
+  }
+
+  let supportsPassiveOption = false;
+  try {
+    const opts = Object.defineProperty({}, 'passive', {
+      get() {
+        supportsPassiveOption = true;
+      }
+    });
+    window.addEventListener('test', null, opts);
+  } catch (e) {
+    // do nothing
+  }
+
+  return supportsPassiveOption;
+}
+const EVENT_OPTIONS = canUsePassiveEventListener() ? { passive: true } : undefined;
+
 function debugLog() {
   console.log(arguments); // eslint-disable-line no-console
 }
@@ -51,7 +79,11 @@ class TargetEventHandlers {
     const eventHandlers = this.getEventHandlers(eventName);
 
     if (eventHandlers.size === 0) {
-      this.target.addEventListener(eventName, this.handleEvent.bind(this, eventName));
+      this.target.addEventListener(
+        eventName,
+        this.handleEvent.bind(this, eventName),
+        EVENT_OPTIONS
+      );
     }
 
     eventHandlers.size++;
@@ -66,7 +98,11 @@ class TargetEventHandlers {
     eventHandlers.size--;
 
     if (eventHandlers.size === 0) {
-      this.target.removeEventListener(eventName, this.handleEvent.bind(this, eventName));
+      this.target.removeEventListener(
+        eventName,
+        this.handleEvent.bind(this, eventName),
+        EVENT_OPTIONS
+      );
     }
   }
 }
