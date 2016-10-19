@@ -1,6 +1,6 @@
 ## master (unreleased)
 
-## v4.0.0
+## 4.0.0
 
 - [Breaking] Use passive event listeners in browsers that support them. This
   will break any Waypoint event handler that was calling
