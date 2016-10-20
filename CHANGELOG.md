@@ -1,5 +1,7 @@
 ## master (unreleased)
 
+## 4.0.1
+
 - Fix error when a waypoint unmounts another waypoint as part of handling a
   (scroll/resize) event.
 
