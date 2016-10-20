@@ -63,6 +63,7 @@ class TargetEventHandlers {
         size: 0,
         index: 0,
         handlers: {},
+        handleEvent: undefined,
       };
     }
     return this.events[eventName];
@@ -86,9 +87,11 @@ class TargetEventHandlers {
     const eventHandlers = this.getEventHandlers(eventName);
 
     if (eventHandlers.size === 0) {
+      eventHandlers.handleEvent = this.handleEvent.bind(this, eventName);
+
       this.target.addEventListener(
         eventName,
-        this.handleEvent.bind(this, eventName),
+        eventHandlers.handleEvent,
         EVENT_OPTIONS
       );
     }
@@ -107,9 +110,11 @@ class TargetEventHandlers {
     if (eventHandlers.size === 0) {
       this.target.removeEventListener(
         eventName,
-        this.handleEvent.bind(this, eventName),
+        eventHandlers.handleEvent,
         EVENT_OPTIONS
       );
+
+      eventHandlers.handleEvent = undefined;
     }
   }
 }
