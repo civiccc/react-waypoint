@@ -1,5 +1,8 @@
 ## master (unreleased)
 
+- Fix error when a waypoint unmounts another waypoint as part of handling a
+  (scroll/resize) event.
+
 ## 4.0.0
 
 - [Breaking] Use passive event listeners in browsers that support them. This
