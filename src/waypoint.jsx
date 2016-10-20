@@ -71,7 +71,14 @@ class TargetEventHandlers {
   handleEvent(eventName, event) {
     const { handlers } = this.getEventHandlers(eventName);
     Object.keys(handlers).forEach(function(index) {
-      handlers[index](event);
+      const handler = handlers[index];
+      if (handler) {
+        // We need to check for presence here because a handler function may
+        // cause later handlers to get removed. This can happen if you for
+        // instance have a waypoint that unmounts another waypoint as part of an
+        // onEnter/onLeave handler.
+        handler(event);
+      }
     });
   }
 
