@@ -1,5 +1,9 @@
 ## master (unreleased)
 
+## 4.0.2
+
+- Prevent event listeners from leaking.
+
 ## 4.0.1
 
 - Fix error when a waypoint unmounts another waypoint as part of handling a
