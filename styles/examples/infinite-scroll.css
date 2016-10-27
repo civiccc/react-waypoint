@@ -57,6 +57,12 @@ p.infinite-scroll-example__arrow {
   transform: translate(-50%, -50%);
 }
 
+.infinite-scroll-example__waypoint {
+  color: #cccccc;
+  margin: 50px 20px 200px;
+  text-align: center;
+}
+
 .infinite-scroll-example__list-item {
   max-width: 580px;
 }

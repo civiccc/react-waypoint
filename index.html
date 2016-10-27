@@ -191,24 +191,13 @@ var InfiniteScrollExample = React.createClass({
         <img
           src={imageUrl}
           alt="CATS AND ROBOTS... "
+          style={{ height: 480 }}
           key={index}
           className="infinite-scroll-example__list-item" />
       );
     });
   },
 
-  /**
-   * @return {Object}
-   */
-  _renderLoadingMessage: function() {
-    if (this.state.isLoading) {
-      return (
-        <p className="infinite-scroll-example__loading-message">
-          Loading...
-        </p>
-      );
-    }
-  },
 
   _renderWaypoint: function() {
     if (!this.state.isLoading) {
@@ -229,10 +218,12 @@ var InfiniteScrollExample = React.createClass({
         <p className="infinite-scroll-example__count">
           Items Loaded: {this.state.items.length}
         </p>
-        {this._renderLoadingMessage()}
         <div className="infinite-scroll-example__scrollable-parent">
           {this._renderItems()}
-          {this._renderWaypoint()}
+          <div className="infinite-scroll-example__waypoint">
+            {this._renderWaypoint()}
+            Loading more items…
+          </div>
         </div>
         <p className="infinite-scroll-example__arrow" />
       </div>
