@@ -336,14 +336,14 @@ but in some situations might present limitations.
 ## Credits
 
 Credit to [trotzig][trotzig-github] and [lencioni][lencioni-github] for writing
-this component, and the [Brigade team][brigade-github] for open sourcing it.
+this component, and [Brigade][brigade-home] for open sourcing it. 
 
 Thanks to the creator of the original Waypoints library,
 [imakewebthings][imakewebthings-github].
 
 [lencioni-github]: https://github.com/lencioni
 [trotzig-github]: https://github.com/trotzig
-[brigade-github]: https://github.com/brigade/
+[brigade-home]: https://www.brigade.com/
 [imakewebthings-github]: https://github.com/imakewebthings
 
 ## License
@@ -351,3 +351,13 @@ Thanks to the creator of the original Waypoints library,
 [MIT][mit-license]
 
 [mit-license]: ./LICENSE
+
+---
+
+_Make sure to check out other popular open-source tools from 
+[the Brigade team][brigade-github]: [scss-lint], [overcommit], and [haml-lint]._
+
+[brigade-github]: https://github.com/brigade
+[scss-lint]: https://github.com/brigade/scss-lint
+[overcommit]: https://github.com/brigade/overcommit
+[haml-lint]: https://github.com/brigade/haml-lint
