@@ -29,6 +29,12 @@ Inspired by [Waypoints][waypoints], except this little library grooves the
 npm install react-waypoint --save
 ```
 
+### yarn
+
+```bash
+yarn add react-waypoint
+```
+
 ## Usage
 
 ```javascript
