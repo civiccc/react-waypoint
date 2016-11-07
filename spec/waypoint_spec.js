@@ -115,57 +115,65 @@ describe('<Waypoint>', function() {
     it('does not call the onLeave handler', () => {
       expect(this.props.onLeave).not.toHaveBeenCalled();
     });
+  });
 
-    describe('when scrolling while the waypoint is visible', () => {
-      beforeEach(() => {
-        scrollNodeTo(this.scrollable, this.topSpacerHeight / 2);
-      });
+  describe('when scrolling while the waypoint is visible', () => {
+    beforeEach(() => {
+      this.topSpacerHeight = 90;
+      this.bottomSpacerHeight = 200;
+      this.parentComponent = this.subject();
+      this.scrollable = this.parentComponent;
+      scrollNodeTo(this.scrollable, this.topSpacerHeight / 2);
+    });
 
-      it('does not call the onEnter handler again', () => {
-        expect(this.props.onEnter.calls.count()).toBe(1);
-      });
+    it('does not call the onEnter handler again', () => {
+      expect(this.props.onEnter.calls.count()).toBe(1);
+    });
 
-      it('does not call the onLeave handler', () => {
-        expect(this.props.onLeave).not.toHaveBeenCalled();
-      });
+    it('does not call the onLeave handler', () => {
+      expect(this.props.onLeave).not.toHaveBeenCalled();
+    });
 
-      it('does not call the onPositionChange handler again', () => {
-        expect(this.props.onPositionChange.calls.count()).toBe(1);
-      });
+    it('does not call the onPositionChange handler again', () => {
+      expect(this.props.onPositionChange.calls.count()).toBe(1);
+    });
+  });
 
-      describe('when scrolling past it', () => {
-        beforeEach(() => {
-          scrollNodeTo(this.scrollable, this.topSpacerHeight + 10);
+  describe('when scrolling past the waypoint while it is visible', () => {
+    beforeEach(() => {
+      this.topSpacerHeight = 90;
+      this.bottomSpacerHeight = 200;
+      this.parentComponent = this.subject();
+      this.scrollable = this.parentComponent;
+      scrollNodeTo(this.scrollable, this.topSpacerHeight + 10);
+    });
+
+    it('the onLeave handler is called', () => {
+      expect(this.props.onLeave).
+        toHaveBeenCalledWith({
+          currentPosition: Waypoint.above,
+          previousPosition: Waypoint.inside,
+          event: jasmine.any(Event),
+          waypointTop: this.margin - 10,
+          viewportTop: this.margin,
+          viewportBottom: this.margin + this.parentHeight,
         });
+    });
 
-        it('the onLeave handler is called', () => {
-          expect(this.props.onLeave).
-            toHaveBeenCalledWith({
-              currentPosition: Waypoint.above,
-              previousPosition: Waypoint.inside,
-              event: jasmine.any(Event),
-              waypointTop: this.margin - 10,
-              viewportTop: this.margin,
-              viewportBottom: this.margin + this.parentHeight,
-            });
-        });
+    it('does not call the onEnter handler', () => {
+      expect(this.props.onEnter.calls.count()).toBe(1);
+    });
 
-        it('does not call the onEnter handler', () => {
-          expect(this.props.onEnter.calls.count()).toBe(1);
+    it('the onPositionChange is called', () => {
+      expect(this.props.onPositionChange).
+        toHaveBeenCalledWith({
+          currentPosition: Waypoint.above,
+          previousPosition: Waypoint.inside,
+          event: jasmine.any(Event),
+          waypointTop: this.margin - 10,
+          viewportTop: this.margin,
+          viewportBottom: this.margin + this.parentHeight,
         });
-
-        it('the onPositionChange is called', () => {
-          expect(this.props.onPositionChange).
-            toHaveBeenCalledWith({
-              currentPosition: Waypoint.above,
-              previousPosition: Waypoint.inside,
-              event: jasmine.any(Event),
-              waypointTop: this.margin - 10,
-              viewportTop: this.margin,
-              viewportBottom: this.margin + this.parentHeight,
-            });
-        });
-      });
     });
   });
 
