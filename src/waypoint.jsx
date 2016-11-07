@@ -212,6 +212,7 @@ function parseOffsetAsPercentage(str) {
  */
 function computeOffsetPixels(offset, contextHeight) {
   const pixelOffset = parseOffsetAsPixels(offset);
+
   if (typeof pixelOffset === 'number') {
     return pixelOffset;
   }
@@ -235,8 +236,7 @@ export default class Waypoint extends React.Component {
 
   componentWillMount() {
     if (this.props.scrollableParent) { // eslint-disable-line react/prop-types
-      throw new Error('The `scrollableParent` prop has changed name ' +
-                      'to `scrollableAncestor`.');
+      throw new Error('The `scrollableParent` prop has changed name to `scrollableAncestor`.');
     }
   }
 
@@ -244,9 +244,10 @@ export default class Waypoint extends React.Component {
     if (!Waypoint.getWindow()) {
       return;
     }
-    this._handleScroll =
-      this.props.throttleHandler(this._handleScroll.bind(this));
+
+    this._handleScroll = this.props.throttleHandler(this._handleScroll.bind(this));
     this.scrollableAncestor = this._findScrollableAncestor();
+
     if (this.props.debug) {
       debugLog('scrollableAncestor', this.scrollableAncestor);
     }
@@ -336,9 +337,11 @@ export default class Waypoint extends React.Component {
       // There's a chance we end up here after the component has been unmounted.
       return;
     }
+
     const bounds = this._getBounds();
     const currentPosition = getCurrentPosition(bounds);
     const previousPosition = this._previousPosition || null;
+
     if (this.props.debug) {
       debugLog('currentPosition', currentPosition);
       debugLog('previousPosition', previousPosition);
@@ -370,10 +373,10 @@ export default class Waypoint extends React.Component {
 
     const isRapidScrollDown = previousPosition === POSITIONS.below &&
       currentPosition === POSITIONS.above;
-    const isRapidScrollUp =   previousPosition === POSITIONS.above &&
+    const isRapidScrollUp = previousPosition === POSITIONS.above &&
       currentPosition === POSITIONS.below;
-    if (this.props.fireOnRapidScroll &&
-        (isRapidScrollDown || isRapidScrollUp)) {
+
+    if (this.props.fireOnRapidScroll && (isRapidScrollDown || isRapidScrollUp)) {
       // If the scroll event isn't fired often enough to occur while the
       // waypoint was visible, we trigger both callbacks anyway.
       this.props.onEnter.call(this, {
@@ -397,6 +400,7 @@ export default class Waypoint extends React.Component {
 
   _getBounds() {
     const waypointTop = this._ref.getBoundingClientRect().top;
+
     let contextHeight;
     let contextScrollTop;
     if (this.scrollableAncestor === window) {
@@ -404,9 +408,9 @@ export default class Waypoint extends React.Component {
       contextScrollTop = 0;
     } else {
       contextHeight = this.scrollableAncestor.offsetHeight;
-      contextScrollTop = this.scrollableAncestor
-        .getBoundingClientRect().top;
+      contextScrollTop = this.scrollableAncestor.getBoundingClientRect().top;
     }
+
     if (this.props.debug) {
       debugLog('waypoint top', waypointTop);
       debugLog('scrollableAncestor height', contextHeight);
@@ -443,6 +447,7 @@ Waypoint.propTypes = {
   fireOnRapidScroll: PropTypes.bool,
   scrollableAncestor: PropTypes.any,
   throttleHandler: PropTypes.func,
+
   // `topOffset` can either be a number, in which case its a distance from the
   // top of the container in pixels, or a string value. Valid string values are
   // of the form "20px", which is parsed as pixels, or "20%", which is parsed
@@ -454,12 +459,14 @@ Waypoint.propTypes = {
     PropTypes.string,
     PropTypes.number,
   ]),
+
   // `bottomOffset` is like `topOffset`, but for the bottom of the container.
   bottomOffset: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
   ]),
 };
+
 Waypoint.above = POSITIONS.above;
 Waypoint.below = POSITIONS.below;
 Waypoint.inside = POSITIONS.inside;
