@@ -92,7 +92,7 @@ describe('<Waypoint>', function() {
     it('calls the onEnter handler', () => {
       expect(this.props.onEnter).toHaveBeenCalledWith({
         currentPosition: Waypoint.inside,
-        previousPosition: null,
+        previousPosition: undefined,
         event: null,
         waypointTop: this.margin + this.topSpacerHeight,
         viewportTop: this.margin,
@@ -104,7 +104,7 @@ describe('<Waypoint>', function() {
       expect(this.props.onPositionChange).
         toHaveBeenCalledWith({
           currentPosition: Waypoint.inside,
-          previousPosition: null,
+          previousPosition: undefined,
           event: null,
           waypointTop: this.margin + this.topSpacerHeight,
           viewportTop: this.margin,
@@ -201,7 +201,7 @@ describe('<Waypoint>', function() {
       expect(this.props.onPositionChange).
         toHaveBeenCalledWith({
           currentPosition: Waypoint.below,
-          previousPosition: null,
+          previousPosition: undefined,
           event: null,
           waypointTop: this.margin + this.topSpacerHeight,
           viewportTop: this.margin,
@@ -865,7 +865,7 @@ describe('<Waypoint>', function() {
       expect(this.props.onPositionChange).
         toHaveBeenCalledWith({
           currentPosition: Waypoint.below,
-          previousPosition: null,
+          previousPosition: undefined,
           event: null,
           waypointTop: this.margin + this.topSpacerHeight,
           viewportTop: 0,
@@ -987,7 +987,7 @@ describe('<Waypoint>', function() {
       expect(this.props.onEnter).
         toHaveBeenCalledWith({
           currentPosition: Waypoint.inside,
-          previousPosition: null,
+          previousPosition: undefined,
           event: null,
           waypointTop: 20 + this.topSpacerHeight,
           viewportTop: 0,
@@ -1003,7 +1003,7 @@ describe('<Waypoint>', function() {
       expect(this.props.onPositionChange).
         toHaveBeenCalledWith({
           currentPosition: Waypoint.inside,
-          previousPosition: null,
+          previousPosition: undefined,
           event: null,
           waypointTop: 20 + this.topSpacerHeight,
           viewportTop: 0,

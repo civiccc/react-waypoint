@@ -340,7 +340,7 @@ export default class Waypoint extends React.Component {
 
     const bounds = this._getBounds();
     const currentPosition = getCurrentPosition(bounds);
-    const previousPosition = this._previousPosition || null;
+    const previousPosition = this._previousPosition;
 
     if (this.props.debug) {
       debugLog('currentPosition', currentPosition);
