@@ -117,6 +117,121 @@ describe('<Waypoint>', function() {
     });
   });
 
+  describe('when the Waypoint is visible on mount and has topOffset < -100%', () => {
+    beforeEach(() => {
+      this.props.topOffset = '-200%';
+
+      this.topSpacerHeight = 90;
+      this.bottomSpacerHeight = 200;
+      this.parentComponent = this.subject();
+      this.scrollable = this.parentComponent;
+    });
+
+    it('calls the onEnter handler', () => {
+      expect(this.props.onEnter).toHaveBeenCalledWith({
+        currentPosition: Waypoint.inside,
+        previousPosition: undefined,
+        event: null,
+        waypointTop: this.margin + this.topSpacerHeight,
+        viewportTop: this.margin - (this.parentHeight * 2),
+        viewportBottom: this.margin + this.parentHeight,
+      });
+    });
+
+    it('calls the onPositionChange handler', () => {
+      expect(this.props.onPositionChange).
+        toHaveBeenCalledWith({
+          currentPosition: Waypoint.inside,
+          previousPosition: undefined,
+          event: null,
+          waypointTop: this.margin + this.topSpacerHeight,
+          viewportTop: this.margin - (this.parentHeight * 2),
+          viewportBottom: this.margin + this.parentHeight,
+        });
+    });
+
+    it('does not call the onLeave handler', () => {
+      expect(this.props.onLeave).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('when the Waypoint is visible on mount and has bottomOffset < -100%', () => {
+    beforeEach(() => {
+      this.props.bottomOffset = '-200%';
+
+      this.topSpacerHeight = 90;
+      this.bottomSpacerHeight = 200;
+      this.parentComponent = this.subject();
+      this.scrollable = this.parentComponent;
+    });
+
+    it('calls the onEnter handler', () => {
+      expect(this.props.onEnter).toHaveBeenCalledWith({
+        currentPosition: Waypoint.inside,
+        previousPosition: undefined,
+        event: null,
+        waypointTop: this.margin + this.topSpacerHeight,
+        viewportTop: this.margin,
+        viewportBottom: this.margin + (this.parentHeight * 3),
+      });
+    });
+
+    it('calls the onPositionChange handler', () => {
+      expect(this.props.onPositionChange).
+        toHaveBeenCalledWith({
+          currentPosition: Waypoint.inside,
+          previousPosition: undefined,
+          event: null,
+          waypointTop: this.margin + this.topSpacerHeight,
+          viewportTop: this.margin,
+          viewportBottom: this.margin + (this.parentHeight * 3),
+        });
+    });
+
+    it('does not call the onLeave handler', () => {
+      expect(this.props.onLeave).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('when the Waypoint is visible on mount and offsets < -100%', () => {
+    beforeEach(() => {
+      this.props.topOffset = '-200%';
+      this.props.bottomOffset = '-200%';
+
+      this.topSpacerHeight = 90;
+      this.bottomSpacerHeight = 200;
+      this.parentComponent = this.subject();
+      this.scrollable = this.parentComponent;
+    });
+
+    it('calls the onEnter handler', () => {
+      expect(this.props.onEnter).toHaveBeenCalledWith({
+        currentPosition: Waypoint.inside,
+        previousPosition: undefined,
+        event: null,
+        waypointTop: this.margin + this.topSpacerHeight,
+        viewportTop: this.margin - (this.parentHeight * 2),
+        viewportBottom: this.margin + (this.parentHeight * 3),
+      });
+    });
+
+    it('calls the onPositionChange handler', () => {
+      expect(this.props.onPositionChange).
+        toHaveBeenCalledWith({
+          currentPosition: Waypoint.inside,
+          previousPosition: undefined,
+          event: null,
+          waypointTop: this.margin + this.topSpacerHeight,
+          viewportTop: this.margin - (this.parentHeight * 2),
+          viewportBottom: this.margin + (this.parentHeight * 3),
+        });
+    });
+
+    it('does not call the onLeave handler', () => {
+      expect(this.props.onLeave).not.toHaveBeenCalled();
+    });
+  });
+
   describe('when scrolling while the waypoint is visible', () => {
     beforeEach(() => {
       this.topSpacerHeight = 90;
