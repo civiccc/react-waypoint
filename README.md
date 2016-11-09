@@ -339,10 +339,14 @@ but in some situations might present limitations.
   means that if your scrollable container has a height that is greater than the
   window, it might trigger `onEnter` unexpectedly.
 
+## In the wild
+
+[Organizations and projects using `react-waypoint`](INTHEWILD.md).
+
 ## Credits
 
 Credit to [trotzig][trotzig-github] and [lencioni][lencioni-github] for writing
-this component, and [Brigade][brigade-home] for open sourcing it. 
+this component, and [Brigade][brigade-home] for open sourcing it.
 
 Thanks to the creator of the original Waypoints library,
 [imakewebthings][imakewebthings-github].
@@ -360,7 +364,7 @@ Thanks to the creator of the original Waypoints library,
 
 ---
 
-_Make sure to check out other popular open-source tools from 
+_Make sure to check out other popular open-source tools from
 [the Brigade team][brigade-github]: [scss-lint], [overcommit], and [haml-lint]._
 
 [brigade-github]: https://github.com/brigade
