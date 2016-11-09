@@ -1,5 +1,9 @@
 ## master (unreleased)
 
+## 4.0.3
+
+- Extract event listener code to consolidated-events package.
+
 ## 4.0.2
 
 - Prevent event listeners from leaking.
