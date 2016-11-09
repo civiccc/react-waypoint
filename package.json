@@ -63,5 +63,8 @@
     "react-component",
     "scroll",
     "onscroll"
-  ]
+  ],
+  "dependencies": {
+    "consolidated-events": "^1.0.1"
+  }
 }
