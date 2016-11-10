@@ -24,6 +24,7 @@ const scrollNodeTo = function(node, scrollTop) {
 
 describe('<Waypoint>', function() {
   beforeEach(() => {
+    jasmine.clock().install();
     spyOn(console, 'log');
     this.props = {
       onEnter: jasmine.createSpy('onEnter'),
@@ -46,7 +47,7 @@ describe('<Waypoint>', function() {
     this.bottomSpacerHeight = 0;
 
     this.subject = () => {
-      return renderAttached(
+      const el = renderAttached(
         React.createElement('div', { style: this.parentStyle },
           React.createElement(
             'div', { style: { height: this.topSpacerHeight } }),
@@ -55,6 +56,9 @@ describe('<Waypoint>', function() {
             'div', { style: { height: this.bottomSpacerHeight } })
         )
       );
+
+      jasmine.clock().tick(1);
+      return el;
     };
   });
 
@@ -63,6 +67,7 @@ describe('<Waypoint>', function() {
       ReactDOM.unmountComponentAtNode(div);
     }
     scrollNodeTo(window, 0);
+    jasmine.clock().uninstall();
   });
 
   describe('when called with debug=true', () => {
@@ -1191,27 +1196,22 @@ describe('<Waypoint>', function() {
   });
 
   describe('with a throttleHandler that delays execution', () => {
+    const throttleTimeout = 5;
+
     beforeEach(() => {
       this.props.throttleHandler = (scrollHandler) => {
-        return () => setTimeout(scrollHandler, 1);
+        return () => {
+          setTimeout(scrollHandler, throttleTimeout);
+        };
       };
       scrollNodeTo(this.subject(), 100);
     });
 
-    afterEach((done) => {
-      // We need to keep the component mounted for a little while
-      setTimeout(done);
-    });
-
     it('does not call the onEnter handler immediately', () => {
       expect(this.props.onEnter).not.toHaveBeenCalled();
-    });
-
-    it('calls the onEnter handler after the delay', (done) => {
-      setTimeout(() => {
-        expect(this.props.onEnter).toHaveBeenCalled();
-        done();
-      }, 2);
+      // wait for throttle timeout to finish
+      jasmine.clock().tick(throttleTimeout);
+      expect(this.props.onEnter).toHaveBeenCalled();
     });
   });
 });
