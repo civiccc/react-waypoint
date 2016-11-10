@@ -1,5 +1,9 @@
 ## master (unreleased)
 
+## 4.0.4
+
+- Delay initial calling of handleScroll when mounting.
+
 ## 4.0.3
 
 - Extract event listener code to consolidated-events package.
