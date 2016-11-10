@@ -152,7 +152,12 @@ export default class Waypoint extends React.Component {
       { passive: true }
     );
 
-    this._handleScroll(null);
+    // this._ref may occasionally not be set at this time. To help ensure that
+    // this works smoothly, we want to delay the initial execution until the
+    // next tick.
+    setTimeout(() => {
+      this._handleScroll(null);
+    }, 0);
   }
 
   componentDidUpdate() {
