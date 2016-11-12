@@ -1215,3 +1215,91 @@ describe('<Waypoint>', function() {
     });
   });
 });
+
+// smoke tests for horizontal scrolling
+const scrollNodeToHorizontal = function(node, scrollLeft) {
+  if (node === window) {
+    window.scroll(scrollLeft, 0);
+  } else {
+    node.scrollLeft = scrollLeft;
+  }
+  const event = document.createEvent('Event');
+  event.initEvent('scroll', false, false);
+  node.dispatchEvent(event);
+};
+
+describe('<Waypoint>', function() {
+  beforeEach(() => {
+    jasmine.clock().install();
+    document.body.style.margin = 'auto'; // should be no horizontal margin
+
+    this.props = {
+      onEnter: jasmine.createSpy('onEnter'),
+      horizontal: true
+    };
+
+    this.margin = 10;
+    this.parentWidth = 100;
+
+    this.parentStyle = {
+      height: 100,
+      overflow: 'auto',
+      whiteSpace: 'nowrap',
+      position: 'relative',
+      width: this.parentWidth,
+      margin: this.margin, //Normalize the space left of the viewport.
+    };
+
+    this.leftSpacerWidth = 0;
+    this.rightSpacerWidth = 0;
+
+    this.subject = () => {
+      const el = renderAttached(
+        React.createElement('div', { style: this.parentStyle },
+          React.createElement(
+            'div', { style: {
+              width: this.leftSpacerWidth,
+              display: 'inline-block'
+            } }),
+          React.createElement(Waypoint, this.props),
+          React.createElement(
+            'div', { style: {
+              width: this.rightSpacerWidth,
+              display: 'inline-block'
+            } })
+        )
+      );
+
+      jasmine.clock().tick(1);
+      return el;
+    };
+  });
+
+  afterEach(() => {
+    if (div) {
+      ReactDOM.unmountComponentAtNode(div);
+    }
+    scrollNodeToHorizontal(window, 0);
+    jasmine.clock().uninstall();
+  });
+
+  describe('when the Waypoint is visible on mount', () => {
+    beforeEach(() => {
+      this.leftSpacerWidth = 90;
+      this.rightSpacerWidth = 200;
+      this.parentComponent = this.subject();
+      this.scrollable = this.parentComponent;
+    });
+
+    it('calls the onEnter handler', () => {
+      expect(this.props.onEnter).toHaveBeenCalledWith({
+        currentPosition: Waypoint.inside,
+        previousPosition: undefined,
+        event: null,
+        waypointTop: this.margin + this.leftSpacerWidth,
+        viewportTop: this.margin,
+        viewportBottom: this.margin + this.parentWidth,
+      });
+    });
+  });
+});
