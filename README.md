@@ -103,6 +103,11 @@ below) has changed.
     onPositionChange: PropTypes.func,
 
     /**
+     * Whether to activate on horizontal scrolling instead of vertical
+     */
+    horizontal: PropTypes.bool,
+
+    /**
      * `topOffset` can either be a number, in which case its a distance from the
      * top of the container in pixels, or a string value. Valid string values are
      * of the form "20px", which is parsed as pixels, or "20%", which is parsed
@@ -218,6 +223,15 @@ boundaries. By default, the offset is `'0px'`. If you specify a positive value,
 then the boundaries will be pushed inward, toward the center of the page. If
 you specify a negative value for an offset, then the boundary will be pushed
 outward from the center of the page.
+
+#### Horizontal Scrolling
+
+By default, waypoints listen to vertical scrolling. If you want to switch to
+horizontal scrolling instead, use the `horizontal` prop. For simplicity's sake,
+all other props and callbacks do not change. Instead, `topOffset` and
+`bottomOffset` (among other directional variables) will mean the offset from
+the left and the offset from the right, respectively, and work exactly as they
+did before, just calculated in the horizontal direction.
 
 #### Example Usage
 

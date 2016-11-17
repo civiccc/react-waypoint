@@ -11,6 +11,7 @@ const POSITIONS = {
 const defaultProps = {
   topOffset: '0px',
   bottomOffset: '0px',
+  horizontal: false,
   onEnter() {},
   onLeave() {},
   onPositionChange() {},
@@ -207,10 +208,12 @@ export default class Waypoint extends React.Component {
       }
 
       const style = window.getComputedStyle(node);
-      const overflowY = style.getPropertyValue('overflow-y') ||
-        style.getPropertyValue('overflow');
+      const overflowDirec = this.props.horizontal ?
+        style.getPropertyValue('overflow-x') :
+        style.getPropertyValue('overflow-y');
+      const overflow = overflowDirec || style.getPropertyValue('overflow');
 
-      if (overflowY === 'auto' || overflowY === 'scroll') {
+      if (overflow === 'auto' || overflow === 'scroll') {
         return node;
       }
     }
@@ -292,16 +295,21 @@ export default class Waypoint extends React.Component {
   }
 
   _getBounds() {
-    const waypointTop = this._ref.getBoundingClientRect().top;
+    const horizontal = this.props.horizontal;
+    const waypointTop = horizontal ? this._ref.getBoundingClientRect().left :
+      this._ref.getBoundingClientRect().top;
 
     let contextHeight;
     let contextScrollTop;
     if (this.scrollableAncestor === window) {
-      contextHeight = window.innerHeight;
+      contextHeight = horizontal ? window.innerWidth : window.innerHeight;
       contextScrollTop = 0;
     } else {
-      contextHeight = this.scrollableAncestor.offsetHeight;
-      contextScrollTop = this.scrollableAncestor.getBoundingClientRect().top;
+      contextHeight = horizontal ? this.scrollableAncestor.offsetWidth :
+        this.scrollableAncestor.offsetHeight;
+      contextScrollTop = horizontal ?
+        this.scrollableAncestor.getBoundingClientRect().left :
+        this.scrollableAncestor.getBoundingClientRect().top;
     }
 
     if (this.props.debug) {
@@ -340,6 +348,7 @@ Waypoint.propTypes = {
   fireOnRapidScroll: PropTypes.bool,
   scrollableAncestor: PropTypes.any,
   throttleHandler: PropTypes.func,
+  horizontal: PropTypes.bool,
 
   // `topOffset` can either be a number, in which case its a distance from the
   // top of the container in pixels, or a string value. Valid string values are
