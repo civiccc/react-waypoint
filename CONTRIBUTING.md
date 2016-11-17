@@ -12,14 +12,14 @@ We love pull requests. Here's a quick guide:
 ## Publishing a new version
 
 1. Add list of changes to CHANGELOG.md. Do not commit them yet.
-2. Run `npm run version:major`, `npm run version:minor`, or `npm run
-   version:patch`.
+2. Run `npm version major`, `npm version minor`, or `npm
+   version patch`.
 
-This script will handle the rest of the process for you, including running
-tests, cleaning out the previous build, building the package, bumping the
-version, committing the changes you've made to CHANGELOG.md, tagging the
-version, pushing the changes to GitHub, pushing the tags to GitHub, and
-publishing the new version on npm.
+This will handle the rest of the process for you, including running tests,
+cleaning out the previous build, building the package, bumping the version,
+committing the changes you've made to CHANGELOG.md, tagging the version, pushing
+the changes to GitHub, pushing the tags to GitHub, and publishing the new
+version on npm.
 
 ## Code of conduct
 
