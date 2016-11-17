@@ -22,10 +22,7 @@
     "tag": "git tag v$npm_package_version",
     "test": "npm run testonly",
     "testonly": "karma start --single-run",
-    "testonly:watch": "karma start --no-single-run",
-    "version:major": "npm --no-git-tag-version version major",
-    "version:minor": "npm --no-git-tag-version version minor",
-    "version:patch": "npm --no-git-tag-version version patch"
+    "testonly:watch": "karma start --no-single-run"
   },
   "author": "Brigade Engineering",
   "license": "MIT",
