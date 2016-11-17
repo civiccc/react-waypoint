@@ -1,5 +1,9 @@
 ## master (unreleased)
 
+## 4.1.0
+
+- Add `horizontal` prop. Use it to make the waypoint trigger on horizontal scrolling.
+
 ## 4.0.4
 
 - Delay initial calling of handleScroll when mounting.
