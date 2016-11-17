@@ -1235,6 +1235,7 @@ describe('<Waypoint>', function() {
 
     this.props = {
       onEnter: jasmine.createSpy('onEnter'),
+      onLeave: jasmine.createSpy('onLeave'),
       horizontal: true
     };
 
@@ -1245,7 +1246,6 @@ describe('<Waypoint>', function() {
       height: 100,
       overflow: 'auto',
       whiteSpace: 'nowrap',
-      position: 'relative',
       width: this.parentWidth,
       margin: this.margin, //Normalize the space left of the viewport.
     };
@@ -1256,17 +1256,19 @@ describe('<Waypoint>', function() {
     this.subject = () => {
       const el = renderAttached(
         React.createElement('div', { style: this.parentStyle },
-          React.createElement(
-            'div', { style: {
+          React.createElement('div', {
+            style: {
               width: this.leftSpacerWidth,
               display: 'inline-block'
-            } }),
+            }
+          }),
           React.createElement(Waypoint, this.props),
-          React.createElement(
-            'div', { style: {
+          React.createElement('div', {
+            style: {
               width: this.rightSpacerWidth,
               display: 'inline-block'
-            } })
+            }
+          })
         )
       );
 
@@ -1283,22 +1285,91 @@ describe('<Waypoint>', function() {
     jasmine.clock().uninstall();
   });
 
-  describe('when the Waypoint is visible on mount', () => {
-    beforeEach(() => {
-      this.leftSpacerWidth = 90;
-      this.rightSpacerWidth = 200;
-      this.parentComponent = this.subject();
-      this.scrollable = this.parentComponent;
+  describe('when a div is the scrollable ancestor', () => {
+    describe('when the Waypoint is visible on mount', () => {
+      beforeEach(() => {
+        this.subject();
+      });
+
+      it('calls the onEnter handler', () => {
+        expect(this.props.onEnter).toHaveBeenCalledWith({
+          currentPosition: Waypoint.inside,
+          previousPosition: undefined,
+          event: null,
+          waypointTop: this.margin + this.leftSpacerWidth,
+          viewportTop: this.margin,
+          viewportBottom: this.margin + this.parentWidth,
+        });
+      });
     });
 
-    it('calls the onEnter handler', () => {
-      expect(this.props.onEnter).toHaveBeenCalledWith({
-        currentPosition: Waypoint.inside,
-        previousPosition: undefined,
-        event: null,
-        waypointTop: this.margin + this.leftSpacerWidth,
-        viewportTop: this.margin,
-        viewportBottom: this.margin + this.parentWidth,
+    describe('when the Waypoint is not visible on mount', () => {
+      beforeEach(() => {
+        this.leftSpacerWidth = 300;
+        this.subject();
+      });
+
+      it('does not call the onEnter handler', () => {
+        expect(this.props.onEnter).not.toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('when the window is the scrollable ancestor', () => {
+    beforeEach(() => {
+      delete this.parentStyle.overflow;
+      delete this.parentStyle.width;
+    });
+
+    describe('when the Waypoint is visible on mount', () => {
+      beforeEach(() => {
+        this.subject();
+      });
+
+      it('calls the onEnter handler', () => {
+        expect(this.props.onEnter).toHaveBeenCalled();
+      });
+    });
+
+    describe('when the Waypoint is not visible on mount', () => {
+      beforeEach(() => {
+        this.leftSpacerWidth = window.innerWidth * 2;
+        this.subject();
+      });
+
+      it('does not call the onEnter handler', () => {
+        expect(this.props.onEnter).not.toHaveBeenCalled();
+      });
+
+      describe('when scrolled sideways to make the waypoint visible', () => {
+        beforeEach(() => {
+          scrollNodeToHorizontal(window, window.innerWidth + 100);
+        });
+
+        it('calls the onEnter handler', () => {
+          expect(this.props.onEnter).toHaveBeenCalled();
+        });
+
+        it('does not call the onLeave handler', () => {
+          expect(this.props.onLeave).not.toHaveBeenCalled();
+        });
+
+        describe('when scrolled back to initial position', () => {
+          /* eslint-disable max-nested-callbacks */
+          beforeEach(() => {
+            this.props.onEnter.calls.reset();
+            scrollNodeToHorizontal(window, 0);
+          });
+
+          it('does not call the onEnter handler', () => {
+            expect(this.props.onEnter).not.toHaveBeenCalled();
+          });
+
+          it('calls the onLeave handler', () => {
+            expect(this.props.onLeave).toHaveBeenCalled();
+          });
+          /* eslint-enable max-nested-callbacks */
+        });
       });
     });
   });
