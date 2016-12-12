@@ -1,5 +1,7 @@
 ## master (unreleased)
 
+- Remove `throttleHandler`
+
 ## 4.1.0
 
 - Add `horizontal` prop. Use it to make the waypoint trigger on horizontal scrolling.
