@@ -16,9 +16,6 @@ const defaultProps = {
   onLeave() {},
   onPositionChange() {},
   fireOnRapidScroll: true,
-  throttleHandler(handler) {
-    return handler;
-  }
 };
 
 function debugLog() {
@@ -132,7 +129,7 @@ export default class Waypoint extends React.Component {
       return;
     }
 
-    this._handleScroll = this.props.throttleHandler(this._handleScroll.bind(this));
+    this._handleScroll = this._handleScroll.bind(this);
     this.scrollableAncestor = this._findScrollableAncestor();
 
     if (this.props.debug) {
@@ -347,7 +344,6 @@ Waypoint.propTypes = {
   onPositionChange: PropTypes.func,
   fireOnRapidScroll: PropTypes.bool,
   scrollableAncestor: PropTypes.any,
-  throttleHandler: PropTypes.func,
   horizontal: PropTypes.bool,
 
   // `topOffset` can either be a number, in which case its a distance from the

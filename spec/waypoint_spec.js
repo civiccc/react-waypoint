@@ -1194,26 +1194,6 @@ describe('<Waypoint>', function() {
       expect(this.subject).toThrowError(/changed name to `scrollableAncestor`/);
     });
   });
-
-  describe('with a throttleHandler that delays execution', () => {
-    const throttleTimeout = 5;
-
-    beforeEach(() => {
-      this.props.throttleHandler = (scrollHandler) => {
-        return () => {
-          setTimeout(scrollHandler, throttleTimeout);
-        };
-      };
-      scrollNodeTo(this.subject(), 100);
-    });
-
-    it('does not call the onEnter handler immediately', () => {
-      expect(this.props.onEnter).not.toHaveBeenCalled();
-      // wait for throttle timeout to finish
-      jasmine.clock().tick(throttleTimeout);
-      expect(this.props.onEnter).toHaveBeenCalled();
-    });
-  });
 });
 
 // smoke tests for horizontal scrolling

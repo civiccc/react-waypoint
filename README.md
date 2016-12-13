@@ -151,13 +151,6 @@ below) has changed.
      * things down significantly, so it should only be used during development.
      */
     debug: PropTypes.bool,
-
-    /**
-     * The `throttleHandler` prop provides a function that throttle the internal
-     * scroll handler to increase performance.
-     * See the section on "Throttling" for details on how to use it.
-     */
-    throttleHandler: PropTypes.func,
   },
 ```
 
@@ -283,45 +276,6 @@ This might look something like:
 />
 ```
 
-## Throttling
-By default, waypoints will trigger on every scroll event. In most cases, this
-works just fine. But if you find yourself wanting to tweak the scrolling
-performance, the `throttleHandler` prop can come in handy. You pass in a
-function that returns a different (throttled) version of the function passed
-in. Here's an example using
-[lodash.throttle](https://www.npmjs.com/package/lodash.throttle):
-
-```jsx
-import throttle from 'lodash.throttle';
-
-<Waypoint throttleHandler={(scrollHandler) => throttle(scrollHandler, 100)} />
-```
-
-The argument passed in to the throttle handler function, `scrollHandler`, is
-waypoint's internal scroll handler. The `throttleHandler` is only invoked once
-during the lifetime of a waypoint (when the waypoint is mounted).
-
-To prevent errors coming from the fact that the scroll handler can be called
-after the waypoint is unmounted, it's a good idea to cancel the throttle
-function on unmount:
-
-```jsx
-import throttle from 'lodash.throttle';
-
-let throttledHandler;
-
-<Waypoint throttleHandler={(scrollHandler) => {
-    throttledHandler = throttle(scrollHandler, 100);
-    return throttledHandler;
-  }}
-  ref={function(component) {
-    if (!component) {
-      throttledHandler.cancel();
-    }
-  }}
-/>
-```
-
 ## Troubleshooting
 If your waypoint isn't working the way you expect it to, there are a few ways
 you can debug your setup.
@@ -343,9 +297,9 @@ but in some situations might present limitations.
 
 - We determine the scrollable-ness of a node by inspecting its computed
   overflow-y or overflow property and nothing else. This could mean that a
-  container with this style but that does not actually currently scroll will be
+  container with this style that does not actually currently scroll will be
   considered when performing visibility calculations.
-- We assume that waypoint is rendered within at most one scrollable container.
+- We assume that waypoints are rendered within at most one scrollable container.
   If you render a waypoint in multiple nested scrollable containers, the
   visibility calculations will likely not be accurate.
 - We also base the visibility calculations on the scroll position of the
