@@ -5,6 +5,7 @@ Please use [pull requests](https://github.com/brigade/react-waypoint/pull/new/ma
 - [Airbnb](https://github.com/airbnb)
 - [Brigade](https://github.com/brigade)
 - [StarNow](https://github.com/starnow)
+- [Yorango](https://github.com/Yorango)
 
 # Projects
 
