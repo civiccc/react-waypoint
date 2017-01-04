@@ -1,6 +1,9 @@
 ## master (unreleased)
 
-- Remove `throttleHandler`
+## 5.0.0
+
+- [Breaking] Remove `throttleHandler`
+- Add typescript definitions file
 
 ## 4.1.0
 
