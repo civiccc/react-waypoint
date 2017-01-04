@@ -1,6 +1,6 @@
 /// <reference types="react" />
 
-import {ClassicComponentClass} from 'react';
+import { ClassicComponentClass } from 'react';
 
 declare namespace ReactWaypoint {
     interface CallbackArgs {
