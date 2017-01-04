@@ -3,6 +3,7 @@
   "version": "4.1.0",
   "description": "A React component to execute a function whenever you scroll to an element.",
   "main": "build/waypoint.js",
+  "types": "index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/brigade/react-waypoint.git"
@@ -30,6 +31,7 @@
     "react": "^0.14.0 || ^15.0.0"
   },
   "devDependencies": {
+    "@types/react": "^0.14.55",
     "babel": "^6.0.0",
     "babel-cli": "^6.0.0",
     "babel-core": "^6.0.0",
