@@ -108,4 +108,4 @@ declare namespace ReactWaypoint {
 }
 
 declare let Waypoint: ReactWaypoint.Waypoint;
-export = Waypoint;
+export default Waypoint;
