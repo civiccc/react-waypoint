@@ -1,5 +1,8 @@
 ## master (unreleased)
 
+## 5.0.1
+- Fix typescript definition to support ES6 imports
+
 ## 5.0.0
 
 - [Breaking] Remove `throttleHandler`
