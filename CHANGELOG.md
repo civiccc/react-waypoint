@@ -1,5 +1,8 @@
 ## master (unreleased)
 
+## 5.0.2
+- Revert ES6 typescript definition.
+
 ## 5.0.1
 - Fix typescript definition to support ES6 imports
 
