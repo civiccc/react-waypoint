@@ -11,4 +11,4 @@ Please use [pull requests](https://github.com/brigade/react-waypoint/pull/new/ma
 
 # Projects
 
-- Your project here!
+- [Happo](https://github.com/Galooshi/happo)
