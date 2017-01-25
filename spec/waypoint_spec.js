@@ -100,6 +100,7 @@ describe('<Waypoint>', function() {
         previousPosition: undefined,
         event: null,
         waypointTop: this.margin + this.topSpacerHeight,
+        waypointBottom: this.margin + this.topSpacerHeight,
         viewportTop: this.margin,
         viewportBottom: this.margin + this.parentHeight,
       });
@@ -112,6 +113,7 @@ describe('<Waypoint>', function() {
           previousPosition: undefined,
           event: null,
           waypointTop: this.margin + this.topSpacerHeight,
+          waypointBottom: this.margin + this.topSpacerHeight,
           viewportTop: this.margin,
           viewportBottom: this.margin + this.parentHeight,
         });
@@ -138,6 +140,7 @@ describe('<Waypoint>', function() {
         previousPosition: undefined,
         event: null,
         waypointTop: this.margin + this.topSpacerHeight,
+        waypointBottom: this.margin + this.topSpacerHeight,
         viewportTop: this.margin - (this.parentHeight * 2),
         viewportBottom: this.margin + this.parentHeight,
       });
@@ -150,6 +153,7 @@ describe('<Waypoint>', function() {
           previousPosition: undefined,
           event: null,
           waypointTop: this.margin + this.topSpacerHeight,
+          waypointBottom: this.margin + this.topSpacerHeight,
           viewportTop: this.margin - (this.parentHeight * 2),
           viewportBottom: this.margin + this.parentHeight,
         });
@@ -176,6 +180,7 @@ describe('<Waypoint>', function() {
         previousPosition: undefined,
         event: null,
         waypointTop: this.margin + this.topSpacerHeight,
+        waypointBottom: this.margin + this.topSpacerHeight,
         viewportTop: this.margin,
         viewportBottom: this.margin + (this.parentHeight * 3),
       });
@@ -188,6 +193,7 @@ describe('<Waypoint>', function() {
           previousPosition: undefined,
           event: null,
           waypointTop: this.margin + this.topSpacerHeight,
+          waypointBottom: this.margin + this.topSpacerHeight,
           viewportTop: this.margin,
           viewportBottom: this.margin + (this.parentHeight * 3),
         });
@@ -215,6 +221,7 @@ describe('<Waypoint>', function() {
         previousPosition: undefined,
         event: null,
         waypointTop: this.margin + this.topSpacerHeight,
+        waypointBottom: this.margin + this.topSpacerHeight,
         viewportTop: this.margin - (this.parentHeight * 2),
         viewportBottom: this.margin + (this.parentHeight * 3),
       });
@@ -227,6 +234,7 @@ describe('<Waypoint>', function() {
           previousPosition: undefined,
           event: null,
           waypointTop: this.margin + this.topSpacerHeight,
+          waypointBottom: this.margin + this.topSpacerHeight,
           viewportTop: this.margin - (this.parentHeight * 2),
           viewportBottom: this.margin + (this.parentHeight * 3),
         });
@@ -275,6 +283,7 @@ describe('<Waypoint>', function() {
           previousPosition: Waypoint.inside,
           event: jasmine.any(Event),
           waypointTop: this.margin - 10,
+          waypointBottom: this.margin - 10,
           viewportTop: this.margin,
           viewportBottom: this.margin + this.parentHeight,
         });
@@ -291,6 +300,7 @@ describe('<Waypoint>', function() {
           previousPosition: Waypoint.inside,
           event: jasmine.any(Event),
           waypointTop: this.margin - 10,
+          waypointBottom: this.margin - 10,
           viewportTop: this.margin,
           viewportBottom: this.margin + this.parentHeight,
         });
@@ -324,9 +334,51 @@ describe('<Waypoint>', function() {
           previousPosition: undefined,
           event: null,
           waypointTop: this.margin + this.topSpacerHeight,
+          waypointBottom: this.margin + this.topSpacerHeight,
           viewportTop: this.margin,
           viewportBottom: this.margin + this.parentHeight,
         });
+    });
+
+    describe('with children', () => {
+      beforeEach(() => {
+        this.childrenHeight = 80;
+        this.props.children = [
+          React.createElement('div', {
+            key: 1,
+            style: {
+              height: this.childrenHeight / 2,
+            }
+          }),
+          React.createElement('div', {
+            key: 2,
+            style: {
+              height: this.childrenHeight / 2,
+            }
+          }),
+        ];
+      });
+
+      describe('when scrolling down far enough', () => {
+        beforeEach(() => {
+          this.component = this.subject();
+          this.props.onPositionChange.calls.reset();
+          scrollNodeTo(this.component, 100);
+        });
+
+        it('calls the onEnter handler', () => {
+          expect(this.props.onEnter).
+            toHaveBeenCalledWith({
+              currentPosition: Waypoint.inside,
+              previousPosition: Waypoint.below,
+              event: jasmine.any(Event),
+              waypointTop: this.margin + this.topSpacerHeight - 100,
+              waypointBottom: this.margin + this.topSpacerHeight - 100 + this.childrenHeight,
+              viewportTop: this.margin,
+              viewportBottom: this.margin + this.parentHeight,
+            });
+        });
+      });
     });
 
     describe('when scrolling down just below the threshold', () => {
@@ -362,6 +414,7 @@ describe('<Waypoint>', function() {
             previousPosition: Waypoint.below,
             event: jasmine.any(Event),
             waypointTop: this.margin + this.topSpacerHeight - 100,
+            waypointBottom: this.margin + this.topSpacerHeight - 100,
             viewportTop: this.margin,
             viewportBottom: this.margin + this.parentHeight,
           });
@@ -375,6 +428,7 @@ describe('<Waypoint>', function() {
             previousPosition: Waypoint.below,
             event: jasmine.any(Event),
             waypointTop: this.margin + this.topSpacerHeight - 100,
+            waypointBottom: this.margin + this.topSpacerHeight - 100,
             viewportTop: this.margin,
             viewportBottom: this.margin + this.parentHeight,
           });
@@ -398,6 +452,7 @@ describe('<Waypoint>', function() {
               previousPosition: Waypoint.below,
               event: jasmine.any(Event),
               waypointTop: this.margin + this.topSpacerHeight - 100,
+              waypointBottom: this.margin + this.topSpacerHeight - 100,
               viewportTop: this.margin,
               viewportBottom: this.margin + this.parentHeight,
             });
@@ -411,6 +466,7 @@ describe('<Waypoint>', function() {
               previousPosition: Waypoint.below,
               event: jasmine.any(Event),
               waypointTop: this.margin + this.topSpacerHeight - 100,
+              waypointBottom: this.margin + this.topSpacerHeight - 100,
               viewportTop: this.margin,
               viewportBottom: this.margin + this.parentHeight,
             });
@@ -444,6 +500,7 @@ describe('<Waypoint>', function() {
             previousPosition: Waypoint.below,
             event: jasmine.any(Event),
             waypointTop: this.margin - this.bottomSpacerHeight + this.parentHeight,
+            waypointBottom: this.margin - this.bottomSpacerHeight + this.parentHeight,
             viewportTop: this.margin,
             viewportBottom: this.margin + this.parentHeight,
           });
@@ -457,6 +514,7 @@ describe('<Waypoint>', function() {
             previousPosition: Waypoint.inside,
             event: jasmine.any(Event),
             waypointTop: this.margin - this.bottomSpacerHeight + this.parentHeight,
+            waypointBottom: this.margin - this.bottomSpacerHeight + this.parentHeight,
             viewportTop: this.margin,
             viewportBottom: this.margin + this.parentHeight,
           });
@@ -470,6 +528,7 @@ describe('<Waypoint>', function() {
             previousPosition: Waypoint.below,
             event: jasmine.any(Event),
             waypointTop: this.margin - this.bottomSpacerHeight + this.parentHeight,
+            waypointBottom: this.margin - this.bottomSpacerHeight + this.parentHeight,
             viewportTop: this.margin,
             viewportBottom: this.margin + this.parentHeight,
           });
@@ -498,6 +557,7 @@ describe('<Waypoint>', function() {
               previousPosition: Waypoint.below,
               event: jasmine.any(Event),
               waypointTop: this.margin - this.bottomSpacerHeight + this.parentHeight,
+              waypointBottom: this.margin - this.bottomSpacerHeight + this.parentHeight,
               viewportTop: this.margin,
               viewportBottom: this.margin + this.parentHeight,
             });
@@ -525,6 +585,7 @@ describe('<Waypoint>', function() {
                 previousPosition: Waypoint.inside,
                 event: jasmine.any(Event),
                 waypointTop: this.margin + this.topSpacerHeight - 211,
+                waypointBottom: this.margin + this.topSpacerHeight - 211,
                 viewportTop: this.margin + this.parentHeight * -0.1,
                 viewportBottom: this.margin + this.parentHeight,
               });
@@ -573,6 +634,7 @@ describe('<Waypoint>', function() {
                 previousPosition: Waypoint.below,
                 event: jasmine.any(Event),
                 waypointTop: this.margin + this.topSpacerHeight - 90,
+                waypointBottom: this.margin + this.topSpacerHeight - 90,
                 viewportTop: this.margin,
                 viewportBottom: this.margin + Math.floor(this.parentHeight * 1.1),
               });
@@ -589,6 +651,7 @@ describe('<Waypoint>', function() {
                 previousPosition: Waypoint.below,
                 event: jasmine.any(Event),
                 waypointTop: this.margin + this.topSpacerHeight - 90,
+                waypointBottom: this.margin + this.topSpacerHeight - 90,
                 viewportTop: this.margin,
                 viewportBottom: this.margin + Math.floor(this.parentHeight * 1.1),
               });
@@ -635,6 +698,7 @@ describe('<Waypoint>', function() {
                 previousPosition: Waypoint.below,
                 event: jasmine.any(Event),
                 waypointTop: this.margin + this.topSpacerHeight - 90,
+                waypointBottom: this.margin + this.topSpacerHeight - 90,
                 viewportTop: this.margin,
                 viewportBottom: this.margin + this.parentHeight + 10,
               });
@@ -651,6 +715,7 @@ describe('<Waypoint>', function() {
                 previousPosition: Waypoint.below,
                 event: jasmine.any(Event),
                 waypointTop: this.margin + this.topSpacerHeight - 90,
+                waypointBottom: this.margin + this.topSpacerHeight - 90,
                 viewportTop: this.margin,
                 viewportBottom: this.margin + this.parentHeight + 10,
               });
@@ -697,6 +762,7 @@ describe('<Waypoint>', function() {
                 previousPosition: Waypoint.below,
                 event: jasmine.any(Event),
                 waypointTop: this.margin + this.topSpacerHeight - 90,
+                waypointBottom: this.margin + this.topSpacerHeight - 90,
                 viewportTop: this.margin,
                 viewportBottom: this.margin + this.parentHeight + 10,
               });
@@ -713,6 +779,7 @@ describe('<Waypoint>', function() {
                 previousPosition: Waypoint.below,
                 event: jasmine.any(Event),
                 waypointTop: this.margin + this.topSpacerHeight - 90,
+                waypointBottom: this.margin + this.topSpacerHeight - 90,
                 viewportTop: this.margin,
                 viewportBottom: this.margin + this.parentHeight + 10,
               });
@@ -759,6 +826,7 @@ describe('<Waypoint>', function() {
                 previousPosition: Waypoint.below,
                 event: jasmine.any(Event),
                 waypointTop: this.margin + this.topSpacerHeight - 90,
+                waypointBottom: this.margin + this.topSpacerHeight - 90,
                 viewportTop: this.margin,
                 viewportBottom: this.margin + this.parentHeight + 10,
               });
@@ -775,11 +843,65 @@ describe('<Waypoint>', function() {
                 previousPosition: Waypoint.below,
                 event: jasmine.any(Event),
                 waypointTop: this.margin + this.topSpacerHeight - 90,
+                waypointBottom: this.margin + this.topSpacerHeight - 90,
                 viewportTop: this.margin,
                 viewportBottom: this.margin + this.parentHeight + 10,
               });
           });
         });
+      });
+    });
+  });
+
+  describe('when the Waypoint has children and is above the top', () => {
+    beforeEach(() => {
+      this.topSpacerHeight = 200;
+      this.bottomSpacerHeight = 200;
+      this.childrenHeight = 100;
+      this.props.children =  React.createElement('div', {
+        style: {
+          height: this.childrenHeight,
+        }
+      });
+      this.scrollable = this.subject();
+
+      // Because of how we detect when a Waypoint is scrolled past without any
+      // scroll event fired when it was visible, we need to reset callback
+      // spies.
+      scrollNodeTo(this.scrollable, 400);
+      this.props.onEnter.calls.reset();
+      this.props.onLeave.calls.reset();
+      scrollNodeTo(this.scrollable, 400);
+    });
+
+    it('does not call the onEnter handler', () => {
+      expect(this.props.onEnter).not.toHaveBeenCalled();
+    });
+
+    it('does not call the onLeave handler', () => {
+      expect(this.props.onLeave).not.toHaveBeenCalled();
+    });
+
+    describe('when scrolled back up just past the bottom', () => {
+      beforeEach(() => {
+        scrollNodeTo(this.scrollable, this.topSpacerHeight + 50);
+      });
+
+      it('calls the onEnter handler', () => {
+        expect(this.props.onEnter).
+          toHaveBeenCalledWith({
+            currentPosition: Waypoint.inside,
+            previousPosition: Waypoint.above,
+            event: jasmine.any(Event),
+            waypointTop: -40,
+            waypointBottom: -40 + this.childrenHeight,
+            viewportTop: this.margin,
+            viewportBottom: this.margin + this.parentHeight,
+          });
+      });
+
+      it('does not call the onLeave handler', () => {
+        expect(this.props.onLeave).not.toHaveBeenCalled();
       });
     });
   });
@@ -842,6 +964,7 @@ describe('<Waypoint>', function() {
             previousPosition: Waypoint.above,
             event: jasmine.any(Event),
             waypointTop: this.margin + this.topSpacerHeight - 200,
+            waypointBottom: this.margin + this.topSpacerHeight - 200,
             viewportTop: this.margin,
             viewportBottom: this.margin + this.parentHeight,
           });
@@ -858,6 +981,7 @@ describe('<Waypoint>', function() {
             previousPosition: Waypoint.above,
             event: jasmine.any(Event),
             waypointTop: this.margin + this.topSpacerHeight - 200,
+            waypointBottom: this.margin + this.topSpacerHeight - 200,
             viewportTop: this.margin,
             viewportBottom: this.margin + this.parentHeight,
           });
@@ -876,6 +1000,7 @@ describe('<Waypoint>', function() {
               previousPosition: Waypoint.inside,
               event: jasmine.any(Event),
               waypointTop: this.margin + this.topSpacerHeight - 99,
+              waypointBottom: this.margin + this.topSpacerHeight - 99,
               viewportTop: this.margin,
               viewportBottom: this.margin + this.parentHeight,
             });
@@ -892,6 +1017,7 @@ describe('<Waypoint>', function() {
               previousPosition: Waypoint.inside,
               event: jasmine.any(Event),
               waypointTop: this.margin + this.topSpacerHeight - 99,
+              waypointBottom: this.margin + this.topSpacerHeight - 99,
               viewportTop: this.margin,
               viewportBottom: this.margin + this.parentHeight,
             });
@@ -915,6 +1041,7 @@ describe('<Waypoint>', function() {
             previousPosition: Waypoint.above,
             event: jasmine.any(Event),
             waypointTop: this.margin + this.topSpacerHeight,
+            waypointBottom: this.margin + this.topSpacerHeight,
             viewportTop: this.margin,
             viewportBottom: this.margin + this.parentHeight,
           });
@@ -927,6 +1054,7 @@ describe('<Waypoint>', function() {
             previousPosition: Waypoint.inside,
             event: jasmine.any(Event),
             waypointTop: this.margin + this.topSpacerHeight,
+            waypointBottom: this.margin + this.topSpacerHeight,
             viewportTop: this.margin,
             viewportBottom: this.margin + this.parentHeight,
           });
@@ -939,6 +1067,7 @@ describe('<Waypoint>', function() {
             previousPosition: Waypoint.above,
             event: jasmine.any(Event),
             waypointTop: this.margin + this.topSpacerHeight,
+            waypointBottom: this.margin + this.topSpacerHeight,
             viewportTop: this.margin,
             viewportBottom: this.margin + this.parentHeight,
           });
@@ -958,6 +1087,7 @@ describe('<Waypoint>', function() {
         previousPosition: Waypoint.inside,
         event: jasmine.any(Event),
         waypointTop: 0,
+        waypointBottom: 0,
         viewportTop: 0,
         viewportBottom: 0,
       });
@@ -988,6 +1118,7 @@ describe('<Waypoint>', function() {
           previousPosition: undefined,
           event: null,
           waypointTop: this.margin + this.topSpacerHeight,
+          waypointBottom: this.margin + this.topSpacerHeight,
           viewportTop: 0,
           viewportBottom: window.innerHeight,
         });
@@ -1006,6 +1137,7 @@ describe('<Waypoint>', function() {
             previousPosition: Waypoint.below,
             event: jasmine.any(Event),
             waypointTop: this.margin + Math.ceil(window.innerHeight / 2),
+            waypointBottom: this.margin + Math.ceil(window.innerHeight / 2),
             viewportTop: 0,
             viewportBottom: window.innerHeight,
           });
@@ -1018,6 +1150,7 @@ describe('<Waypoint>', function() {
             previousPosition: Waypoint.below,
             event: jasmine.any(Event),
             waypointTop: this.margin + Math.ceil(window.innerHeight / 2),
+            waypointBottom: this.margin + Math.ceil(window.innerHeight / 2),
             viewportTop: 0,
             viewportBottom: window.innerHeight,
           });
@@ -1110,6 +1243,7 @@ describe('<Waypoint>', function() {
           previousPosition: undefined,
           event: null,
           waypointTop: 20 + this.topSpacerHeight,
+          waypointBottom: 20 + this.topSpacerHeight,
           viewportTop: 0,
           viewportBottom: window.innerHeight,
         });
@@ -1126,6 +1260,7 @@ describe('<Waypoint>', function() {
           previousPosition: undefined,
           event: null,
           waypointTop: 20 + this.topSpacerHeight,
+          waypointBottom: 20 + this.topSpacerHeight,
           viewportTop: 0,
           viewportBottom: window.innerHeight,
         });
@@ -1161,6 +1296,7 @@ describe('<Waypoint>', function() {
               previousPosition: Waypoint.inside,
               event: jasmine.any(Event),
               waypointTop: 20 + this.topSpacerHeight - 25,
+              waypointBottom: 20 + this.topSpacerHeight - 25,
               viewportTop: 0,
               viewportBottom: window.innerHeight,
             });
@@ -1177,6 +1313,7 @@ describe('<Waypoint>', function() {
               previousPosition: Waypoint.inside,
               event: jasmine.any(Event),
               waypointTop: 20 + this.topSpacerHeight - 25,
+              waypointBottom: 20 + this.topSpacerHeight - 25,
               viewportTop: 0,
               viewportBottom: window.innerHeight,
             });
@@ -1208,7 +1345,7 @@ const scrollNodeToHorizontal = function(node, scrollLeft) {
   node.dispatchEvent(event);
 };
 
-describe('<Waypoint>', function() {
+describe('<Waypoint> Horizontal', function() {
   beforeEach(() => {
     jasmine.clock().install();
     document.body.style.margin = 'auto'; // should be no horizontal margin
@@ -1277,6 +1414,7 @@ describe('<Waypoint>', function() {
           previousPosition: undefined,
           event: null,
           waypointTop: this.margin + this.leftSpacerWidth,
+          waypointBottom: this.margin + this.leftSpacerWidth,
           viewportTop: this.margin,
           viewportBottom: this.margin + this.parentWidth,
         });

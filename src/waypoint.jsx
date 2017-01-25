@@ -34,8 +34,21 @@ function getCurrentPosition(bounds) {
     return POSITIONS.invisible;
   }
 
+  // top is within the screen
   if (bounds.viewportTop <= bounds.waypointTop &&
       bounds.waypointTop <= bounds.viewportBottom) {
+    return POSITIONS.inside;
+  }
+
+  // bottom is within the screen
+  if (bounds.viewportTop <= bounds.waypointBottom &&
+      bounds.waypointBottom <= bounds.viewportBottom) {
+    return POSITIONS.inside;
+  }
+
+  // top is above the screen and bottom is below the screen
+  if (bounds.waypointTop <= bounds.viewportTop &&
+      bounds.viewportBottom <= bounds.waypointBottom) {
     return POSITIONS.inside;
   }
 
@@ -255,6 +268,7 @@ export default class Waypoint extends React.Component {
       previousPosition,
       event,
       waypointTop: bounds.waypointTop,
+      waypointBottom: bounds.waypointBottom,
       viewportTop: bounds.viewportTop,
       viewportBottom: bounds.viewportBottom,
     };
@@ -279,6 +293,7 @@ export default class Waypoint extends React.Component {
         previousPosition,
         event,
         waypointTop: bounds.waypointTop,
+        waypointBottom: bounds.waypointBottom,
         viewportTop: bounds.viewportTop,
         viewportBottom: bounds.viewportBottom,
       });
@@ -287,6 +302,7 @@ export default class Waypoint extends React.Component {
         previousPosition: POSITIONS.inside,
         event,
         waypointTop: bounds.waypointTop,
+        waypointBottom: bounds.waypointBottom,
         viewportTop: bounds.viewportTop,
         viewportBottom: bounds.viewportBottom,
       });
@@ -295,8 +311,9 @@ export default class Waypoint extends React.Component {
 
   _getBounds() {
     const horizontal = this.props.horizontal;
-    const waypointTop = horizontal ? this._ref.getBoundingClientRect().left :
-      this._ref.getBoundingClientRect().top;
+    const { left, top, right, bottom } = this._ref.getBoundingClientRect();
+    const waypointTop = horizontal ? left : top;
+    const waypointBottom = horizontal ? right : bottom;
 
     let contextHeight;
     let contextScrollTop;
@@ -313,6 +330,7 @@ export default class Waypoint extends React.Component {
 
     if (this.props.debug) {
       debugLog('waypoint top', waypointTop);
+      debugLog('waypoint bottom', waypointBottom);
       debugLog('scrollableAncestor height', contextHeight);
       debugLog('scrollableAncestor scrollTop', contextScrollTop);
     }
@@ -324,6 +342,7 @@ export default class Waypoint extends React.Component {
 
     return {
       waypointTop,
+      waypointBottom,
       viewportTop: contextScrollTop + topOffsetPx,
       viewportBottom: contextBottom - bottomOffsetPx,
     };
@@ -333,6 +352,10 @@ export default class Waypoint extends React.Component {
    * @return {Object}
    */
   render() {
+    if (this.props.children) {
+      return <div ref={this.refElement}>{this.props.children}</div>;
+    }
+
     // We need an element that we can locate in the DOM to determine where it is
     // rendered relative to the top of its context.
     return <span ref={this.refElement} style={{ fontSize: 0 }} />;
@@ -340,6 +363,7 @@ export default class Waypoint extends React.Component {
 }
 
 Waypoint.propTypes = {
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.array]),
   debug: PropTypes.bool,
   onEnter: PropTypes.func,
   onLeave: PropTypes.func,
