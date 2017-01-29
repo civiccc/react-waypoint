@@ -77,6 +77,19 @@ below) has changed.
 />
 ```
 
+Waypoints can have children, allowing you to track when a section of content
+enters or leaves the viewport.
+
+```javascript
+<Waypoint
+  onPositionChange={this._handlePositionChange}
+>
+  <div>
+    Some content here
+  </div>
+</Waypoint>
+```
+
 
 ### Example: [JSFiddle Example][jsfiddle-example]
 
@@ -217,7 +230,7 @@ then the boundaries will be pushed inward, toward the center of the page. If
 you specify a negative value for an offset, then the boundary will be pushed
 outward from the center of the page.
 
-#### Horizontal Scrolling
+#### Horizontal Scrolling Offsets and Boundaries
 
 By default, waypoints listen to vertical scrolling. If you want to switch to
 horizontal scrolling instead, use the `horizontal` prop. For simplicity's sake,
@@ -248,6 +261,29 @@ the `onLeave` and `onEnter` callback will be called. By using the arguments
 passed to the callbacks, you can determine whether the waypoint has crossed the
 top boundary or the bottom boundary.
 
+## Children
+
+If you don't pass children into your Waypoint, then you can think of the
+waypoint as a line across the page. Whenever that line crosses a
+[boundary](#offsets-and-boundaries), then the `onEnter` or `onLeave` callbacks
+will be called.
+
+When children are passed, then the waypoint's size will be determined by the
+size of the contained children. The `onEnter` callback will be called when *any*
+part of the children is visible in the viewport. The `onLeave` callback will be
+called when *all* children have exited the viewport.
+
+Deciding whether to pass children or not will depend on your use case. One
+example of when passing children is useful is for a scrollspy. Imagine if you
+want to fire a waypoint when a particularly long piece of content is visible
+onscreen. When the page loads, it is conceivable that both the top and bottom of
+this piece of content could lie outside of the boundaries, because the content
+is taller than the viewport. If you didn't pass children, and instead put the
+waypoint above or below the content, then you will not receive an `onEnter`
+callback (nor any other callback from this library). Instead, passing this long
+content as a child of the Waypoint would fire the `onEnter` callback when the
+page loads.
+
 ## Containing elements and `scrollableAncestor`
 
 React Waypoint positions its [boundaries](#offsets-and-boundaries) based on the
@@ -277,6 +313,7 @@ This might look something like:
 ```
 
 ## Troubleshooting
+
 If your waypoint isn't working the way you expect it to, there are a few ways
 you can debug your setup.
 
