@@ -90,18 +90,19 @@ function parseOffsetAsPercentage(str) {
 }
 
 /**
- * @param {string|number} offset
+ * @param {string|number|function(int)} offset
  * @param {number} contextHeight
  * @return {number} A number representing `offset` converted into pixels.
  */
 function computeOffsetPixels(offset, contextHeight) {
-  const pixelOffset = parseOffsetAsPixels(offset);
+  const offsetValue = typeof offset === 'function' ? offset.call(this) : offset;
+  const pixelOffset = parseOffsetAsPixels(offsetValue);
 
   if (typeof pixelOffset === 'number') {
     return pixelOffset;
   }
 
-  const percentOffset = parseOffsetAsPercentage(offset);
+  const percentOffset = parseOffsetAsPercentage(offsetValue);
   if (typeof percentOffset === 'number') {
     return percentOffset * contextHeight;
   }
@@ -358,12 +359,14 @@ Waypoint.propTypes = {
   topOffset: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
+    PropTypes.func,
   ]),
 
   // `bottomOffset` is like `topOffset`, but for the bottom of the container.
   bottomOffset: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
+    PropTypes.func,
   ]),
 };
 
