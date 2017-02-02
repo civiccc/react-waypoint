@@ -34,6 +34,8 @@ describe('<Waypoint>', function() {
 
     this.margin = 10;
     this.parentHeight = 100;
+    this.topSpacerHeight = 0;
+    this.bottomSpacerHeight = 0;
 
     this.parentStyle = {
       height: this.parentHeight,
@@ -42,9 +44,6 @@ describe('<Waypoint>', function() {
       width: 100,
       margin: this.margin, //Normalize the space above the viewport.
     };
-
-    this.topSpacerHeight = 0;
-    this.bottomSpacerHeight = 0;
 
     this.subject = () => {
       const el = renderAttached(
@@ -229,6 +228,45 @@ describe('<Waypoint>', function() {
           waypointTop: this.margin + this.topSpacerHeight,
           viewportTop: this.margin - (this.parentHeight * 2),
           viewportBottom: this.margin + (this.parentHeight * 3),
+        });
+    });
+
+    it('does not call the onLeave handler', () => {
+      expect(this.props.onLeave).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('when the Waypoint is visible on mount and has a dynamic topOffset', () => {
+    beforeEach(() => {
+      this.props.topOffset = () => 3 + 2;
+      this.props.bottomOffset = 0;
+
+      this.topSpacerHeight = 10;
+      this.bottomSpacerHeight = 10;
+      this.parentComponent = this.subject();
+      this.scrollable = this.parentComponent;
+    });
+
+    it('calls the onEnter handler', () => {
+      expect(this.props.onEnter).toHaveBeenCalledWith({
+        currentPosition: Waypoint.inside,
+        previousPosition: undefined,
+        event: null,
+        waypointTop: this.margin + this.topSpacerHeight,
+        viewportTop: this.margin + 5,
+        viewportBottom: this.margin + this.parentHeight,
+      });
+    });
+
+    it('calls the onPositionChange handler', () => {
+      expect(this.props.onPositionChange).
+        toHaveBeenCalledWith({
+          currentPosition: Waypoint.inside,
+          previousPosition: undefined,
+          event: null,
+          waypointTop: this.margin + this.topSpacerHeight,
+          viewportTop: this.margin + 5,
+          viewportBottom: this.margin + this.parentHeight,
         });
     });
 
