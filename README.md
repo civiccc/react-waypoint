@@ -119,6 +119,7 @@ below) has changed.
     topOffset: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.number,
+      PropTypes.func,
     ]),
 
     /**
@@ -127,6 +128,7 @@ below) has changed.
     bottomOffset: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.number,
+      PropTypes.func,
     ]),
 
     /**
