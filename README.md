@@ -37,11 +37,11 @@ yarn add react-waypoint
 
 ## Usage
 
-```javascript
+```jsx
 var Waypoint = require('react-waypoint');
 ```
 
-```javascript
+```jsx
 <Waypoint
   onEnter={this._handleWaypointEnter}
   onLeave={this._handleWaypointLeave}
@@ -60,7 +60,7 @@ position. Sometimes it's useful to have a waypoint that fires `onEnter` every
 time it is updated as long as it stays visible (e.g. for infinite scroll). You
 can then use a `key` prop to control when a waypoint is reused vs. re-created.
 
-```javascript
+```jsx
 <Waypoint
   key={cursor}
   onEnter={this._loadMoreContent}
@@ -71,7 +71,7 @@ Alternatively, you can also use an `onPositionChange` event to just get
 notified when the waypoint's position (e.g. inside the viewport, above or
 below) has changed.
 
-```javascript
+```jsx
 <Waypoint
   onPositionChange={this._handlePositionChange}
 />
@@ -80,13 +80,46 @@ below) has changed.
 Waypoints can have children, allowing you to track when a section of content
 enters or leaves the viewport.
 
-```javascript
-<Waypoint
-  onPositionChange={this._handlePositionChange}
->
+```jsx
+<Waypoint onEnter={this._handleEnter}>
   <div>
     Some content here
   </div>
+</Waypoint>
+```
+
+Note that this inserts a `<div>` wrapping the children passed in.
+If this is undesirable, you can use the `noWrapper={true}` prop,
+in which case you can pass a single React Class or DOM element
+which will be rendered directly. You cannot pass a stateless component,
+text node, or array of nodes when `noWrapper={true}`.
+
+```jsx
+<Waypoint onEnter={this._handleEnter} noWrapper>
+  <section>
+    This section will be rendered without an enclosing div.
+  </section>
+</Waypoint>
+
+// INVALID:
+<Waypoint noWrapper>
+  <hr />
+  <section>
+    Oops, I cannot pass multiple children with noWrapper={true}!
+  </section>
+</Waypoint>
+
+// INVALID:
+<Waypoint noWrapper>
+  Oops, I must pass an element with noWrapper={true}!
+</Waypoint>
+
+// INVALID:
+<Waypoint noWrapper>
+  <MyStatelessComponent>
+    Oops, I cannot pass a stateless component with noWrapper={true}!
+    (this is because stateless components do not accept refs)
+  </MyStatelessComponent>
 </Waypoint>
 ```
 
@@ -97,7 +130,7 @@ enters or leaves the viewport.
 
 ## Prop types
 
-```javascript
+```jsx
   propTypes: {
 
     /**
@@ -268,10 +301,13 @@ waypoint as a line across the page. Whenever that line crosses a
 [boundary](#offsets-and-boundaries), then the `onEnter` or `onLeave` callbacks
 will be called.
 
-When children are passed, then the waypoint's size will be determined by the
-size of the contained children. The `onEnter` callback will be called when *any*
-part of the children is visible in the viewport. The `onLeave` callback will be
-called when *all* children have exited the viewport.
+When children are passed, the waypoint's size will be determined by the
+size of a div wrapping the contained children (or, with `noWrapper={true}`,
+the size of the child element you pass). The `onEnter` callback will be called
+when *any* part of the children is visible in the viewport. The `onLeave`
+callback will be called when *all* children have exited the viewport.
+(Note that this is measured only on a single axis; strangely positioned elements
+may not work as expected).
 
 Deciding whether to pass children or not will depend on your use case. One
 example of when passing children is useful is for a scrollspy. Imagine if you

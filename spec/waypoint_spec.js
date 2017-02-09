@@ -906,6 +906,70 @@ describe('<Waypoint>', function() {
     });
   });
 
+  describe('when noWrapper=true and child is above the top', () => {
+    beforeEach(() => {
+      this.topSpacerHeight = 200;
+      this.bottomSpacerHeight = 200;
+      this.childrenHeight = 100;
+      this.childRefSpy = jasmine.createSpy('ref');
+      this.props.noWrapper = true;
+      this.props.children =  React.createElement('section', {
+        ref: this.childRefSpy,
+        style: {
+          height: this.childrenHeight,
+        }
+      });
+      this.scrollable = this.subject();
+
+      // Because of how we detect when a Waypoint is scrolled past without any
+      // scroll event fired when it was visible, we need to reset callback
+      // spies.
+      scrollNodeTo(this.scrollable, 400);
+      this.props.onEnter.calls.reset();
+      this.props.onLeave.calls.reset();
+      scrollNodeTo(this.scrollable, 400);
+    });
+
+    it('calls the original ref handler', () => {
+      expect(this.childRefSpy).toHaveBeenCalled();
+    });
+
+    it('does not have an extra div', () => {
+      expect(this.scrollable.children[1].nodeName).toBe('SECTION');
+    });
+
+    it('does not call the onEnter handler', () => {
+      expect(this.props.onEnter).not.toHaveBeenCalled();
+    });
+
+    it('does not call the onLeave handler', () => {
+      expect(this.props.onLeave).not.toHaveBeenCalled();
+    });
+
+    describe('when scrolled back up just past the bottom', () => {
+      beforeEach(() => {
+        scrollNodeTo(this.scrollable, this.topSpacerHeight + 50);
+      });
+
+      it('calls the onEnter handler', () => {
+        expect(this.props.onEnter).
+          toHaveBeenCalledWith({
+            currentPosition: Waypoint.inside,
+            previousPosition: Waypoint.above,
+            event: jasmine.any(Event),
+            waypointTop: -40,
+            waypointBottom: -40 + this.childrenHeight,
+            viewportTop: this.margin,
+            viewportBottom: this.margin + this.parentHeight,
+          });
+      });
+
+      it('does not call the onLeave handler', () => {
+        expect(this.props.onLeave).not.toHaveBeenCalled();
+      });
+    });
+  });
+
   describe('when the Waypoint is above the top', () => {
     beforeEach(() => {
       this.topSpacerHeight = 200;

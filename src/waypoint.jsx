@@ -34,19 +34,19 @@ function getCurrentPosition(bounds) {
     return POSITIONS.invisible;
   }
 
-  // top is within the screen
+  // top is within the viewport
   if (bounds.viewportTop <= bounds.waypointTop &&
       bounds.waypointTop <= bounds.viewportBottom) {
     return POSITIONS.inside;
   }
 
-  // bottom is within the screen
+  // bottom is within the viewport
   if (bounds.viewportTop <= bounds.waypointBottom &&
       bounds.waypointBottom <= bounds.viewportBottom) {
     return POSITIONS.inside;
   }
 
-  // top is above the screen and bottom is below the screen
+  // top is above the viewport and bottom is below the viewport
   if (bounds.waypointTop <= bounds.viewportTop &&
       bounds.viewportBottom <= bounds.waypointBottom) {
     return POSITIONS.inside;
@@ -352,6 +352,17 @@ export default class Waypoint extends React.Component {
    * @return {Object}
    */
   render() {
+    if (this.props.noWrapper) {
+      const child = React.Children.only(this.props.children);
+      const ref = (node) => {
+        this.refElement(node);
+        if (this.props.children.ref) {
+          this.props.children.ref(node);
+        }
+      };
+      return React.cloneElement(child, { ref });
+    }
+
     if (this.props.children) {
       return <div ref={this.refElement}>{this.props.children}</div>;
     }
@@ -363,7 +374,8 @@ export default class Waypoint extends React.Component {
 }
 
 Waypoint.propTypes = {
-  children: PropTypes.oneOfType([PropTypes.element, PropTypes.array]),
+  children: PropTypes.node,
+  noWrapper: PropTypes.bool,
   debug: PropTypes.bool,
   onEnter: PropTypes.func,
   onLeave: PropTypes.func,
