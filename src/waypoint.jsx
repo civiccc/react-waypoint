@@ -120,6 +120,35 @@ function computeOffsetPixels(offset, contextHeight) {
   }
 }
 
+/**
+ * When an element's type is a string, it represents a DOM node with that tag name
+ * https://facebook.github.io/react/blog/2015/12/18/react-components-elements-and-instances.html#dom-elements
+ *
+ * @param {React.element} Component
+ * @return {bool} Whether the component is a DOM Element
+ */
+function isDOMElement(Component) {
+  return (typeof Component.type === 'string');
+}
+
+
+/**
+ * Raise an error if "children" isn't a single DOM Element
+ *
+ * @param {React.element|null} children
+ * @return {undefined}
+ */
+function ensureChildrenIsSingleDOMElement(children) {
+  if (children) {
+    React.Children.only(children);
+
+    if (!isDOMElement(children)) {
+      throw new Error(
+        'You must wrap any Component Elements passed to Waypoint in a DOM Element (eg; a <div>).'
+      );
+    }
+  }
+}
 
 /**
  * Calls a function when you scroll to the element.
@@ -132,6 +161,8 @@ export default class Waypoint extends React.Component {
   }
 
   componentWillMount() {
+    ensureChildrenIsSingleDOMElement(this.props.children);
+
     if (this.props.scrollableParent) { // eslint-disable-line react/prop-types
       throw new Error('The `scrollableParent` prop has changed name to `scrollableAncestor`.');
     }
@@ -169,6 +200,10 @@ export default class Waypoint extends React.Component {
     this.initialTimeout = setTimeout(() => {
       this._handleScroll(null);
     }, 0);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    ensureChildrenIsSingleDOMElement(nextProps.children);
   }
 
   componentDidUpdate() {
@@ -352,30 +387,27 @@ export default class Waypoint extends React.Component {
    * @return {Object}
    */
   render() {
-    if (this.props.noWrapper) {
-      const child = React.Children.only(this.props.children);
-      const ref = (node) => {
-        this.refElement(node);
-        if (this.props.children.ref) {
-          this.props.children.ref(node);
-        }
-      };
-      return React.cloneElement(child, { ref });
+    const { children } = this.props;
+
+    if (!children) {
+      // We need an element that we can locate in the DOM to determine where it is
+      // rendered relative to the top of its context.
+      return <span ref={this.refElement} style={{ fontSize: 0 }} />;
     }
 
-    if (this.props.children) {
-      return <div ref={this.refElement}>{this.props.children}</div>;
-    }
+    const ref = (node) => {
+      this.refElement(node);
+      if (children.ref) {
+        children.ref(node);
+      }
+    };
 
-    // We need an element that we can locate in the DOM to determine where it is
-    // rendered relative to the top of its context.
-    return <span ref={this.refElement} style={{ fontSize: 0 }} />;
+    return React.cloneElement(children, { ref });
   }
 }
 
 Waypoint.propTypes = {
-  children: PropTypes.node,
-  noWrapper: PropTypes.bool,
+  children: PropTypes.element,
   debug: PropTypes.bool,
   onEnter: PropTypes.func,
   onLeave: PropTypes.func,

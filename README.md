@@ -77,8 +77,8 @@ below) has changed.
 />
 ```
 
-Waypoints can have children, allowing you to track when a section of content
-enters or leaves the viewport.
+Waypoints can take a child, allowing you to track when a section of content
+enters or leaves the viewport. For details, see [Children](#children), below.
 
 ```jsx
 <Waypoint onEnter={this._handleEnter}>
@@ -87,42 +87,6 @@ enters or leaves the viewport.
   </div>
 </Waypoint>
 ```
-
-Note that this inserts a `<div>` wrapping the children passed in.
-If this is undesirable, you can use the `noWrapper={true}` prop,
-in which case you can pass a single React Class or DOM element
-which will be rendered directly. You cannot pass a stateless component,
-text node, or array of nodes when `noWrapper={true}`.
-
-```jsx
-<Waypoint onEnter={this._handleEnter} noWrapper>
-  <section>
-    This section will be rendered without an enclosing div.
-  </section>
-</Waypoint>
-
-// INVALID:
-<Waypoint noWrapper>
-  <hr />
-  <section>
-    Oops, I cannot pass multiple children with noWrapper={true}!
-  </section>
-</Waypoint>
-
-// INVALID:
-<Waypoint noWrapper>
-  Oops, I must pass an element with noWrapper={true}!
-</Waypoint>
-
-// INVALID:
-<Waypoint noWrapper>
-  <MyStatelessComponent>
-    Oops, I cannot pass a stateless component with noWrapper={true}!
-    (this is because stateless components do not accept refs)
-  </MyStatelessComponent>
-</Waypoint>
-```
-
 
 ### Example: [JSFiddle Example][jsfiddle-example]
 
@@ -296,29 +260,34 @@ top boundary or the bottom boundary.
 
 ## Children
 
-If you don't pass children into your Waypoint, then you can think of the
+If you don't pass a child into your Waypoint, then you can think of the
 waypoint as a line across the page. Whenever that line crosses a
 [boundary](#offsets-and-boundaries), then the `onEnter` or `onLeave` callbacks
 will be called.
 
-When children are passed, the waypoint's size will be determined by the
-size of a div wrapping the contained children (or, with `noWrapper={true}`,
-the size of the child element you pass). The `onEnter` callback will be called
-when *any* part of the children is visible in the viewport. The `onLeave`
-callback will be called when *all* children have exited the viewport.
-(Note that this is measured only on a single axis; strangely positioned elements
-may not work as expected).
+If you do pass a child, it must be a single DOM Element (eg; a `<div>`)
+and *not* a Component Element (eg; `<MyComponent />`).
 
-Deciding whether to pass children or not will depend on your use case. One
-example of when passing children is useful is for a scrollspy. Imagine if you
-want to fire a waypoint when a particularly long piece of content is visible
-onscreen. When the page loads, it is conceivable that both the top and bottom of
-this piece of content could lie outside of the boundaries, because the content
-is taller than the viewport. If you didn't pass children, and instead put the
-waypoint above or below the content, then you will not receive an `onEnter`
-callback (nor any other callback from this library). Instead, passing this long
-content as a child of the Waypoint would fire the `onEnter` callback when the
-page loads.
+The `onEnter` callback will be called when *any* part of the child is visible
+in the viewport. The `onLeave` callback will be called when *all* of the child
+has exited the viewport.
+
+(Note that this is measured only on a single axis. What this means is that for a
+Waypoint within a vertically scrolling parent, it could be off of the screen
+horizontally yet still fire an onEnter event, because it is within the vertical
+boundaries).
+
+Deciding whether to pass a child or not will depend on your use case. One
+example of when passing a child is useful is for a scrollspy
+(like [Bootstrap's](https://bootstrapdocs.com/v3.3.6/docs/javascript/#scrollspy)).
+Imagine if you want to fire a waypoint when a particularly long piece of content
+is visible onscreen. When the page loads, it is conceivable that both the top
+and bottom of this piece of content could lie outside of the boundaries,
+because the content is taller than the viewport. If you didn't pass a child,
+and instead put the waypoint above or below the content, then you will not
+receive an `onEnter` callback (nor any other callback from this library).
+Instead, passing this long content as a child of the Waypoint would fire the `onEnter`
+callback when the page loads.
 
 ## Containing elements and `scrollableAncestor`
 
