@@ -34,8 +34,21 @@ function getCurrentPosition(bounds) {
     return POSITIONS.invisible;
   }
 
+  // top is within the viewport
   if (bounds.viewportTop <= bounds.waypointTop &&
       bounds.waypointTop <= bounds.viewportBottom) {
+    return POSITIONS.inside;
+  }
+
+  // bottom is within the viewport
+  if (bounds.viewportTop <= bounds.waypointBottom &&
+      bounds.waypointBottom <= bounds.viewportBottom) {
+    return POSITIONS.inside;
+  }
+
+  // top is above the viewport and bottom is below the viewport
+  if (bounds.waypointTop <= bounds.viewportTop &&
+      bounds.viewportBottom <= bounds.waypointBottom) {
     return POSITIONS.inside;
   }
 
@@ -107,6 +120,35 @@ function computeOffsetPixels(offset, contextHeight) {
   }
 }
 
+/**
+ * When an element's type is a string, it represents a DOM node with that tag name
+ * https://facebook.github.io/react/blog/2015/12/18/react-components-elements-and-instances.html#dom-elements
+ *
+ * @param {React.element} Component
+ * @return {bool} Whether the component is a DOM Element
+ */
+function isDOMElement(Component) {
+  return (typeof Component.type === 'string');
+}
+
+
+/**
+ * Raise an error if "children" isn't a single DOM Element
+ *
+ * @param {React.element|null} children
+ * @return {undefined}
+ */
+function ensureChildrenIsSingleDOMElement(children) {
+  if (children) {
+    React.Children.only(children);
+
+    if (!isDOMElement(children)) {
+      throw new Error(
+        'You must wrap any Component Elements passed to Waypoint in a DOM Element (eg; a <div>).'
+      );
+    }
+  }
+}
 
 /**
  * Calls a function when you scroll to the element.
@@ -119,6 +161,8 @@ export default class Waypoint extends React.Component {
   }
 
   componentWillMount() {
+    ensureChildrenIsSingleDOMElement(this.props.children);
+
     if (this.props.scrollableParent) { // eslint-disable-line react/prop-types
       throw new Error('The `scrollableParent` prop has changed name to `scrollableAncestor`.');
     }
@@ -156,6 +200,10 @@ export default class Waypoint extends React.Component {
     this.initialTimeout = setTimeout(() => {
       this._handleScroll(null);
     }, 0);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    ensureChildrenIsSingleDOMElement(nextProps.children);
   }
 
   componentDidUpdate() {
@@ -255,6 +303,7 @@ export default class Waypoint extends React.Component {
       previousPosition,
       event,
       waypointTop: bounds.waypointTop,
+      waypointBottom: bounds.waypointBottom,
       viewportTop: bounds.viewportTop,
       viewportBottom: bounds.viewportBottom,
     };
@@ -279,6 +328,7 @@ export default class Waypoint extends React.Component {
         previousPosition,
         event,
         waypointTop: bounds.waypointTop,
+        waypointBottom: bounds.waypointBottom,
         viewportTop: bounds.viewportTop,
         viewportBottom: bounds.viewportBottom,
       });
@@ -287,6 +337,7 @@ export default class Waypoint extends React.Component {
         previousPosition: POSITIONS.inside,
         event,
         waypointTop: bounds.waypointTop,
+        waypointBottom: bounds.waypointBottom,
         viewportTop: bounds.viewportTop,
         viewportBottom: bounds.viewportBottom,
       });
@@ -295,8 +346,9 @@ export default class Waypoint extends React.Component {
 
   _getBounds() {
     const horizontal = this.props.horizontal;
-    const waypointTop = horizontal ? this._ref.getBoundingClientRect().left :
-      this._ref.getBoundingClientRect().top;
+    const { left, top, right, bottom } = this._ref.getBoundingClientRect();
+    const waypointTop = horizontal ? left : top;
+    const waypointBottom = horizontal ? right : bottom;
 
     let contextHeight;
     let contextScrollTop;
@@ -313,6 +365,7 @@ export default class Waypoint extends React.Component {
 
     if (this.props.debug) {
       debugLog('waypoint top', waypointTop);
+      debugLog('waypoint bottom', waypointBottom);
       debugLog('scrollableAncestor height', contextHeight);
       debugLog('scrollableAncestor scrollTop', contextScrollTop);
     }
@@ -324,6 +377,7 @@ export default class Waypoint extends React.Component {
 
     return {
       waypointTop,
+      waypointBottom,
       viewportTop: contextScrollTop + topOffsetPx,
       viewportBottom: contextBottom - bottomOffsetPx,
     };
@@ -333,13 +387,27 @@ export default class Waypoint extends React.Component {
    * @return {Object}
    */
   render() {
-    // We need an element that we can locate in the DOM to determine where it is
-    // rendered relative to the top of its context.
-    return <span ref={this.refElement} style={{ fontSize: 0 }} />;
+    const { children } = this.props;
+
+    if (!children) {
+      // We need an element that we can locate in the DOM to determine where it is
+      // rendered relative to the top of its context.
+      return <span ref={this.refElement} style={{ fontSize: 0 }} />;
+    }
+
+    const ref = (node) => {
+      this.refElement(node);
+      if (children.ref) {
+        children.ref(node);
+      }
+    };
+
+    return React.cloneElement(children, { ref });
   }
 }
 
 Waypoint.propTypes = {
+  children: PropTypes.element,
   debug: PropTypes.bool,
   onEnter: PropTypes.func,
   onLeave: PropTypes.func,
