@@ -1,9 +1,12 @@
 ## master (unreleased)
 
+## 5.1.0
+
+- Waypoint can now accept children.
+
 ## 5.0.3
 
 - Clear initial timeout when unmounting component.
-
 
 ## 5.0.2
 - Revert ES6 typescript definition.
