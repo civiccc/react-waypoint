@@ -375,9 +375,8 @@ Thanks to the creator of the original Waypoints library,
 ---
 
 _Make sure to check out other popular open-source tools from
-[the Brigade team][brigade-github]: [scss-lint], [overcommit], and [haml-lint]._
+[the Brigade team][brigade-github]: [overcommit] and [haml-lint].
 
 [brigade-github]: https://github.com/brigade
-[scss-lint]: https://github.com/brigade/scss-lint
 [overcommit]: https://github.com/brigade/overcommit
 [haml-lint]: https://github.com/brigade/haml-lint
