@@ -176,7 +176,7 @@ export default class Waypoint extends React.Component {
     this._handleScroll = this._handleScroll.bind(this);
     this.scrollableAncestor = this._findScrollableAncestor();
 
-    if (this.props.debug) {
+    if (process.env.NODE_ENV !== 'production' && this.props.debug) {
       debugLog('scrollableAncestor', this.scrollableAncestor);
     }
 
@@ -285,7 +285,7 @@ export default class Waypoint extends React.Component {
     const currentPosition = getCurrentPosition(bounds);
     const previousPosition = this._previousPosition;
 
-    if (this.props.debug) {
+    if (process.env.NODE_ENV !== 'production' && this.props.debug) {
       debugLog('currentPosition', currentPosition);
       debugLog('previousPosition', previousPosition);
     }
@@ -363,7 +363,7 @@ export default class Waypoint extends React.Component {
         this.scrollableAncestor.getBoundingClientRect().top;
     }
 
-    if (this.props.debug) {
+    if (process.env.NODE_ENV !== 'production' && this.props.debug) {
       debugLog('waypoint top', waypointTop);
       debugLog('waypoint bottom', waypointBottom);
       debugLog('scrollableAncestor height', contextHeight);
