@@ -129,6 +129,7 @@ enters or leaves the viewport. For details, see [Children](#children), below.
     topOffset: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.number,
+      PropTypes.func,
     ]),
 
     /**
@@ -137,6 +138,7 @@ enters or leaves the viewport. For details, see [Children](#children), below.
     bottomOffset: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.number,
+      PropTypes.func,
     ]),
 
     /**
