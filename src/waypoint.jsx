@@ -6,6 +6,7 @@ import constants from './constants';
 import debugLog from './debugLog';
 import ensureChildrenIsSingleDOMElement from './ensureChildrenIsSingleDOMElement';
 import getCurrentPosition from './getCurrentPosition';
+import resolveScrollableAncestorProp from './resolveScrollableAncestorProp';
 
 const defaultProps = {
   topOffset: '0px',
@@ -102,8 +103,13 @@ export default class Waypoint extends React.Component {
    *   as a fallback.
    */
   _findScrollableAncestor() {
-    if (this.props.scrollableAncestor) {
-      return this.props.scrollableAncestor;
+    const {
+      horizontal,
+      scrollableAncestor,
+    } = this.props;
+
+    if (scrollableAncestor) {
+      return resolveScrollableAncestorProp(scrollableAncestor);
     }
 
     let node = this._ref;
@@ -122,7 +128,7 @@ export default class Waypoint extends React.Component {
       }
 
       const style = window.getComputedStyle(node);
-      const overflowDirec = this.props.horizontal ?
+      const overflowDirec = horizontal ?
         style.getPropertyValue('overflow-x') :
         style.getPropertyValue('overflow-y');
       const overflow = overflowDirec || style.getPropertyValue('overflow');

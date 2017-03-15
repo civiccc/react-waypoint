@@ -146,6 +146,9 @@ enters or leaves the viewport. For details, see [Children](#children), below.
      * the container. For example, when your target is in a div
      * that has overflow auto but you are detecting onEnter based
      * on the window.
+     *
+     * This should typically be a reference to a DOM node, but it will also work
+     * to pass it the string "window" if you are using server rendering.
      */
     scrollableAncestor: PropTypes.any,
 
@@ -296,8 +299,12 @@ first scrollable ancestor of the Waypoint.
 
 If that algorithm doesn't work for your use case, then you might find the
 `scrollableAncestor` prop useful. It allows you to specify what the scrollable
-ancestor is. Pass a node as that prop, and the Waypoint will use the scroll
-position of *that* node, rather than its first scrollable ancestor.
+ancestor is. Pass a reference to a DOM node as that prop, and the Waypoint will
+use the scroll position of *that* node, rather than its first scrollable
+ancestor.
+
+This can also be the string "window", which can be useful if you are using
+server rendering.
 
 #### Example Usage
 
