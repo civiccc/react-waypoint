@@ -1,5 +1,11 @@
 ## master (unreleased)
 
+## 5.2.0
+
+- [New] scrollableAncestor prop can now accept "window" as a string. This should
+  help with server rendering.
+- Debug code is now minified out in production build.
+
 ## 5.1.0
 
 - Waypoint can now accept children.
