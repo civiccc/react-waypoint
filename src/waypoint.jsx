@@ -1,12 +1,11 @@
-import React, { PropTypes } from 'react';
 import { addEventListener, removeEventListener } from 'consolidated-events';
+import React, { PropTypes } from 'react';
 
-const POSITIONS = {
-  above: 'above',
-  inside: 'inside',
-  below: 'below',
-  invisible: 'invisible',
-};
+import computeOffsetPixels from './computeOffsetPixels';
+import constants from './constants';
+import debugLog from './debugLog';
+import ensureChildrenIsSingleDOMElement from './ensureChildrenIsSingleDOMElement';
+import getCurrentPosition from './getCurrentPosition';
 
 const defaultProps = {
   topOffset: '0px',
@@ -17,138 +16,6 @@ const defaultProps = {
   onPositionChange() {},
   fireOnRapidScroll: true,
 };
-
-function debugLog() {
-  console.log(arguments); // eslint-disable-line no-console
-}
-
-/**
- * @param {object} bounds An object with bounds data for the waypoint and
- *   scrollable parent
- * @return {string} The current position of the waypoint in relation to the
- *   visible portion of the scrollable parent. One of `POSITIONS.above`,
- *   `POSITIONS.below`, or `POSITIONS.inside`.
- */
-function getCurrentPosition(bounds) {
-  if (bounds.viewportBottom - bounds.viewportTop === 0) {
-    return POSITIONS.invisible;
-  }
-
-  // top is within the viewport
-  if (bounds.viewportTop <= bounds.waypointTop &&
-      bounds.waypointTop <= bounds.viewportBottom) {
-    return POSITIONS.inside;
-  }
-
-  // bottom is within the viewport
-  if (bounds.viewportTop <= bounds.waypointBottom &&
-      bounds.waypointBottom <= bounds.viewportBottom) {
-    return POSITIONS.inside;
-  }
-
-  // top is above the viewport and bottom is below the viewport
-  if (bounds.waypointTop <= bounds.viewportTop &&
-      bounds.viewportBottom <= bounds.waypointBottom) {
-    return POSITIONS.inside;
-  }
-
-  if (bounds.viewportBottom < bounds.waypointTop) {
-    return POSITIONS.below;
-  }
-
-  if (bounds.waypointTop < bounds.viewportTop) {
-    return POSITIONS.above;
-  }
-
-  return POSITIONS.invisible;
-}
-
-/**
- * Attempts to parse the offset provided as a prop as a pixel value. If
- * parsing fails, then `undefined` is returned. Three examples of values that
- * will be successfully parsed are:
- * `20`
- * "20px"
- * "20"
- *
- * @param {string|number} str A string of the form "{number}" or "{number}px",
- *   or just a number.
- * @return {number|undefined} The numeric version of `str`. Undefined if `str`
- *   was neither a number nor string ending in "px".
- */
-function parseOffsetAsPixels(str) {
-  if (!isNaN(parseFloat(str)) && isFinite(str)) {
-    return parseFloat(str);
-  } else if (str.slice(-2) === 'px') {
-    return parseFloat(str.slice(0, -2));
-  }
-}
-
-/**
- * Attempts to parse the offset provided as a prop as a percentage. For
- * instance, if the component has been provided with the string "20%" as
- * a value of one of the offset props. If the value matches, then it returns
- * a numeric version of the prop. For instance, "20%" would become `0.2`.
- * If `str` isn't a percentage, then `undefined` will be returned.
- *
- * @param {string} str The value of an offset prop to be converted to a
- *   number.
- * @return {number|undefined} The numeric version of `str`. Undefined if `str`
- *   was not a percentage.
- */
-function parseOffsetAsPercentage(str) {
-  if (str.slice(-1) === '%') {
-    return parseFloat(str.slice(0, -1)) / 100;
-  }
-}
-
-/**
- * @param {string|number} offset
- * @param {number} contextHeight
- * @return {number} A number representing `offset` converted into pixels.
- */
-function computeOffsetPixels(offset, contextHeight) {
-  const pixelOffset = parseOffsetAsPixels(offset);
-
-  if (typeof pixelOffset === 'number') {
-    return pixelOffset;
-  }
-
-  const percentOffset = parseOffsetAsPercentage(offset);
-  if (typeof percentOffset === 'number') {
-    return percentOffset * contextHeight;
-  }
-}
-
-/**
- * When an element's type is a string, it represents a DOM node with that tag name
- * https://facebook.github.io/react/blog/2015/12/18/react-components-elements-and-instances.html#dom-elements
- *
- * @param {React.element} Component
- * @return {bool} Whether the component is a DOM Element
- */
-function isDOMElement(Component) {
-  return (typeof Component.type === 'string');
-}
-
-
-/**
- * Raise an error if "children" isn't a single DOM Element
- *
- * @param {React.element|null} children
- * @return {undefined}
- */
-function ensureChildrenIsSingleDOMElement(children) {
-  if (children) {
-    React.Children.only(children);
-
-    if (!isDOMElement(children)) {
-      throw new Error(
-        'You must wrap any Component Elements passed to Waypoint in a DOM Element (eg; a <div>).'
-      );
-    }
-  }
-}
 
 /**
  * Calls a function when you scroll to the element.
@@ -309,22 +176,22 @@ export default class Waypoint extends React.Component {
     };
     this.props.onPositionChange.call(this, callbackArg);
 
-    if (currentPosition === POSITIONS.inside) {
+    if (currentPosition === constants.inside) {
       this.props.onEnter.call(this, callbackArg);
-    } else if (previousPosition === POSITIONS.inside) {
+    } else if (previousPosition === constants.inside) {
       this.props.onLeave.call(this, callbackArg);
     }
 
-    const isRapidScrollDown = previousPosition === POSITIONS.below &&
-      currentPosition === POSITIONS.above;
-    const isRapidScrollUp = previousPosition === POSITIONS.above &&
-      currentPosition === POSITIONS.below;
+    const isRapidScrollDown = previousPosition === constants.below &&
+      currentPosition === constants.above;
+    const isRapidScrollUp = previousPosition === constants.above &&
+      currentPosition === constants.below;
 
     if (this.props.fireOnRapidScroll && (isRapidScrollDown || isRapidScrollUp)) {
       // If the scroll event isn't fired often enough to occur while the
       // waypoint was visible, we trigger both callbacks anyway.
       this.props.onEnter.call(this, {
-        currentPosition: POSITIONS.inside,
+        currentPosition: constants.inside,
         previousPosition,
         event,
         waypointTop: bounds.waypointTop,
@@ -334,7 +201,7 @@ export default class Waypoint extends React.Component {
       });
       this.props.onLeave.call(this, {
         currentPosition,
-        previousPosition: POSITIONS.inside,
+        previousPosition: constants.inside,
         event,
         waypointTop: bounds.waypointTop,
         waypointBottom: bounds.waypointBottom,
@@ -435,10 +302,10 @@ Waypoint.propTypes = {
   ]),
 };
 
-Waypoint.above = POSITIONS.above;
-Waypoint.below = POSITIONS.below;
-Waypoint.inside = POSITIONS.inside;
-Waypoint.invisible = POSITIONS.invisible;
+Waypoint.above = constants.above;
+Waypoint.below = constants.below;
+Waypoint.inside = constants.inside;
+Waypoint.invisible = constants.invisible;
 Waypoint.getWindow = () => {
   if (typeof window !== 'undefined') {
     return window;
