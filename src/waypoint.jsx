@@ -66,6 +66,7 @@ export default class Waypoint extends React.Component {
     // this works smoothly, we want to delay the initial execution until the
     // next tick.
     this.initialTimeout = setTimeout(() => {
+      this.initialTimeout = null;
       this._handleScroll(null);
     }, 0);
   }
@@ -91,7 +92,9 @@ export default class Waypoint extends React.Component {
     removeEventListener(this.scrollEventListenerHandle);
     removeEventListener(this.resizeEventListenerHandle);
 
-    clearTimeout(this.initialTimeout);
+    if (this.initialTimeout) {
+      clearTimeout(this.initialTimeout);
+    }
   }
 
   /**
