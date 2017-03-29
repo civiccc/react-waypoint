@@ -1,5 +1,9 @@
 ## master (unreleased)
 
+## 5.2.1
+
+- [Fix] Avoid unnecessary clearTimeout when unmounting.
+
 ## 5.2.0
 
 - [New] scrollableAncestor prop can now accept "window" as a string. This should
