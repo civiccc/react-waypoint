@@ -1,5 +1,10 @@
 ## master (unreleased)
 
+## 6.0.0
+
+- Add `prop-types` as a peer dependency to remove deprecation warnings when
+  running on React 15.5
+
 ## 5.3.1
 
 - Remove the `prop-types` peer dependency. This was an accidental breaking
