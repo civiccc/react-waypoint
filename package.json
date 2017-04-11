@@ -1,6 +1,6 @@
 {
   "name": "react-waypoint",
-  "version": "5.3.1",
+  "version": "6.0.0",
   "description": "A React component to execute a function whenever you scroll to an element.",
   "main": "build/waypoint.js",
   "types": "index.d.ts",
@@ -28,7 +28,8 @@
   "author": "Brigade Engineering",
   "license": "MIT",
   "peerDependencies": {
-    "react": "^0.14.0 || ^15.0.0"
+    "react": "^0.14.0 || ^15.0.0",
+    "prop-types": "^15.0.0"
   },
   "devDependencies": {
     "@types/react": "^15.0.21",
