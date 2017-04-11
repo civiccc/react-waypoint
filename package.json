@@ -28,7 +28,7 @@
   "author": "Brigade Engineering",
   "license": "MIT",
   "peerDependencies": {
-    "react": "^15.0.0",
+    "react": "^0.14.0 || ^15.0.0",
     "prop-types": "^15.0.0"
   },
   "devDependencies": {
