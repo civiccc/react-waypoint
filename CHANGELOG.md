@@ -1,5 +1,10 @@
 ## master (unreleased)
 
+## 5.3.0
+
+- Remove deprecation warnings when running on React 15.5
+- Add React 14 to Travis test suite.
+
 ## 5.2.1
 
 - [Fix] Avoid unnecessary clearTimeout when unmounting.
