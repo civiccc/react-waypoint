@@ -1210,7 +1210,7 @@ describe('<Waypoint>', function() {
 
   describe('when the waypoint is updated in the onEnter callback', () => {
     beforeEach(() => {
-      const Wrapper = React.createClass({
+      class Wrapper extends React.Component {
         render() {
           return React.createElement('div',
             { style: { margin: window.innerHeight * 2 + 'px 0' } },
@@ -1221,8 +1221,8 @@ describe('<Waypoint>', function() {
               }
             })
           );
-        },
-      });
+        }
+      }
 
       this.subject = () => {
         return renderAttached(React.createElement(Wrapper, this.props));
