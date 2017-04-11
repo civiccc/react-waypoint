@@ -1,6 +1,5 @@
 import { addEventListener, removeEventListener } from 'consolidated-events';
-import PropTypes from 'prop-types';
-import React from 'react';
+import React, { PropTypes } from 'react';
 
 import computeOffsetPixels from './computeOffsetPixels';
 import constants from './constants';
