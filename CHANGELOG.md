@@ -1,5 +1,10 @@
 ## master (unreleased)
 
+## 5.3.1
+
+- Remove the `prop-types` peer dependency. This was an accidental breaking
+  change that will instead be released as 6.0.0.
+
 ## 5.3.0
 
 - Remove deprecation warnings when running on React 15.5
