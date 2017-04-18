@@ -23,7 +23,9 @@
     "tag": "git tag v$npm_package_version",
     "test": "npm run testonly",
     "testonly": "karma start --single-run",
-    "testonly:watch": "karma start --no-single-run"
+    "testonly:watch": "karma start --no-single-run",
+    "performance-test:watch": "webpack --watch --config webpack.config.performance-test.js"
+
   },
   "author": "Brigade Engineering",
   "license": "MIT",

@@ -9,6 +9,13 @@ We love pull requests. Here's a quick guide:
 4. Make the test pass.
 5. Push to your fork and submit a pull request.
 
+## Testing performance
+
+To test scroll performance when having multiple waypoints on a page, run `npm run
+performance-test:watch`, then open `spec/performance-test.html`. Scroll around
+and use your regular performance profiling tools to see the effects of your
+changes.
+
 ## Publishing a new version
 
 1. Add list of changes to CHANGELOG.md. Do not commit them yet.
