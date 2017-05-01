@@ -230,6 +230,13 @@ then the boundaries will be pushed inward, toward the center of the page. If
 you specify a negative value for an offset, then the boundary will be pushed
 outward from the center of the page.
 
+Here is an illustration of offsets and boundaries. The black box is the
+[`scrollableAncestor`](#containing-elements-and-scrollableancestor). The pink
+lines represent the location of the boundaries. The offsets that determine
+the boundaries are in light pink.
+
+![](https://cloud.githubusercontent.com/assets/2322305/16939123/5be12454-4d33-11e6-86b6-ad431da93bf2.png)
+
 #### Horizontal Scrolling Offsets and Boundaries
 
 By default, waypoints listen to vertical scrolling. If you want to switch to
