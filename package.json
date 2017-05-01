@@ -25,13 +25,11 @@
     "testonly": "karma start --single-run",
     "testonly:watch": "karma start --no-single-run",
     "performance-test:watch": "webpack --watch --config webpack.config.performance-test.js"
-
   },
   "author": "Brigade Engineering",
   "license": "MIT",
   "peerDependencies": {
-    "react": "^0.14.9 || ^15.0.0",
-    "prop-types": "^15.0.0"
+    "react": "^0.14.9 || ^15.0.0"
   },
   "devDependencies": {
     "@types/react": "^15.0.21",
@@ -52,7 +50,6 @@
     "karma-firefox-launcher": "^1.0.1",
     "karma-jasmine": "^1.1.0",
     "karma-webpack": "^2.0.3",
-    "prop-types": "^15.5.4",
     "react": "^15.5.3",
     "react-dom": "^15.5.3",
     "rimraf": "^2.6.1",
@@ -67,6 +64,7 @@
     "onscroll"
   ],
   "dependencies": {
-    "consolidated-events": "^1.0.1"
+    "consolidated-events": "^1.0.1",
+    "prop-types": "^15.5.8"
   }
 }
