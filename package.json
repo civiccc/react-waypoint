@@ -65,6 +65,6 @@
   ],
   "dependencies": {
     "consolidated-events": "^1.0.1",
-    "prop-types": "^15.5.8"
+    "prop-types": "^15.0.0"
   }
 }
