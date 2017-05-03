@@ -121,14 +121,9 @@ export default class Waypoint extends React.Component {
     while (node.parentNode) {
       node = node.parentNode;
 
-      if (node === document) {
-        // This particular node does not have a computed style.
-        continue;
-      }
-
-      if (node === document.documentElement) {
-        // This particular node does not have a scroll bar, it uses the window.
-        continue;
+      if (node === document.body) {
+        // We've reached all the way to the root node.
+        return window;
       }
 
       const style = window.getComputedStyle(node);

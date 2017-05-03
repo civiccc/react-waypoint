@@ -1138,9 +1138,17 @@ describe('<Waypoint>', function() {
       this.parentStyle.height = 'auto';
       this.parentStyle.overflow = 'visible';
 
+      // This is only here to try and confuse the _findScrollableAncestor code.
+      document.body.style.overflow = 'auto';
+
       // Make the spacers large enough to make the Waypoint render off-screen
       this.topSpacerHeight = window.innerHeight + 1000;
       this.bottomSpacerHeight = 1000;
+    });
+
+    afterEach(() => {
+      // Reset body style
+      document.body.style.overflow = '';
     });
 
     it('does not fire the onEnter handler on mount', () => {
