@@ -1,5 +1,11 @@
 ## master (unreleased)
 
+## 7.0.0
+
+- Move `prop-types` to a regular dependency
+- Assume `window` as scrollable ancestor when `<body>` has `overflow: auto|scroll`
+- Restrict lower bound of React to v0.14.9
+
 ## 6.0.0
 
 - Add `prop-types` as a peer dependency to remove deprecation warnings when
