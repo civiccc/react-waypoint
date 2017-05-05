@@ -7,6 +7,7 @@ import constants from './constants';
 import debugLog from './debugLog';
 import ensureChildrenIsSingleDOMElement from './ensureChildrenIsSingleDOMElement';
 import getCurrentPosition from './getCurrentPosition';
+import onNextTick from './onNextTick';
 import resolveScrollableAncestorProp from './resolveScrollableAncestorProp';
 
 const defaultProps = {
@@ -42,34 +43,33 @@ export default class Waypoint extends React.Component {
       return;
     }
 
-    this._handleScroll = this._handleScroll.bind(this);
-    this.scrollableAncestor = this._findScrollableAncestor();
-
-    if (process.env.NODE_ENV !== 'production' && this.props.debug) {
-      debugLog('scrollableAncestor', this.scrollableAncestor);
-    }
-
-    this.scrollEventListenerHandle = addEventListener(
-      this.scrollableAncestor,
-      'scroll',
-      this._handleScroll,
-      { passive: true }
-    );
-
-    this.resizeEventListenerHandle = addEventListener(
-      window,
-      'resize',
-      this._handleScroll,
-      { passive: true }
-    );
-
     // this._ref may occasionally not be set at this time. To help ensure that
     // this works smoothly, we want to delay the initial execution until the
     // next tick.
-    this.initialTimeout = setTimeout(() => {
-      this.initialTimeout = null;
+    this.cancelInitialTimeout = onNextTick(() => {
+      this._handleScroll = this._handleScroll.bind(this);
+      this.scrollableAncestor = this._findScrollableAncestor();
+
+      if (process.env.NODE_ENV !== 'production' && this.props.debug) {
+        debugLog('scrollableAncestor', this.scrollableAncestor);
+      }
+
+      this.scrollEventListenerHandle = addEventListener(
+        this.scrollableAncestor,
+        'scroll',
+        this._handleScroll,
+        { passive: true }
+      );
+
+      this.resizeEventListenerHandle = addEventListener(
+        window,
+        'resize',
+        this._handleScroll,
+        { passive: true }
+      );
+
       this._handleScroll(null);
-    }, 0);
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -90,11 +90,15 @@ export default class Waypoint extends React.Component {
       return;
     }
 
-    removeEventListener(this.scrollEventListenerHandle);
-    removeEventListener(this.resizeEventListenerHandle);
+    if (this.scrollEventListenerHandle) {
+      removeEventListener(this.scrollEventListenerHandle);
+    }
+    if (this.resizeEventListenerHandle) {
+      removeEventListener(this.resizeEventListenerHandle);
+    }
 
-    if (this.initialTimeout) {
-      clearTimeout(this.initialTimeout);
+    if (this.cancelInitialTimeout) {
+      this.cancelInitialTimeout();
     }
   }
 

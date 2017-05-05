@@ -1239,8 +1239,14 @@ describe('<Waypoint>', function() {
 
     it('only calls onEnter once', () => {
       this.subject();
-      scrollNodeTo(window, window.innerHeight);
-      expect(this.props.onEnter.calls.count()).toBe(1);
+
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          scrollNodeTo(window, window.innerHeight);
+          expect(this.props.onEnter.calls.count()).toBe(1);
+          resolve();
+        });
+      });
     });
   });
 
