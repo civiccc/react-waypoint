@@ -1,5 +1,10 @@
 ## master (unreleased)
 
+## 7.0.1
+
+- Improve startup time by consolidating `setTimeout`s and deferring work until
+  the initial timeout happens.
+
 ## 7.0.0
 
 - Move `prop-types` to a regular dependency
