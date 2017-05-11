@@ -17,15 +17,12 @@ export default function onNextTick(cb) {
     }, 0);
   }
 
-  let isSubscribed = true;
-
   return function unsubscribe() {
-    if (!isSubscribed) {
+    const index = timeoutQueue.indexOf(cb);
+    if (index === -1) {
       return;
     }
 
-    isSubscribed = false;
-    const index = timeoutQueue.indexOf(cb);
     timeoutQueue.splice(index, 1);
 
     if (!timeoutQueue.length && timeout) {
