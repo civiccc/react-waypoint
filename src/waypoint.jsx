@@ -1,4 +1,4 @@
-import { addEventListener, removeEventListener } from 'consolidated-events';
+import { addEventListener } from 'consolidated-events';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -54,14 +54,14 @@ export default class Waypoint extends React.Component {
         debugLog('scrollableAncestor', this.scrollableAncestor);
       }
 
-      this.scrollEventListenerHandle = addEventListener(
+      this.scrollEventListenerUnsubscribe = addEventListener(
         this.scrollableAncestor,
         'scroll',
         this._handleScroll,
         { passive: true }
       );
 
-      this.resizeEventListenerHandle = addEventListener(
+      this.resizeEventListenerUnsubscribe = addEventListener(
         window,
         'resize',
         this._handleScroll,
@@ -95,11 +95,11 @@ export default class Waypoint extends React.Component {
       return;
     }
 
-    if (this.scrollEventListenerHandle) {
-      removeEventListener(this.scrollEventListenerHandle);
+    if (this.scrollEventListenerUnsubscribe) {
+      this.scrollEventListenerUnsubscribe();
     }
-    if (this.resizeEventListenerHandle) {
-      removeEventListener(this.resizeEventListenerHandle);
+    if (this.resizeEventListenerUnsubscribe) {
+      this.resizeEventListenerUnsubscribe();
     }
 
     if (this.cancelInitialTimeout) {
