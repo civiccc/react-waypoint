@@ -1,5 +1,9 @@
 ## master (unreleased)
 
+## 7.0.4
+
+- Update consolidated-events from 1.0.1 to 1.1.0.
+
 ## 7.0.3
 
 - Fix bug in onNextTick.
