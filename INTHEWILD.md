@@ -4,6 +4,7 @@ Please use [pull requests](https://github.com/brigade/react-waypoint/pull/new/ma
 
 - [Airbnb](https://github.com/airbnb)
 - [Brigade](https://github.com/brigade)
+- [DoorDash](https://github.com/doordash)
 - [Netflix](https://github.com/Netflix)
 - [Remix](https://github.com/remix)
 - [StarNow](https://github.com/starnow)
