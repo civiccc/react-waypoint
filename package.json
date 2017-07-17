@@ -61,7 +61,8 @@
     "component",
     "react-component",
     "scroll",
-    "onscroll"
+    "onscroll",
+    "scrollspy"
   ],
   "dependencies": {
     "consolidated-events": "^1.1.0",
