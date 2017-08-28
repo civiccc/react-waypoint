@@ -1,7 +1,7 @@
 import isFunction from './isFunction';
 
 /**
- * Raise an error if "children| is a function and there is no ref in Waypoint
+ * Raise an error if "children" is a function and there is no ref in Waypoint
  *
  * @param {*} children
  * @param {*} ref
