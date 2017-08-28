@@ -5,18 +5,20 @@ import React from 'react';
 import computeOffsetPixels from './computeOffsetPixels';
 import constants from './constants';
 import debugLog from './debugLog';
-import ensureChildrenIsSingleDOMElement from './ensureChildrenIsSingleDOMElement';
+import ensureChildrenIsValid from './ensureChildrenIsValid';
 import getCurrentPosition from './getCurrentPosition';
 import onNextTick from './onNextTick';
 import resolveScrollableAncestorProp from './resolveScrollableAncestorProp';
+
+import isFunction from './isFunction';
 
 const defaultProps = {
   topOffset: '0px',
   bottomOffset: '0px',
   horizontal: false,
-  onEnter() {},
-  onLeave() {},
-  onPositionChange() {},
+  onEnter() { },
+  onLeave() { },
+  onPositionChange() { },
   fireOnRapidScroll: true,
 };
 
@@ -31,7 +33,7 @@ export default class Waypoint extends React.Component {
   }
 
   componentWillMount() {
-    ensureChildrenIsSingleDOMElement(this.props.children);
+    ensureChildrenIsValid(this.props.children);
 
     if (this.props.scrollableParent) { // eslint-disable-line react/prop-types
       throw new Error('The `scrollableParent` prop has changed name to `scrollableAncestor`.');
@@ -73,7 +75,7 @@ export default class Waypoint extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    ensureChildrenIsSingleDOMElement(nextProps.children);
+    ensureChildrenIsValid(nextProps.children);
   }
 
   componentDidUpdate() {
@@ -276,6 +278,10 @@ export default class Waypoint extends React.Component {
       return <span ref={this.refElement} style={{ fontSize: 0 }} />;
     }
 
+    if (isFunction(children)) {
+      return children(this.refElement);
+    }
+
     const ref = (node) => {
       this.refElement(node);
       if (children.ref) {
@@ -288,7 +294,10 @@ export default class Waypoint extends React.Component {
 }
 
 Waypoint.propTypes = {
-  children: PropTypes.element,
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.func
+  ]),
   debug: PropTypes.bool,
   onEnter: PropTypes.func,
   onLeave: PropTypes.func,
