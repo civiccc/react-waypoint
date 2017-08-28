@@ -872,9 +872,14 @@ describe('<Waypoint>', function() {
     });
   });
 
+  it('doesn\'t throw with a function as a child', () => {
+    this.props.children = ref => React.createElement('div', { ref });
+    expect(this.subject).not.toThrow();
+  });
+
   it('errors with a stateless component child', () => {
     const errorMessage = 'You must wrap any Component Elements passed to Waypoint ' +
-      'in a DOM Element (eg; a <div>).';
+      'in a DOM Element (eg; a <div>) or in a Render Callback.';
     const StatelessComponent = () => React.createElement('div');
     this.props.children = React.createElement(StatelessComponent);
 
@@ -890,7 +895,7 @@ describe('<Waypoint>', function() {
     this.props.children = React.createElement(ClassBasedComponent);
 
     const errorMessage = 'You must wrap any Component Elements passed to Waypoint ' +
-      'in a DOM Element (eg; a <div>).';
+      'in a DOM Element (eg; a <div>) or in a Render Callback.';
     expect(this.subject).toThrowError(errorMessage);
   });
 

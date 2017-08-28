@@ -10,8 +10,8 @@ import isFunction from './isFunction';
 export default function ensureChildrenIsValid(children) {
   if (children && !isFunction(children) && !isDOMElement(children)) {
     throw new Error(
-      'You must wrap any Component Elements passed to Waypoint in a DOM Element (eg; a <div>)' +
-      'or in a Render Callback'
+      'You must wrap any Component Elements passed to Waypoint in a DOM Element (eg; a <div>) ' +
+      'or in a Render Callback.'
     );
   }
 }
