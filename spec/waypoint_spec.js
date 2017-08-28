@@ -877,6 +877,14 @@ describe('<Waypoint>', function() {
     expect(this.subject).not.toThrow();
   });
 
+  it('errors if child is a function and there is no ref', () => {
+    this.props.children = () => React.createElement('div');
+    expect(this.subject).toThrowError(
+      'No ref was provided to Waypoint component. If you are using function as a child, ' +
+      'make sure that you passed a ref function to the component you want to render.'
+    );
+  });
+
   it('errors with a stateless component child', () => {
     const errorMessage = 'You must wrap any Component Elements passed to Waypoint ' +
       'in a DOM Element (eg; a <div>) or in a Render Callback.';

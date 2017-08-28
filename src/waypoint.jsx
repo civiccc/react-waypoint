@@ -5,12 +5,12 @@ import React from 'react';
 import computeOffsetPixels from './computeOffsetPixels';
 import constants from './constants';
 import debugLog from './debugLog';
+import isFunction from './isFunction';
 import ensureChildrenIsValid from './ensureChildrenIsValid';
+import ensureRefIsUsedByChild from './ensureRefIsUsedByChild';
 import getCurrentPosition from './getCurrentPosition';
 import onNextTick from './onNextTick';
 import resolveScrollableAncestorProp from './resolveScrollableAncestorProp';
-
-import isFunction from './isFunction';
 
 const defaultProps = {
   topOffset: '0px',
@@ -121,6 +121,7 @@ export default class Waypoint extends React.Component {
     const {
       horizontal,
       scrollableAncestor,
+      children,
     } = this.props;
 
     if (scrollableAncestor) {
@@ -128,6 +129,7 @@ export default class Waypoint extends React.Component {
     }
 
     let node = this._ref;
+    ensureRefIsUsedByChild(children, node);
 
     while (node.parentNode) {
       node = node.parentNode;

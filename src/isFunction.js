@@ -1,7 +1,7 @@
 /**
  * Checks if `input` is a function
  *
- * @param {any} input
+ * @param {*} input
  * @return {bool} Whether the input is a function
  */
 export default function isFunction(input) {
