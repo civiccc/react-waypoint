@@ -1,17 +1,21 @@
-import isDOMElement from './isDOMElement';
-import isFunction from './isFunction';
+import React from 'react';
+
+export const errorMessage =
+  '<Waypoint> expected to receive a function or a single React element child.\n\n' +
+  'See /* TODO: shortlink to Children section */ for more info.';
 
 /**
- * Raise an error if "children" isn't a single DOM Element or a function
+ * Raise an error if "children" is not a function or if more that one child was provided
  *
- * @param {React.element|null} children
+ * @param {?(React.element|Function)} children
  * @return {undefined}
  */
 export default function ensureChildrenIsValid(children) {
-  if (children && !isFunction(children) && !isDOMElement(children)) {
-    throw new Error(
-      'You must wrap any Component Elements passed to Waypoint in a DOM Element (eg; a <div>) ' +
-      'or in a Render Callback.'
-    );
+  if (children && typeof children !== 'function') {
+    try {
+      React.Children.only(children);
+    } catch (e) {
+      throw new Error(errorMessage);
+    }
   }
 }

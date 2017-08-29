@@ -5,9 +5,9 @@ import React from 'react';
 import computeOffsetPixels from './computeOffsetPixels';
 import constants from './constants';
 import debugLog from './debugLog';
-import isFunction from './isFunction';
 import ensureChildrenIsValid from './ensureChildrenIsValid';
 import ensureRefIsUsedByChild from './ensureRefIsUsedByChild';
+import isDOMElement from './isDOMElement';
 import getCurrentPosition from './getCurrentPosition';
 import onNextTick from './onNextTick';
 import resolveScrollableAncestorProp from './resolveScrollableAncestorProp';
@@ -49,6 +49,9 @@ export default class Waypoint extends React.Component {
     // this works smoothly, we want to delay the initial execution until the
     // next tick.
     this.cancelInitialTimeout = onNextTick(() => {
+      // Berofe doing anything, we want to check that this._ref is avaliable in Waypoint
+      ensureRefIsUsedByChild(this.props.children, this._ref);
+
       this._handleScroll = this._handleScroll.bind(this);
       this.scrollableAncestor = this._findScrollableAncestor();
 
@@ -72,10 +75,6 @@ export default class Waypoint extends React.Component {
 
       this._handleScroll(null);
     });
-  }
-
-  componentWillReceiveProps(nextProps) {
-    ensureChildrenIsValid(nextProps.children);
   }
 
   componentDidUpdate() {
@@ -109,6 +108,10 @@ export default class Waypoint extends React.Component {
     }
   }
 
+  componentWillReceiveNewProps(newProps) {
+    ensureChildrenIsValid(newProps.children);
+  }
+
   /**
    * Traverses up the DOM to find an ancestor container which has an overflow
    * style that allows for scrolling.
@@ -121,7 +124,6 @@ export default class Waypoint extends React.Component {
     const {
       horizontal,
       scrollableAncestor,
-      children,
     } = this.props;
 
     if (scrollableAncestor) {
@@ -129,7 +131,6 @@ export default class Waypoint extends React.Component {
     }
 
     let node = this._ref;
-    ensureRefIsUsedByChild(children, node);
 
     while (node.parentNode) {
       node = node.parentNode;
@@ -280,25 +281,29 @@ export default class Waypoint extends React.Component {
       return <span ref={this.refElement} style={{ fontSize: 0 }} />;
     }
 
-    if (isFunction(children)) {
+    if (typeof children === 'function') {
       return children(this.refElement);
     }
 
-    const ref = (node) => {
-      this.refElement(node);
-      if (children.ref) {
-        children.ref(node);
-      }
-    };
+    if (isDOMElement(children)) {
+      const ref = (node) => {
+        this.refElement(node);
+        if (children.ref) {
+          children.ref(node);
+        }
+      };
 
-    return React.cloneElement(children, { ref });
+      return React.cloneElement(children, { ref });
+    }
+
+    return React.cloneElement(children, { innerRef: this.refElement });
   }
 }
 
 Waypoint.propTypes = {
   children: PropTypes.oneOfType([
-    PropTypes.element,
-    PropTypes.func
+    PropTypes.node,
+    PropTypes.func,
   ]),
   debug: PropTypes.bool,
   onEnter: PropTypes.func,
