@@ -3,6 +3,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Waypoint from '../src/waypoint.jsx';
 
+import { errorMessage as notValidErrorMessage } from '../src/ensureChildrenIsValid';
+import { errorMessage as refNotUsedErrorMessage } from '../src/ensureRefIsUsedByChild';
+
 let div;
 
 const renderAttached = function(component) {
@@ -872,39 +875,71 @@ describe('<Waypoint>', function() {
     });
   });
 
-  it('doesn\'t throw with a function as a child', () => {
-    this.props.children = ref => React.createElement('div', { ref });
-    expect(this.subject).not.toThrow();
-  });
+  describe('when the Waypoint has children', () => {
+    it('does not throw with a DOM Element as a child', () => {
+      this.props.children = React.createElement('div');
+      expect(this.subject).not.toThrow();
+    });
 
-  it('errors if child is a function and there is no ref', () => {
-    this.props.children = () => React.createElement('div');
-    expect(this.subject).toThrowError(
-      'No ref was provided to Waypoint component. If you are using function as a child, ' +
-      'make sure that you passed a ref function to the component you want to render.'
-    );
-  });
+    it('errors when multiple children are provided', () => {
+      this.props.children = [
+        React.createElement('div'),
+        React.createElement('div'),
+        React.createElement('div')
+      ];
 
-  it('errors with a stateless component child', () => {
-    const errorMessage = 'You must wrap any Component Elements passed to Waypoint ' +
-      'in a DOM Element (eg; a <div>) or in a Render Callback.';
-    const StatelessComponent = () => React.createElement('div');
-    this.props.children = React.createElement(StatelessComponent);
+      expect(this.subject).toThrowError(notValidErrorMessage);
+    });
 
-    expect(this.subject).toThrowError(errorMessage);
-  });
-
-  it('errors with a class-based component child', () => {
-    class ClassBasedComponent extends React.Component {
-      render() {
-        return React.createElement('div');
+    it('does not throw with a Statefull Component as a child', () => {
+      class StatefullComponent extends React.Component {
+        render() {
+          return React.createElement('div', { ref: this.props.innerRef });
+        }
       }
-    }
-    this.props.children = React.createElement(ClassBasedComponent);
 
-    const errorMessage = 'You must wrap any Component Elements passed to Waypoint ' +
-      'in a DOM Element (eg; a <div>) or in a Render Callback.';
-    expect(this.subject).toThrowError(errorMessage);
+      this.props.children = React.createElement(StatefullComponent);
+      expect(this.subject).not.toThrow();
+    });
+
+    it('errors when a Statefull Component does not provide ref to Waypoint', () => {
+      class StatefullComponent extends React.Component {
+        render() {
+          return React.createElement('div');
+        }
+      }
+
+      this.props.children = React.createElement(StatefullComponent);
+      expect(this.subject).toThrowError(refNotUsedErrorMessage);
+    });
+
+    it('does not throw with a Stateless Component as a child', () => {
+      const StatelessComponent = (props) => React.createElement('div', { ref: props.innerRef });
+
+      this.props.children = React.createElement(StatelessComponent);
+      expect(this.subject).not.toThrow();
+    });
+
+    it('errors when a Stateless Component does not provide ref to Waypoint', () => {
+      const StatelessComponent = () => React.createElement('div');
+
+      this.props.children = React.createElement(StatelessComponent);
+      expect(this.subject).toThrowError(refNotUsedErrorMessage);
+    });
+
+    it('does not throw with a function as a child', () => {
+      const renderCallback = (innerRef) => React.createElement('div', { ref: innerRef });
+
+      this.props.children = renderCallback;
+      expect(this.subject).not.toThrow();
+    });
+
+    it('errors when a function as child does not provide ref to Waypoint', () => {
+      const renderCallback = () => React.createElement('div');
+
+      this.props.children = renderCallback;
+      expect(this.subject).toThrowError(refNotUsedErrorMessage);
+    });
   });
 
   describe('when the Waypoint has children and is above the top', () => {
