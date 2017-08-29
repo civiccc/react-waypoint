@@ -2,7 +2,7 @@ import isDOMElement from './isDOMElement';
 
 export const errorMessage =
   '<Waypoint> needs a DOM element to compute boundaries. The child you passed is neither a ' +
-  'DOM element (e.g. <div>) nor does it have a ref or innerRef function.\n\n' +
+  'DOM element (e.g. <div>) nor does it uses innerRef prop.\n\n' +
   'See /* TODO: shortlink */ for more info.';
 
 /**
