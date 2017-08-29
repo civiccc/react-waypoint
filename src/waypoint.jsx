@@ -281,10 +281,6 @@ export default class Waypoint extends React.Component {
       return <span ref={this.refElement} style={{ fontSize: 0 }} />;
     }
 
-    if (typeof children === 'function') {
-      return children(this.refElement);
-    }
-
     if (isDOMElement(children)) {
       const ref = (node) => {
         this.refElement(node);
@@ -301,10 +297,7 @@ export default class Waypoint extends React.Component {
 }
 
 Waypoint.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.node,
-    PropTypes.func,
-  ]),
+  children: PropTypes.node,
   debug: PropTypes.bool,
   onEnter: PropTypes.func,
   onLeave: PropTypes.func,

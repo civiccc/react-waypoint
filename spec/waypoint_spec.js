@@ -891,25 +891,25 @@ describe('<Waypoint>', function() {
       expect(this.subject).toThrowError(notValidErrorMessage);
     });
 
-    it('does not throw with a Statefull Component as a child', () => {
-      class StatefullComponent extends React.Component {
+    it('does not throw with a Stateful Component as a child', () => {
+      class StatefulComponent extends React.Component {
         render() {
           return React.createElement('div', { ref: this.props.innerRef });
         }
       }
 
-      this.props.children = React.createElement(StatefullComponent);
+      this.props.children = React.createElement(StatefulComponent);
       expect(this.subject).not.toThrow();
     });
 
-    it('errors when a Statefull Component does not provide ref to Waypoint', () => {
-      class StatefullComponent extends React.Component {
+    it('errors when a Stateful Component does not provide ref to Waypoint', () => {
+      class StatefulComponent extends React.Component {
         render() {
           return React.createElement('div');
         }
       }
 
-      this.props.children = React.createElement(StatefullComponent);
+      this.props.children = React.createElement(StatefulComponent);
       expect(this.subject).toThrowError(refNotUsedErrorMessage);
     });
 
@@ -924,20 +924,6 @@ describe('<Waypoint>', function() {
       const StatelessComponent = () => React.createElement('div');
 
       this.props.children = React.createElement(StatelessComponent);
-      expect(this.subject).toThrowError(refNotUsedErrorMessage);
-    });
-
-    it('does not throw with a function as a child', () => {
-      const renderCallback = (innerRef) => React.createElement('div', { ref: innerRef });
-
-      this.props.children = renderCallback;
-      expect(this.subject).not.toThrow();
-    });
-
-    it('errors when a function as child does not provide ref to Waypoint', () => {
-      const renderCallback = () => React.createElement('div');
-
-      this.props.children = renderCallback;
       expect(this.subject).toThrowError(refNotUsedErrorMessage);
     });
   });

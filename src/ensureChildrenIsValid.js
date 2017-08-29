@@ -1,17 +1,17 @@
 import React from 'react';
 
 export const errorMessage =
-  '<Waypoint> expected to receive a function or a single React element child.\n\n' +
+  '<Waypoint> expected to receive a single React element child.\n\n' +
   'See /* TODO: shortlink to Children section */ for more info.';
 
 /**
- * Raise an error if "children" is not a function or if more that one child was provided
+ * Raise an error if more that one child was provided to "children"
  *
- * @param {?(React.element|Function)} children
+ * @param {?React.element} children
  * @return {undefined}
  */
 export default function ensureChildrenIsValid(children) {
-  if (children && typeof children !== 'function') {
+  if (children) {
     try {
       React.Children.only(children);
     } catch (e) {
