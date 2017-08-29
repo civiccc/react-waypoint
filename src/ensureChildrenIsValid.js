@@ -2,7 +2,7 @@ import React from 'react';
 
 export const errorMessage =
   '<Waypoint> expected to receive a single React element child.\n\n' +
-  'See /* TODO: shortlink to Children section */ for more info.';
+  'See https://goo.gl/LrBNgw for more info.';
 
 /**
  * Raise an error if more that one child was provided to "children"
