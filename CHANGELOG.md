@@ -1,5 +1,9 @@
 ## master (unreleased)
 
+## 7.1.0
+
+- Add support for using composite components as child (#208)
+
 ## 7.0.4
 
 - Update consolidated-events from 1.0.1 to 1.1.0.

@@ -1,6 +1,6 @@
 {
   "name": "react-waypoint",
-  "version": "7.0.4",
+  "version": "7.1.0",
   "description": "A React component to execute a function whenever you scroll to an element.",
   "main": "build/waypoint.js",
   "types": "index.d.ts",
