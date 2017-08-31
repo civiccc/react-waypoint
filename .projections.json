@@ -1,9 +1,9 @@
 {
   "src/*.js": {
-    "alternate": "spec/{}_spec.js",
+    "alternate": "test/{}_test.js",
     "type": "source"
   },
-  "spec/*_spec.js": {
+  "test/*_test.js": {
     "alternate": "src/{}.js",
     "type": "test"
   }
