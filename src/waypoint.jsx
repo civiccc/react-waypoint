@@ -77,6 +77,10 @@ export default class Waypoint extends React.Component {
     });
   }
 
+  componentWillReceiveProps(newProps) {
+    ensureChildrenIsValid(newProps.children);
+  }
+
   componentDidUpdate() {
     if (!Waypoint.getWindow()) {
       return;
@@ -106,10 +110,6 @@ export default class Waypoint extends React.Component {
     if (this.cancelInitialTimeout) {
       this.cancelInitialTimeout();
     }
-  }
-
-  componentWillReceiveNewProps(newProps) {
-    ensureChildrenIsValid(newProps.children);
   }
 
   /**
