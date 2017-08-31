@@ -5,7 +5,9 @@ import React from 'react';
 import computeOffsetPixels from './computeOffsetPixels';
 import constants from './constants';
 import debugLog from './debugLog';
-import ensureChildrenIsSingleDOMElement from './ensureChildrenIsSingleDOMElement';
+import ensureChildrenIsValid from './ensureChildrenIsValid';
+import ensureRefIsUsedByChild from './ensureRefIsUsedByChild';
+import isDOMElement from './isDOMElement';
 import getCurrentPosition from './getCurrentPosition';
 import onNextTick from './onNextTick';
 import resolveScrollableAncestorProp from './resolveScrollableAncestorProp';
@@ -14,9 +16,9 @@ const defaultProps = {
   topOffset: '0px',
   bottomOffset: '0px',
   horizontal: false,
-  onEnter() {},
-  onLeave() {},
-  onPositionChange() {},
+  onEnter() { },
+  onLeave() { },
+  onPositionChange() { },
   fireOnRapidScroll: true,
 };
 
@@ -31,7 +33,7 @@ export default class Waypoint extends React.Component {
   }
 
   componentWillMount() {
-    ensureChildrenIsSingleDOMElement(this.props.children);
+    ensureChildrenIsValid(this.props.children);
 
     if (this.props.scrollableParent) { // eslint-disable-line react/prop-types
       throw new Error('The `scrollableParent` prop has changed name to `scrollableAncestor`.');
@@ -47,6 +49,9 @@ export default class Waypoint extends React.Component {
     // this works smoothly, we want to delay the initial execution until the
     // next tick.
     this.cancelInitialTimeout = onNextTick(() => {
+      // Berofe doing anything, we want to check that this._ref is avaliable in Waypoint
+      ensureRefIsUsedByChild(this.props.children, this._ref);
+
       this._handleScroll = this._handleScroll.bind(this);
       this.scrollableAncestor = this._findScrollableAncestor();
 
@@ -72,8 +77,8 @@ export default class Waypoint extends React.Component {
     });
   }
 
-  componentWillReceiveProps(nextProps) {
-    ensureChildrenIsSingleDOMElement(nextProps.children);
+  componentWillReceiveProps(newProps) {
+    ensureChildrenIsValid(newProps.children);
   }
 
   componentDidUpdate() {
@@ -276,19 +281,23 @@ export default class Waypoint extends React.Component {
       return <span ref={this.refElement} style={{ fontSize: 0 }} />;
     }
 
-    const ref = (node) => {
-      this.refElement(node);
-      if (children.ref) {
-        children.ref(node);
-      }
-    };
+    if (isDOMElement(children)) {
+      const ref = (node) => {
+        this.refElement(node);
+        if (children.ref) {
+          children.ref(node);
+        }
+      };
 
-    return React.cloneElement(children, { ref });
+      return React.cloneElement(children, { ref });
+    }
+
+    return React.cloneElement(children, { innerRef: this.refElement });
   }
 }
 
 Waypoint.propTypes = {
-  children: PropTypes.element,
+  children: PropTypes.node,
   debug: PropTypes.bool,
   onEnter: PropTypes.func,
   onLeave: PropTypes.func,

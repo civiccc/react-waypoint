@@ -3,6 +3,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Waypoint from '../src/waypoint.jsx';
 
+import { errorMessage as notValidErrorMessage } from '../src/ensureChildrenIsValid';
+import { errorMessage as refNotUsedErrorMessage } from '../src/ensureRefIsUsedByChild';
+
 let div;
 
 const renderAttached = function(component) {
@@ -872,26 +875,57 @@ describe('<Waypoint>', function() {
     });
   });
 
-  it('errors with a stateless component child', () => {
-    const errorMessage = 'You must wrap any Component Elements passed to Waypoint ' +
-      'in a DOM Element (eg; a <div>).';
-    const StatelessComponent = () => React.createElement('div');
-    this.props.children = React.createElement(StatelessComponent);
+  describe('when the Waypoint has children', () => {
+    it('does not throw with a DOM Element as a child', () => {
+      this.props.children = React.createElement('div');
+      expect(this.subject).not.toThrow();
+    });
 
-    expect(this.subject).toThrowError(errorMessage);
-  });
+    it('errors when multiple children are provided', () => {
+      this.props.children = [
+        React.createElement('div'),
+        React.createElement('div'),
+        React.createElement('div')
+      ];
 
-  it('errors with a class-based component child', () => {
-    class ClassBasedComponent extends React.Component {
-      render() {
-        return React.createElement('div');
+      expect(this.subject).toThrowError(notValidErrorMessage);
+    });
+
+    it('does not throw with a Stateful Component as a child', () => {
+      class StatefulComponent extends React.Component {
+        render() {
+          return React.createElement('div', { ref: this.props.innerRef });
+        }
       }
-    }
-    this.props.children = React.createElement(ClassBasedComponent);
 
-    const errorMessage = 'You must wrap any Component Elements passed to Waypoint ' +
-      'in a DOM Element (eg; a <div>).';
-    expect(this.subject).toThrowError(errorMessage);
+      this.props.children = React.createElement(StatefulComponent);
+      expect(this.subject).not.toThrow();
+    });
+
+    it('errors when a Stateful Component does not provide ref to Waypoint', () => {
+      class StatefulComponent extends React.Component {
+        render() {
+          return React.createElement('div');
+        }
+      }
+
+      this.props.children = React.createElement(StatefulComponent);
+      expect(this.subject).toThrowError(refNotUsedErrorMessage);
+    });
+
+    it('does not throw with a Stateless Component as a child', () => {
+      const StatelessComponent = (props) => React.createElement('div', { ref: props.innerRef });
+
+      this.props.children = React.createElement(StatelessComponent);
+      expect(this.subject).not.toThrow();
+    });
+
+    it('errors when a Stateless Component does not provide ref to Waypoint', () => {
+      const StatelessComponent = () => React.createElement('div');
+
+      this.props.children = React.createElement(StatelessComponent);
+      expect(this.subject).toThrowError(refNotUsedErrorMessage);
+    });
   });
 
   describe('when the Waypoint has children and is above the top', () => {
