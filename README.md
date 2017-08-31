@@ -275,19 +275,24 @@ waypoint as a line across the page. Whenever that line crosses a
 [boundary](#offsets-and-boundaries), then the `onEnter` or `onLeave` callbacks
 will be called.
 
-If you do pass a child, it could be a single DOM Element or a Component
-Element (eg; `<MyComponent />`).
+If you do pass a child, it can be a single DOM component (e.g. `<div>`) or a
+composite component (e.g. `<MyComponent />`).
 
-Waypoint needs a DOM Element to compute its boundaries. When you pass a DOM Element to Waypoint,
-it handles getting `ref` from DOM Element by itself. If you pass a Component Element,
-*make sure* that you utilize `innerRef` prop, passed by Waypoint to your Component to provide
-DOM element to Waypoint:
+Waypoint needs a DOM node to compute its boundaries. When you pass a DOM
+component to Waypoint, it handles getting a reference to the DOM node through
+the `ref` prop automatically. If you pass a composite component, you need to
+make use of the `innerRef` prop passed by Waypoint to your component. Simply
+pass it through as the `ref` of a DOM component and you're all set. Like in
+this example:
 
 ```jsx
 class Block extends React.Component {
   render() {
     return <div ref={this.props.innerRef}>Hello</div>
   }
+}
+Block.propTypes = {
+  innerRef: PropTypes.func.isRequired,
 }
 
 const App = () => (
