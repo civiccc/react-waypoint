@@ -52,13 +52,11 @@ describe('<Waypoint>', function() {
 
     this.subject = () => {
       const el = renderAttached(
-        React.createElement('div', { style: this.parentStyle },
-          React.createElement(
-            'div', { style: { height: this.topSpacerHeight } }),
-          React.createElement(Waypoint, this.props),
-          React.createElement(
-            'div', { style: { height: this.bottomSpacerHeight } })
-        )
+        <div style={this.parentStyle}>
+          <div style={{ height: this.topSpacerHeight }} />
+          <Waypoint {...this.props} />
+          <div style={{ height: this.bottomSpacerHeight }} />
+        </div>
       );
 
       jasmine.clock().tick(1);
@@ -342,20 +340,12 @@ describe('<Waypoint>', function() {
     describe('with children', () => {
       beforeEach(() => {
         this.childrenHeight = 80;
-        this.props.children = React.createElement('div', {}, [
-          React.createElement('div', {
-            key: 1,
-            style: {
-              height: this.childrenHeight / 2,
-            }
-          }),
-          React.createElement('div', {
-            key: 2,
-            style: {
-              height: this.childrenHeight / 2,
-            }
-          }),
-        ]);
+        this.props.children = (
+          <div>
+            <div style={{ height: this.childrenHeight / 2 }} />
+            <div style={{ height: this.childrenHeight / 2 }} />
+          </div>
+        );
       });
 
       it('calls the onEnter handler when scrolling down far enough', () => {
@@ -877,15 +867,15 @@ describe('<Waypoint>', function() {
 
   describe('when the Waypoint has children', () => {
     it('does not throw with a DOM Element as a child', () => {
-      this.props.children = React.createElement('div');
+      this.props.children = <div />;
       expect(this.subject).not.toThrow();
     });
 
     it('errors when multiple children are provided', () => {
       this.props.children = [
-        React.createElement('div'),
-        React.createElement('div'),
-        React.createElement('div')
+        <div key={1} />,
+        <div key={2} />,
+        <div key={3} />,
       ];
 
       expect(this.subject).toThrowError(notValidErrorMessage);
@@ -894,36 +884,36 @@ describe('<Waypoint>', function() {
     it('does not throw with a Stateful Component as a child', () => {
       class StatefulComponent extends React.Component {
         render() {
-          return React.createElement('div', { ref: this.props.innerRef });
+          return <div ref={this.props.innerRef} />;
         }
       }
 
-      this.props.children = React.createElement(StatefulComponent);
+      this.props.children = <StatefulComponent />;
       expect(this.subject).not.toThrow();
     });
 
     it('errors when a Stateful Component does not provide ref to Waypoint', () => {
       class StatefulComponent extends React.Component {
         render() {
-          return React.createElement('div');
+          return <div />;
         }
       }
 
-      this.props.children = React.createElement(StatefulComponent);
+      this.props.children = <StatefulComponent />;
       expect(this.subject).toThrowError(refNotUsedErrorMessage);
     });
 
     it('does not throw with a Stateless Component as a child', () => {
-      const StatelessComponent = (props) => React.createElement('div', { ref: props.innerRef });
+      const StatelessComponent = (props) => <div ref={props.innerRef} />;
 
-      this.props.children = React.createElement(StatelessComponent);
+      this.props.children = <StatelessComponent />;
       expect(this.subject).not.toThrow();
     });
 
     it('errors when a Stateless Component does not provide ref to Waypoint', () => {
-      const StatelessComponent = () => React.createElement('div');
+      const StatelessComponent = () => <div />;
 
-      this.props.children = React.createElement(StatelessComponent);
+      this.props.children = <StatelessComponent />;
       expect(this.subject).toThrowError(refNotUsedErrorMessage);
     });
   });
@@ -933,11 +923,7 @@ describe('<Waypoint>', function() {
       this.topSpacerHeight = 200;
       this.bottomSpacerHeight = 200;
       this.childrenHeight = 100;
-      this.props.children =  React.createElement('div', {
-        style: {
-          height: this.childrenHeight,
-        }
-      });
+      this.props.children = <div style={{ height: this.childrenHeight }} />;
       this.scrollable = this.subject();
 
       // Because of how we detect when a Waypoint is scrolled past without any
@@ -1254,20 +1240,21 @@ describe('<Waypoint>', function() {
     beforeEach(() => {
       class Wrapper extends React.Component {
         render() {
-          return React.createElement('div',
-            { style: { margin: window.innerHeight * 2 + 'px 0' } },
-            React.createElement(Waypoint, {
-              onEnter: () => {
-                this.props.onEnter();
-                this.forceUpdate();
-              }
-            })
+          const onEnter = () => {
+            this.props.onEnter();
+            this.forceUpdate();
+          };
+
+          return (
+            <div style={{ margin: window.innerHeight * 2 + 'px 0' }}>
+              <Waypoint onEnter={onEnter} />
+            </div>
           );
         }
       }
 
       this.subject = () => {
-        return renderAttached(React.createElement(Wrapper, this.props));
+        return renderAttached(<Wrapper {...this.props} />);
       };
     });
 
@@ -1441,21 +1428,11 @@ describe('<Waypoint> Horizontal', function() {
 
     this.subject = () => {
       const el = renderAttached(
-        React.createElement('div', { style: this.parentStyle },
-          React.createElement('div', {
-            style: {
-              width: this.leftSpacerWidth,
-              display: 'inline-block'
-            }
-          }),
-          React.createElement(Waypoint, this.props),
-          React.createElement('div', {
-            style: {
-              width: this.rightSpacerWidth,
-              display: 'inline-block'
-            }
-          })
-        )
+        <div style={this.parentStyle}>
+          <div style={{ width: this.leftSpacerWidth, display: 'inline-block' }} />
+          <Waypoint {...this.props} />
+          <div style={{ width: this.rightSpacerWidth, display: 'inline-block' }} />
+        </div>
       );
 
       jasmine.clock().tick(1);

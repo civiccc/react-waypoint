@@ -3,8 +3,16 @@
     "alternate": "test/{}_test.js",
     "type": "source"
   },
+  "src/*.jsx": {
+    "alternate": "test/{}_test.jsx",
+    "type": "source"
+  },
   "test/*_test.js": {
     "alternate": "src/{}.js",
+    "type": "test"
+  },
+  "test/*_test.jsx": {
+    "alternate": "src/{}.jsx",
     "type": "test"
   }
 }
