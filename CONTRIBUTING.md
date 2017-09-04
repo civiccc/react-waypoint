@@ -12,7 +12,7 @@ We love pull requests. Here's a quick guide:
 ## Testing performance
 
 To test scroll performance when having multiple waypoints on a page, run `npm run
-performance-test:watch`, then open `spec/performance-test.html`. Scroll around
+performance-test:watch`, then open `test/performance-test.html`. Scroll around
 and use your regular performance profiling tools to see the effects of your
 changes.
 
