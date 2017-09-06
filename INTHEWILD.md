@@ -9,6 +9,7 @@ Please use [pull requests](https://github.com/brigade/react-waypoint/pull/new/ma
 - [Remix](https://github.com/remix)
 - [StarNow](https://github.com/starnow)
 - [Yorango](https://github.com/Yorango)
+- [Wanderpaths](https://github.com/wanderpaths)
 
 # Projects
 
