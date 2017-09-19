@@ -29,7 +29,7 @@
   "author": "Brigade Engineering",
   "license": "MIT",
   "peerDependencies": {
-    "react": "^0.14.9 || ^15.0.0"
+    "react": "^0.14.9 || ^15.0.0 || ^16.0.0"
   },
   "devDependencies": {
     "@types/react": "^15.0.21",
@@ -50,8 +50,8 @@
     "karma-firefox-launcher": "^1.0.1",
     "karma-jasmine": "^1.1.0",
     "karma-webpack": "^2.0.3",
-    "react": "^15.5.3",
-    "react-dom": "^15.5.3",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
     "rimraf": "^2.6.1",
     "safe-publish-latest": "^1.1.1",
     "webpack": "^2.3.3"

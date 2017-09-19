@@ -9,6 +9,7 @@ node_js:
 env:
   - MAIN_RUN=true
   - MAIN_RUN=false && REACT_VERSION=0.14
+  - MAIN_RUN=false && REACT_VERSION=0.15
 before_install:
   - npm install -g npm@2
 before_script:
