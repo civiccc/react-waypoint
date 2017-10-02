@@ -1382,11 +1382,6 @@ describe('<Waypoint>', function() {
       });
     });
   });
-
-  it('throws a helpful error when using the legacy `scrollableParent` prop', () => {
-    this.props.scrollableParent = window;
-    expect(this.subject).toThrowError(/changed name to `scrollableAncestor`/);
-  });
 });
 
 // smoke tests for horizontal scrolling
