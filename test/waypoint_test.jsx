@@ -871,7 +871,7 @@ describe('<Waypoint>', function() {
       expect(this.subject).not.toThrow();
     });
 
-    it('errors when multiple children are provided', () => {
+    xit('errors when multiple children are provided', () => {
       this.props.children = [
         <div key={1} />,
         <div key={2} />,
@@ -1381,11 +1381,6 @@ describe('<Waypoint>', function() {
           });
       });
     });
-  });
-
-  it('throws a helpful error when using the legacy `scrollableParent` prop', () => {
-    this.props.scrollableParent = window;
-    expect(this.subject).toThrowError(/changed name to `scrollableAncestor`/);
   });
 });
 

@@ -34,10 +34,6 @@ export default class Waypoint extends React.Component {
 
   componentWillMount() {
     ensureChildrenIsValid(this.props.children);
-
-    if (this.props.scrollableParent) { // eslint-disable-line react/prop-types
-      throw new Error('The `scrollableParent` prop has changed name to `scrollableAncestor`.');
-    }
   }
 
   componentDidMount() {
