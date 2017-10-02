@@ -1,7 +1,3 @@
 {
-  "plugins": [
-    "transform-react-jsx",
-    "add-module-exports"
-  ],
-  "presets": ["es2015"]
+  "presets": [["airbnb", { "modules": false }]]
 }
