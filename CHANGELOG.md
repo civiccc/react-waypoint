@@ -1,5 +1,10 @@
 ## master (unreleased)
 
+## 7.2.0
+
+- Allow React 16 as a peerDependency.
+- Remove scrollableParent prop check error.
+
 ## 7.1.0
 
 - Add support for using composite components as child (#208)
