@@ -3,14 +3,14 @@ import pkg from './package.json';
 
 export default [
   {
-    entry: 'src/waypoint.jsx',
+    input: 'src/waypoint.jsx',
     external: [
       ...Object.keys(pkg.dependencies),
       ...Object.keys(pkg.peerDependencies),
     ],
-    targets: [
-      { dest: pkg.main, format: 'cjs' },
-      { dest: pkg.module, format: 'es' }
+    output: [
+      { file: pkg.main, format: 'cjs' },
+      { file: pkg.module, format: 'es' }
     ],
     plugins: [
       babel({
