@@ -1,5 +1,10 @@
 ## master (unreleased)
 
+## 7.3.0
+
+- Build with rollup.
+- Add an ES module build.
+
 ## 7.2.0
 
 - Allow React 16 as a peerDependency.
