@@ -873,7 +873,7 @@ describe('<Waypoint>', function() {
 
     it('errors when multiple children are provided', () => {
       // INFO: React 16 throws user errorrs again by it's own in dev mode, see:
-      // https://github.com/facebook/react/blob/e932ad68bed656eed5295b61ba74e5d0857902ed/src/renderers/shared/fiber/ReactFiberErrorLogger.js#L65
+      // https://github.com/facebook/react/issues/10384#issuecomment-334142138
       //
       // This code ignores uncaught errors and prevents test from failing in React 16
       window.onerror = () => undefined;
