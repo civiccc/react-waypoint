@@ -872,7 +872,7 @@ describe('<Waypoint>', function() {
     });
 
     it('errors when multiple children are provided', () => {
-      // INFO: React 16 throws user errorrs again by it's own in dev mode, see:
+      // INFO: React 16 throws user errors again by it's own in dev mode, see:
       // https://github.com/facebook/react/issues/10384#issuecomment-334142138
       //
       // This code ignores uncaught errors and prevents test from failing in React 16
