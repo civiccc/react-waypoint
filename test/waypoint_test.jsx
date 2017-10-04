@@ -871,12 +871,20 @@ describe('<Waypoint>', function() {
       expect(this.subject).not.toThrow();
     });
 
-    xit('errors when multiple children are provided', () => {
+    it('errors when multiple children are provided', (done) => {
       this.props.children = [
         <div key={1} />,
         <div key={2} />,
         <div key={3} />,
       ];
+
+      window.onerror = () => {
+        // INFO: React 16 throws user errorrs again by it's own in dev mode, see:
+        // https://github.com/facebook/react/blob/e932ad68bed656eed5295b61ba74e5d0857902ed/src/renderers/shared/fiber/ReactFiberErrorLogger.js#L65
+        //
+        // This hack prevents tests from failing after uncaught exception is thrown by React
+        done();
+      };
 
       expect(this.subject).toThrowError(notValidErrorMessage);
     });
