@@ -876,6 +876,7 @@ describe('<Waypoint>', function() {
       // https://github.com/facebook/react/issues/10384#issuecomment-334142138
       //
       // This code ignores uncaught errors and prevents test from failing in React 16
+      const prevOnError = window.onerror;
       window.onerror = () => undefined;
 
       this.props.children = [
@@ -886,7 +887,7 @@ describe('<Waypoint>', function() {
 
       expect(this.subject).toThrowError(notValidErrorMessage);
 
-      window.onerror = undefined;
+      window.onerror = prevOnError;
     });
 
     it('does not throw with a Stateful Component as a child', () => {
