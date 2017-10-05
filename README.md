@@ -38,15 +38,16 @@ yarn add react-waypoint
 ## Usage
 
 ```jsx
-var Waypoint = require('react-waypoint');
-```
+import Waypoint from 'react-waypoint';
 
-```jsx
 <Waypoint
   onEnter={this._handleWaypointEnter}
   onLeave={this._handleWaypointLeave}
 />
 ```
+
+*Alternatively, you can also use the ES module that this package provides:
+`import Waypoint from 'react-waypoint/es'`.*
 
 A waypoint normally fires `onEnter` and `onLeave` as you are scrolling, but it
 can fire because of other events too:
