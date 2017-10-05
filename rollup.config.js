@@ -10,7 +10,7 @@ export default [
     ],
     output: [
       { file: pkg.main, format: 'cjs' },
-      { file: pkg.module, format: 'es' }
+      { file: 'build/index.mjs', format: 'es' }
     ],
     plugins: [
       babel({
