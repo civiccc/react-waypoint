@@ -1,5 +1,9 @@
 ## master (unreleased)
 
+## 7.3.1
+
+- Make es module opt in (via `import Waypoint from 'react-waypoint/es'`)
+
 ## 7.3.0
 
 - Build with rollup.
