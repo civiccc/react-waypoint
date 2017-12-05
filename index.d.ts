@@ -1,8 +1,15 @@
-/// <reference types="react" />
+import * as React from 'react';
 
-import { ClassicComponentClass } from 'react';
+declare class Waypoint extends React.Component<Waypoint.WaypointProps> {
+  above: string;
+  below: string;
+  inside: string;
+  invisible: string;
+}
 
-declare namespace ReactWaypoint {
+export = Waypoint;
+
+declare namespace Waypoint {
     interface CallbackArgs {
         /*
          * The position that the waypoint has at the moment.
@@ -98,14 +105,4 @@ declare namespace ReactWaypoint {
          */
         debug?: boolean;
     }
-
-     interface Waypoint extends ClassicComponentClass<WaypointProps> {
-         above: string;
-         below: string;
-         inside: string;
-         invisible: string;
-     }
 }
-
-declare let Waypoint: ReactWaypoint.Waypoint;
-export = Waypoint;
