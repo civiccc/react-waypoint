@@ -1,5 +1,9 @@
 ## master (unreleased)
 
+## 7.3.2
+
+- Fix typescript definition
+
 ## 7.3.1
 
 - Make es module opt in (via `import Waypoint from 'react-waypoint/es'`)
