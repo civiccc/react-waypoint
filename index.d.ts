@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-declare class Waypoint extends React.Component<Waypoint.WaypointProps, null> {
+declare class Waypoint extends React.Component<Waypoint.WaypointProps, {}> {
   above: string;
   below: string;
   inside: string;
