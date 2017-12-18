@@ -1,5 +1,9 @@
 ## master (unreleased)
 
+## 7.3.4
+
+- Fix second arg to Typescript component definition
+
 ## 7.3.3
 
 - Add second arg to Typescript component definition
