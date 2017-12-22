@@ -3,6 +3,7 @@
   "version": "7.3.4",
   "description": "A React component to execute a function whenever you scroll to an element.",
   "main": "cjs/index.js",
+  "module": "es/index.js",
   "types": "index.d.ts",
   "repository": {
     "type": "git",
