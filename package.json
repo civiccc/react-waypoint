@@ -36,6 +36,7 @@
     "babel-cli": "^6.23.0",
     "babel-core": "^6.23.1",
     "babel-loader": "^6.4.0",
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.12",
     "babel-preset-airbnb": "^2.4.0",
     "eslint": "^3.17.1",
     "eslint-config-brigade": "^3.2.1",
