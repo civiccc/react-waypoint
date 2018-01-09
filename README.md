@@ -46,9 +46,6 @@ import Waypoint from 'react-waypoint';
 />
 ```
 
-*Alternatively, you can also use the ES module that this package provides:
-`import Waypoint from 'react-waypoint/es'`.*
-
 A waypoint normally fires `onEnter` and `onLeave` as you are scrolling, but it
 can fire because of other events too:
 
