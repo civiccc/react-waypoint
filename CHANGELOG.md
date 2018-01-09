@@ -1,5 +1,11 @@
 ## master (unreleased)
 
+## 8.0.0
+
+- Add es module entry point in package.json
+- Type Waypoint class properties as static
+- Let proptypes be removable in consumers production bundles
+
 ## 7.3.4
 
 - Fix second arg to Typescript component definition
