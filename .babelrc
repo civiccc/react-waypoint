@@ -1,3 +1,4 @@
 {
-  "presets": [["airbnb", { "modules": false }]]
+  "presets": [["airbnb", { "modules": false }]],
+  "plugins": [["transform-react-remove-prop-types", { mode: 'unsafe-wrap' }]]
 }
