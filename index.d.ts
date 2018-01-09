@@ -1,10 +1,10 @@
 import * as React from 'react';
 
 declare class Waypoint extends React.Component<Waypoint.WaypointProps, {}> {
-  above: string;
-  below: string;
-  inside: string;
-  invisible: string;
+  static above: string;
+  static below: string;
+  static inside: string;
+  static invisible: string;
 }
 
 export = Waypoint;
