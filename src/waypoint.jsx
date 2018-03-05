@@ -58,15 +58,13 @@ export default class Waypoint extends React.Component {
       this.scrollEventListenerUnsubscribe = addEventListener(
         this.scrollableAncestor,
         'scroll',
-        this._handleScroll,
-        { passive: true }
+        this._handleScroll
       );
 
       this.resizeEventListenerUnsubscribe = addEventListener(
         window,
         'resize',
-        this._handleScroll,
-        { passive: true }
+        this._handleScroll
       );
 
       this._handleScroll(null);
