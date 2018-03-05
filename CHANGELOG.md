@@ -1,5 +1,9 @@
 ## master (unreleased)
 
+## 8.0.1
+
+- Fix default export error in typescript definition file
+
 ## 8.0.0
 
 - Add es module entry point in package.json
