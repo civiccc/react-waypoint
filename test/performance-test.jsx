@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 
 import Waypoint from '../src/waypoint';
 
-const WAYPOINT_COUNT = 1000;
+const WAYPOINT_COUNT = 1;
 
 function Foo() {
   return (
@@ -45,13 +45,15 @@ class PerformanceTest extends Component {
     this.state = {};
   }
 
-  handleEnter(index) {
+  handleEnter(index, { previousPosition }) {
+    console.log('Enter', previousPosition);
     this.setState({
       [`active-${index}`]: true,
     });
   }
 
-  handleLeave(index) {
+  handleLeave(index, { currentPosition }) {
+    console.log('Leave', currentPosition);
     this.setState({
       [`active-${index}`]: false,
     });
@@ -63,6 +65,7 @@ class PerformanceTest extends Component {
       elements.push(
         <div key={i}>
           <h2>Container {i}</h2>
+          <div style={{ height: 1000 }}/>
           {this.state[`active-${i}`] &&
             <Foo />
           }
@@ -79,6 +82,7 @@ class PerformanceTest extends Component {
             onEnter={this.handleEnter.bind(this, i)}
             onLeave={this.handleLeave.bind(this, i)}
           />
+          <div style={{ height: 1000 }}/>
         </div>
       );
     }

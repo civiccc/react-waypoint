@@ -13,8 +13,8 @@ export default function getCurrentPosition(bounds) {
   }
 
   // top is within the viewport
-  if (bounds.viewportTop <= bounds.waypointTop &&
-      bounds.waypointTop <= bounds.viewportBottom) {
+  if (bounds.viewportTop < bounds.waypointTop &&
+      bounds.waypointTop < bounds.viewportBottom) {
     return constants.inside;
   }
 
@@ -30,11 +30,11 @@ export default function getCurrentPosition(bounds) {
     return constants.inside;
   }
 
-  if (bounds.viewportBottom < bounds.waypointTop) {
+  if (bounds.viewportBottom <= bounds.waypointTop) {
     return constants.below;
   }
 
-  if (bounds.waypointTop < bounds.viewportTop) {
+  if (bounds.waypointTop <= bounds.viewportTop) {
     return constants.above;
   }
 

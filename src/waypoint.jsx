@@ -49,25 +49,35 @@ export default class Waypoint extends React.Component {
       ensureRefIsUsedByChild(this.props.children, this._ref);
 
       this._handleScroll = this._handleScroll.bind(this);
+      this._handleIntersect = this._handleIntersect.bind(this);
       this.scrollableAncestor = this._findScrollableAncestor();
 
       if (process.env.NODE_ENV !== 'production' && this.props.debug) {
         debugLog('scrollableAncestor', this.scrollableAncestor);
       }
 
-      this.scrollEventListenerUnsubscribe = addEventListener(
-        this.scrollableAncestor,
-        'scroll',
-        this._handleScroll
-      );
+      const { topOffset, bottomOffset } = this.props;
+      const observer = new IntersectionObserver(this._handleIntersect, {
+        root: this.scrollableAncestor === Waypoint.getWindow() ?
+          null : this.scrollableAncestor,
+        rootMargin: `${topOffset} 0px ${bottomOffset} 0px`,
+        threshold: 1.0,
+      });
+      observer.observe(this._ref);
 
-      this.resizeEventListenerUnsubscribe = addEventListener(
-        window,
-        'resize',
-        this._handleScroll
-      );
+      // this.scrollEventListenerUnsubscribe = addEventListener(
+      //   this.scrollableAncestor,
+      //   'scroll',
+      //   this._handleScroll
+      // );
 
-      this._handleScroll(null);
+      // this.resizeEventListenerUnsubscribe = addEventListener(
+      //   window,
+      //   'resize',
+      //   this._handleScroll
+      // );
+
+      // this._handleScroll(null);
     });
   }
 
@@ -104,6 +114,11 @@ export default class Waypoint extends React.Component {
     if (this.cancelInitialTimeout) {
       this.cancelInitialTimeout();
     }
+  }
+
+  _handleIntersect(entries) {
+    const entry = entries[0];
+    this._fireCallbacks(null, entry.boundingClientRect, entry.rootBounds);
   }
 
   /**
@@ -160,8 +175,19 @@ export default class Waypoint extends React.Component {
       // There's a chance we end up here after the component has been unmounted.
       return;
     }
+    this._fireCallbacks(
+      event,
+      this._ref.getBoundingClientRect(),
+      this.scrollableAncestor === window ? undefined :
+        this.scrollableAncestor.getBoundingClientRect()
+    );
+  }
 
-    const bounds = this._getBounds();
+  _fireCallbacks(event, targetBoundingClientRect, ancestorBoundingClientRect) {
+    const bounds = this._getBounds(
+      targetBoundingClientRect,
+      ancestorBoundingClientRect
+    );
     const currentPosition = getCurrentPosition(bounds);
     const previousPosition = this._previousPosition;
 
@@ -224,9 +250,9 @@ export default class Waypoint extends React.Component {
     }
   }
 
-  _getBounds() {
+  _getBounds(targetBoundingClientRect, ancestorBoundingClientRect) {
     const horizontal = this.props.horizontal;
-    const { left, top, right, bottom } = this._ref.getBoundingClientRect();
+    const { left, top, right, bottom } = targetBoundingClientRect;
     const waypointTop = horizontal ? left : top;
     const waypointBottom = horizontal ? right : bottom;
 
@@ -236,11 +262,11 @@ export default class Waypoint extends React.Component {
       contextHeight = horizontal ? window.innerWidth : window.innerHeight;
       contextScrollTop = 0;
     } else {
-      contextHeight = horizontal ? this.scrollableAncestor.offsetWidth :
-        this.scrollableAncestor.offsetHeight;
+      contextHeight = horizontal ? ancestorBoundingClientRect.width :
+        ancestorBoundingClientRect.height;
       contextScrollTop = horizontal ?
-        this.scrollableAncestor.getBoundingClientRect().left :
-        this.scrollableAncestor.getBoundingClientRect().top;
+        ancestorBoundingClientRect.left :
+        ancestorBoundingClientRect.top;
     }
 
     if (process.env.NODE_ENV !== 'production' && this.props.debug) {
