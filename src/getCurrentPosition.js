@@ -12,16 +12,25 @@ export default function getCurrentPosition(bounds) {
     return constants.invisible;
   }
 
-  // top is within the viewport
-  if (bounds.viewportTop <= bounds.waypointTop &&
-      bounds.waypointTop <= bounds.viewportBottom) {
-    return constants.inside;
-  }
+  if (bounds.fullView) {
+    // top & bottom is within the viewport
+    if (bounds.viewportTop <= bounds.waypointTop &&
+        bounds.waypointTop <= bounds.viewportBottom &&
+        bounds.viewportTop <= bounds.waypointBottom &&
+        bounds.waypointBottom <= bounds.viewportBottom) {
+      return constants.inside;
+    }
+  } else {
+    // top is within the viewport
+    if (bounds.viewportTop <= bounds.waypointTop && bounds.waypointTop <= bounds.viewportBottom) {
+      return constants.inside;
+    }
 
-  // bottom is within the viewport
-  if (bounds.viewportTop <= bounds.waypointBottom &&
-      bounds.waypointBottom <= bounds.viewportBottom) {
-    return constants.inside;
+    // bottom is within the viewport
+    if (bounds.viewportTop <= bounds.waypointBottom &&
+        bounds.waypointBottom <= bounds.viewportBottom) {
+      return constants.inside;
+    }
   }
 
   // top is above the viewport and bottom is below the viewport

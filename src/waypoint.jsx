@@ -20,6 +20,7 @@ const defaultProps = {
   onLeave() { },
   onPositionChange() { },
   fireOnRapidScroll: true,
+  fullView: false,
 };
 
 /**
@@ -252,7 +253,7 @@ export default class Waypoint extends React.Component {
       debugLog('scrollableAncestor scrollTop', contextScrollTop);
     }
 
-    const { bottomOffset, topOffset } = this.props;
+    const { bottomOffset, topOffset, fullView } = this.props;
     const topOffsetPx = computeOffsetPixels(topOffset, contextHeight);
     const bottomOffsetPx = computeOffsetPixels(bottomOffset, contextHeight);
     const contextBottom = contextScrollTop + contextHeight;
@@ -262,6 +263,7 @@ export default class Waypoint extends React.Component {
       waypointBottom,
       viewportTop: contextScrollTop + topOffsetPx,
       viewportBottom: contextBottom - bottomOffsetPx,
+      fullView
     };
   }
 
@@ -299,6 +301,7 @@ Waypoint.propTypes = {
   onLeave: PropTypes.func,
   onPositionChange: PropTypes.func,
   fireOnRapidScroll: PropTypes.bool,
+  fullView: PropTypes.bool,
   scrollableAncestor: PropTypes.any,
   horizontal: PropTypes.bool,
 
