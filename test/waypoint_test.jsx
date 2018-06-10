@@ -885,6 +885,10 @@ describe('<Waypoint>', function() {
         <div key={3} />,
       ];
 
+      // eslint-disable-next-line no-console
+      console.error('NOTE: Expect an error log below. You can ignore it. ' +
+        "We're testing errors thrown and it seems hard to prevent things " +
+        'from being logged.');
       expect(this.subject).toThrowError(notValidErrorMessage);
 
       window.onerror = prevOnError;
