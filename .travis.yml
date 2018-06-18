@@ -6,7 +6,6 @@ node_js:
   - '7'
   - '6'
   - '4'
-  - '4.2'
 env:
   - MAIN_RUN=true
   - MAIN_RUN=false && REACT_VERSION=0.14
