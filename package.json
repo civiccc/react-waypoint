@@ -67,7 +67,7 @@
     "scrollspy"
   ],
   "dependencies": {
-    "consolidated-events": "^1.1.0",
+    "consolidated-events": "^1.1.0 || ^2.0.0",
     "prop-types": "^15.0.0"
   }
 }
