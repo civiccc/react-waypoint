@@ -6,6 +6,7 @@ Please use [pull requests](https://github.com/brigade/react-waypoint/pull/new/ma
 - [Brigade](https://github.com/brigade)
 - [Domain Group](https://github.com/DomainGroupOSS)
 - [DoorDash](https://github.com/doordash)
+- [HousingAnywhere](https://github.com/housinganywhere)
 - [Netflix](https://github.com/Netflix)
 - [Remix](https://github.com/remix)
 - [StarNow](https://github.com/starnow)
