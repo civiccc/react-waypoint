@@ -16,3 +16,4 @@ Please use [pull requests](https://github.com/brigade/react-waypoint/pull/new/ma
 # Projects
 
 - [Happo](https://github.com/Galooshi/happo)
+- [react-ideal-image](https://github.com/stereobooster/react-ideal-image)
