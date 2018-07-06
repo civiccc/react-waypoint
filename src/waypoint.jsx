@@ -22,10 +22,13 @@ const defaultProps = {
   fireOnRapidScroll: true,
 };
 
-/**
- * Calls a function when you scroll to the element.
- */
-export default class Waypoint extends React.Component {
+// React.PureComponent was added in React 15.3.0
+const BaseClass = typeof React.PureComponent !== 'undefined' ?
+  React.PureComponent :
+  React.Component;
+
+// Calls a function when you scroll to the element.
+export default class Waypoint extends BaseClass {
   constructor(props) {
     super(props);
 
