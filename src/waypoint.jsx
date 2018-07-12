@@ -45,9 +45,11 @@ export default class Waypoint extends BaseClass {
     }
 
     // this._ref may occasionally not be set at this time. To help ensure that
-    // this works smoothly, we want to delay the initial execution until the
-    // next tick.
-    this.cancelInitialTimeout = onNextTick(() => {
+    // this works smoothly and to avoid layout thrashing, we want to delay the
+    // initial execution until the next tick.
+    this.cancelOnNextTick = onNextTick(() => {
+      this.cancelOnNextTick = null;
+
       // Berofe doing anything, we want to check that this._ref is avaliable in Waypoint
       ensureRefIsUsedByChild(this.props.children, this._ref);
 
@@ -90,8 +92,21 @@ export default class Waypoint extends BaseClass {
       return;
     }
 
-    // The element may have moved.
-    this._handleScroll(null);
+    // The element may have moved, so we need to recompute its position on the
+    // page. This happens via handleScroll in a way that forces layout to be
+    // computed.
+    //
+    // We want this to be deferred to avoid forcing layout during render, which
+    // causes layout thrashing. And, if we already have this work enqueued, we
+    // can just wait for that to happen instead of enqueueing again.
+    if (this.cancelOnNextTick) {
+      return;
+    }
+
+    this.cancelOnNextTick = onNextTick(() => {
+      this.cancelOnNextTick = null;
+      this._handleScroll(null);
+    });
   }
 
   componentWillUnmount() {
@@ -106,8 +121,8 @@ export default class Waypoint extends BaseClass {
       this.resizeEventListenerUnsubscribe();
     }
 
-    if (this.cancelInitialTimeout) {
-      this.cancelInitialTimeout();
+    if (this.cancelOnNextTick) {
+      this.cancelOnNextTick();
     }
   }
 
