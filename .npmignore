@@ -1,4 +1,5 @@
 *.gif
+.babelrc
 .eslintignore
 .eslintrc.js
 .overcommit.yml
