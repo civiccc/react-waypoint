@@ -1,6 +1,7 @@
 import { addEventListener } from 'consolidated-events';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { isForwardRef } from 'react-is';
 
 import computeOffsetPixels from './computeOffsetPixels';
 import constants from './constants';
@@ -295,11 +296,15 @@ export default class Waypoint extends BaseClass {
       return <span ref={this.refElement} style={{ fontSize: 0 }} />;
     }
 
-    if (isDOMElement(children)) {
+    if (isDOMElement(children) || isForwardRef(children.type)) {
       const ref = (node) => {
         this.refElement(node);
         if (children.ref) {
-          children.ref(node);
+          if (typeof children.ref === 'function') {
+            children.ref(node);
+          } else {
+            children.ref.current = node;
+          }
         }
       };
 
