@@ -1,3 +1,8 @@
+## 8.1.0
+
+- Improve support for refs (#278)
+- Don't include `.babelrc` in published npm package (#270)
+
 ## 8.0.3
 
 - Defer `handleScroll` in `componentDidUpdate` ([#265](https://github.com/brigade/react-waypoint/pull/265))
