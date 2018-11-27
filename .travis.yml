@@ -4,14 +4,13 @@ node_js:
   - '10'
   - '8'
   - '6'
-  - '4'
 env:
-  - MAIN_RUN=true
-  - MAIN_RUN=false && REACT_VERSION=0.14
-  - MAIN_RUN=false && REACT_VERSION=15.0
+  - REACT_VERSION=0.14.9
+  - REACT_VERSION=15.0
+  - REACT_VERSION=16.0
 before_install:
-  - npm install -g npm@2
+  - npm install -g npm@6.4.1
 before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
-  - if [[ $MAIN_RUN == false ]]; then npm install react-dom@^$REACT_VERSION react@^$REACT_VERSION; fi
+  - npm install react-dom@^$REACT_VERSION react@^$REACT_VERSION
