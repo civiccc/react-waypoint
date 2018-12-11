@@ -4,7 +4,7 @@ import React from 'react';
 import { isForwardRef } from 'react-is';
 
 import computeOffsetPixels from './computeOffsetPixels';
-import constants from './constants';
+import { INVISIBLE, INSIDE, BELOW, ABOVE } from './constants';
 import debugLog from './debugLog';
 import ensureChildrenIsValid from './ensureChildrenIsValid';
 import ensureRefIsUsedByChild from './ensureRefIsUsedByChild';
@@ -210,22 +210,22 @@ export default class Waypoint extends BaseClass {
     };
     this.props.onPositionChange.call(this, callbackArg);
 
-    if (currentPosition === constants.inside) {
+    if (currentPosition === INSIDE) {
       this.props.onEnter.call(this, callbackArg);
-    } else if (previousPosition === constants.inside) {
+    } else if (previousPosition === INSIDE) {
       this.props.onLeave.call(this, callbackArg);
     }
 
-    const isRapidScrollDown = previousPosition === constants.below &&
-      currentPosition === constants.above;
-    const isRapidScrollUp = previousPosition === constants.above &&
-      currentPosition === constants.below;
+    const isRapidScrollDown = previousPosition === BELOW &&
+      currentPosition === ABOVE;
+    const isRapidScrollUp = previousPosition === ABOVE &&
+      currentPosition === BELOW;
 
     if (this.props.fireOnRapidScroll && (isRapidScrollDown || isRapidScrollUp)) {
       // If the scroll event isn't fired often enough to occur while the
       // waypoint was visible, we trigger both callbacks anyway.
       this.props.onEnter.call(this, {
-        currentPosition: constants.inside,
+        currentPosition: INSIDE,
         previousPosition,
         event,
         waypointTop: bounds.waypointTop,
@@ -235,7 +235,7 @@ export default class Waypoint extends BaseClass {
       });
       this.props.onLeave.call(this, {
         currentPosition,
-        previousPosition: constants.inside,
+        previousPosition: INSIDE,
         event,
         waypointTop: bounds.waypointTop,
         waypointBottom: bounds.waypointBottom,
@@ -344,10 +344,10 @@ Waypoint.propTypes = {
   ]),
 };
 
-Waypoint.above = constants.above;
-Waypoint.below = constants.below;
-Waypoint.inside = constants.inside;
-Waypoint.invisible = constants.invisible;
+Waypoint.above = ABOVE;
+Waypoint.below = BELOW;
+Waypoint.inside = INSIDE;
+Waypoint.invisible = INVISIBLE;
 Waypoint.getWindow = () => {
   if (typeof window !== 'undefined') {
     return window;
