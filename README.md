@@ -158,6 +158,12 @@ enters or leaves the viewport. For details, see [Children](#children), below.
     fireOnRapidScroll: PropTypes.bool,
 
     /**
+     * fullView - if the waypoint is displayed on the screen fully, not partly.
+     * The onEneter/onLeave fire
+     */
+    fullView: PropTypes.bool,
+
+    /**
      * Use this prop to get debug information in the console log. This slows
      * things down significantly, so it should only be used during development.
      */
