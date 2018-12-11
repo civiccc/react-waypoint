@@ -5,8 +5,7 @@ node_js:
   - '8'
   - '6'
 env:
-  - REACT_VERSION=0.14.9
-  - REACT_VERSION=15.0
+  - REACT_VERSION=15.3
   - REACT_VERSION=16.0
 before_install:
   - npm install -g npm@6.4.1

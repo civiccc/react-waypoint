@@ -23,13 +23,8 @@ const defaultProps = {
   fireOnRapidScroll: true,
 };
 
-// React.PureComponent was added in React 15.3.0
-const BaseClass = typeof React.PureComponent !== 'undefined' ?
-  React.PureComponent :
-  React.Component;
-
 // Calls a function when you scroll to the element.
-export default class Waypoint extends BaseClass {
+export default class Waypoint extends React.PureComponent {
   constructor(props) {
     super(props);
 
