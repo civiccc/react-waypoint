@@ -13,6 +13,7 @@ import debugLog from './debugLog';
 import ensureRefIsUsedByChild from './ensureRefIsUsedByChild';
 import isDOMElement from './isDOMElement';
 import getCurrentPosition from './getCurrentPosition';
+import getCurrentProgress from './getCurrentProgress';
 import onNextTick from './onNextTick';
 import resolveScrollableAncestorProp from './resolveScrollableAncestorProp';
 
@@ -25,6 +26,7 @@ const defaultProps = {
   horizontal: false,
   onEnter() { },
   onLeave() { },
+  onProgress() { },
   onPositionChange() { },
   fireOnRapidScroll: true,
 };
@@ -187,6 +189,7 @@ export class Waypoint extends React.PureComponent {
       onEnter,
       onLeave,
       fireOnRapidScroll,
+      onProgress,
     } = this.props;
 
     if (process.env.NODE_ENV !== 'production' && debug) {
@@ -197,11 +200,6 @@ export class Waypoint extends React.PureComponent {
     // Save previous position as early as possible to prevent cycles
     this._previousPosition = currentPosition;
 
-    if (previousPosition === currentPosition) {
-      // No change since last trigger
-      return;
-    }
-
     const callbackArg = {
       currentPosition,
       previousPosition,
@@ -211,12 +209,25 @@ export class Waypoint extends React.PureComponent {
       viewportTop: bounds.viewportTop,
       viewportBottom: bounds.viewportBottom,
     };
+
+    if (currentPosition === INSIDE) {
+      const progress = getCurrentProgress(bounds);
+      onProgress.call(this, Object.assign({}, callbackArg, { progress }));
+    }
+
+    if (previousPosition === currentPosition) {
+      // No change since last trigger
+      return;
+    }
+
     onPositionChange.call(this, callbackArg);
 
     if (currentPosition === INSIDE) {
       onEnter.call(this, callbackArg);
     } else if (previousPosition === INSIDE) {
       onLeave.call(this, callbackArg);
+      const progress = +(currentPosition === ABOVE);
+      onProgress.call(this, Object.assign({}, callbackArg, { progress }));
     }
 
     const isRapidScrollDown = previousPosition === BELOW
@@ -327,6 +338,7 @@ if (process.env.NODE_ENV !== 'production') {
     onEnter: PropTypes.func,
     onLeave: PropTypes.func,
     onPositionChange: PropTypes.func,
+    onProgress: PropTypes.func,
     fireOnRapidScroll: PropTypes.bool,
     // eslint-disable-next-line react/forbid-prop-types
     scrollableAncestor: PropTypes.any,
