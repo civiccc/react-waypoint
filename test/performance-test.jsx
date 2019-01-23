@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
-import Waypoint from '../src/waypoint';
+import { Waypoint } from '../src/waypoint';
 
 const WAYPOINT_COUNT = 1000;
 

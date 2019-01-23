@@ -24,7 +24,7 @@ const defaultProps = {
 };
 
 // Calls a function when you scroll to the element.
-export default class Waypoint extends React.PureComponent {
+export class Waypoint extends React.PureComponent {
   constructor(props) {
     super(props);
 

@@ -7,7 +7,7 @@ declare class Waypoint extends React.Component<Waypoint.WaypointProps, {}> {
   static invisible: string;
 }
 
-export default Waypoint;
+export Waypoint;
 
 declare namespace Waypoint {
     interface CallbackArgs {

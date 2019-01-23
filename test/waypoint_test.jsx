@@ -1,7 +1,7 @@
 /* eslint-disable react/no-multi-comp */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Waypoint from '../src/waypoint.jsx';
+import { Waypoint } from '../src/waypoint.jsx';
 
 import { errorMessage as notValidErrorMessage } from '../src/ensureChildrenIsValid';
 import { errorMessage as refNotUsedErrorMessage } from '../src/ensureRefIsUsedByChild';
