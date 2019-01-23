@@ -4,7 +4,9 @@ import React from 'react';
 import { isForwardRef } from 'react-is';
 
 import computeOffsetPixels from './computeOffsetPixels';
-import { INVISIBLE, INSIDE, BELOW, ABOVE } from './constants';
+import {
+  INVISIBLE, INSIDE, BELOW, ABOVE,
+} from './constants';
 import debugLog from './debugLog';
 import ensureChildrenIsValid from './ensureChildrenIsValid';
 import ensureRefIsUsedByChild from './ensureRefIsUsedByChild';
@@ -28,7 +30,7 @@ export class Waypoint extends React.PureComponent {
   constructor(props) {
     super(props);
 
-    this.refElement = (e) => this._ref = e;
+    this.refElement = e => this._ref = e;
   }
 
   componentWillMount() {
@@ -62,14 +64,14 @@ export class Waypoint extends React.PureComponent {
         this.scrollableAncestor,
         'scroll',
         this._handleScroll,
-        { passive: true }
+        { passive: true },
       );
 
       this.resizeEventListenerUnsubscribe = addEventListener(
         window,
         'resize',
         this._handleScroll,
-        { passive: true }
+        { passive: true },
       );
 
       this._handleScroll(null);
@@ -155,9 +157,9 @@ export class Waypoint extends React.PureComponent {
       }
 
       const style = window.getComputedStyle(node);
-      const overflowDirec = horizontal ?
-        style.getPropertyValue('overflow-x') :
-        style.getPropertyValue('overflow-y');
+      const overflowDirec = horizontal
+        ? style.getPropertyValue('overflow-x')
+        : style.getPropertyValue('overflow-y');
       const overflow = overflowDirec || style.getPropertyValue('overflow');
 
       if (overflow === 'auto' || overflow === 'scroll') {
@@ -215,10 +217,10 @@ export class Waypoint extends React.PureComponent {
       this.props.onLeave.call(this, callbackArg);
     }
 
-    const isRapidScrollDown = previousPosition === BELOW &&
-      currentPosition === ABOVE;
-    const isRapidScrollUp = previousPosition === ABOVE &&
-      currentPosition === BELOW;
+    const isRapidScrollDown = previousPosition === BELOW
+      && currentPosition === ABOVE;
+    const isRapidScrollUp = previousPosition === ABOVE
+      && currentPosition === BELOW;
 
     if (this.props.fireOnRapidScroll && (isRapidScrollDown || isRapidScrollUp)) {
       // If the scroll event isn't fired often enough to occur while the
@@ -246,7 +248,9 @@ export class Waypoint extends React.PureComponent {
 
   _getBounds() {
     const horizontal = this.props.horizontal;
-    const { left, top, right, bottom } = this._ref.getBoundingClientRect();
+    const {
+      left, top, right, bottom,
+    } = this._ref.getBoundingClientRect();
     const waypointTop = horizontal ? left : top;
     const waypointBottom = horizontal ? right : bottom;
 
@@ -256,11 +260,11 @@ export class Waypoint extends React.PureComponent {
       contextHeight = horizontal ? window.innerWidth : window.innerHeight;
       contextScrollTop = 0;
     } else {
-      contextHeight = horizontal ? this.scrollableAncestor.offsetWidth :
-        this.scrollableAncestor.offsetHeight;
-      contextScrollTop = horizontal ?
-        this.scrollableAncestor.getBoundingClientRect().left :
-        this.scrollableAncestor.getBoundingClientRect().top;
+      contextHeight = horizontal ? this.scrollableAncestor.offsetWidth
+        : this.scrollableAncestor.offsetHeight;
+      contextScrollTop = horizontal
+        ? this.scrollableAncestor.getBoundingClientRect().left
+        : this.scrollableAncestor.getBoundingClientRect().top;
     }
 
     if (process.env.NODE_ENV !== 'production' && this.props.debug) {

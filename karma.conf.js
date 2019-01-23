@@ -1,7 +1,7 @@
 /* global process */
 // Karma configuration
 
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -13,7 +13,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'tests.webpack.js'
+      'tests.webpack.js',
     ],
 
     // list of files to exclude
@@ -24,7 +24,7 @@ module.exports = function(config) {
     // available preprocessors:
     // https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'tests.webpack.js': ['webpack']
+      'tests.webpack.js': ['webpack'],
     },
 
     webpack: {
@@ -33,14 +33,14 @@ module.exports = function(config) {
           {
             test: /\.jsx?$/,
             loaders: ['babel-loader?cacheDirectory=true'],
-            exclude: /node_modules/
-          }
-        ]
-      }
+            exclude: /node_modules/,
+          },
+        ],
+      },
     },
 
     webpackMiddleware: {
-      noInfo: true
+      noInfo: true,
     },
 
     // test results reporter to use
@@ -66,8 +66,8 @@ module.exports = function(config) {
     // start these browsers
     // available browser launchers:
     // https://npmjs.org/browse/keyword/karma-launcher
-    browsers: process.env.CONTINUOUS_INTEGRATION === 'true' ?
-      ['Firefox'] : ['Chrome'],
+    browsers: process.env.CONTINUOUS_INTEGRATION === 'true'
+      ? ['Firefox'] : ['Chrome'],
 
     // if true, Karma captures browsers, runs the tests and exits
     singleRun: true,

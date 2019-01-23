@@ -14,7 +14,7 @@
 export default function parseOffsetAsPixels(str) {
   if (!isNaN(parseFloat(str)) && isFinite(str)) {
     return parseFloat(str);
-  } else if (str.slice(-2) === 'px') {
+  } if (str.slice(-2) === 'px') {
     return parseFloat(str.slice(0, -2));
   }
 }
