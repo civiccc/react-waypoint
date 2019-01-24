@@ -32,7 +32,9 @@ export class Waypoint extends React.PureComponent {
   }
 
   componentWillMount() {
-    ensureChildrenIsValid(this.props.children);
+    if (process.env.NODE_ENV !== 'production') {
+      ensureChildrenIsValid(this.props.children);
+    }
   }
 
   componentDidMount() {
@@ -75,7 +77,9 @@ export class Waypoint extends React.PureComponent {
   }
 
   componentWillReceiveProps(newProps) {
-    ensureChildrenIsValid(newProps.children);
+    if (process.env.NODE_ENV !== 'production') {
+      ensureChildrenIsValid(newProps.children);
+    }
   }
 
   componentDidUpdate() {
@@ -312,7 +316,7 @@ export class Waypoint extends React.PureComponent {
 
 if (process.env.NODE_ENV !== 'production') {
   Waypoint.propTypes = {
-    children: PropTypes.node,
+    children: PropTypes.element,
     debug: PropTypes.bool,
     onEnter: PropTypes.func,
     onLeave: PropTypes.func,
