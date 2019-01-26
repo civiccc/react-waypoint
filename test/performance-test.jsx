@@ -1,4 +1,4 @@
-/* eslint-disable max-len, react/no-multi-comp */
+/* eslint-disable max-len, react/no-multi-comp, react/jsx-no-bind */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
@@ -63,16 +63,19 @@ class PerformanceTest extends Component {
   render() {
     const elements = [];
     for (let i = 0; i < WAYPOINT_COUNT; i++) {
+      // eslint-disable-next-line react/destructuring-assignment
+      const isActive = this.state[`active-${i}`];
+
       elements.push(
         <div key={i}>
           <h2>
 Container
             {i}
           </h2>
-          {this.state[`active-${i}`]
+          {isActive
             && <Foo />
           }
-          {!this.state[`active-${i}`]
+          {!isActive
             && (
             <div
               style={{

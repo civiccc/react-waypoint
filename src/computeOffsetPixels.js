@@ -17,4 +17,6 @@ export default function computeOffsetPixels(offset, contextHeight) {
   if (typeof percentOffset === 'number') {
     return percentOffset * contextHeight;
   }
+
+  return undefined;
 }

@@ -1,3 +1,5 @@
+/* eslint-disable import/prefer-default-export */
+
 import { addEventListener } from 'consolidated-events';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -16,6 +18,9 @@ import onNextTick from './onNextTick';
 import resolveScrollableAncestorProp from './resolveScrollableAncestorProp';
 
 const defaultProps = {
+  debug: false,
+  scrollableAncestor: undefined,
+  children: undefined,
   topOffset: '0px',
   bottomOffset: '0px',
   horizontal: false,
@@ -30,12 +35,15 @@ export class Waypoint extends React.PureComponent {
   constructor(props) {
     super(props);
 
-    this.refElement = e => this._ref = e;
+    this.refElement = (e) => {
+      this._ref = e;
+    };
   }
 
   componentWillMount() {
+    const { children } = this.props;
     if (process.env.NODE_ENV !== 'production') {
-      ensureChildrenIsValid(this.props.children);
+      ensureChildrenIsValid(children);
     }
   }
 
@@ -49,14 +57,15 @@ export class Waypoint extends React.PureComponent {
     // initial execution until the next tick.
     this.cancelOnNextTick = onNextTick(() => {
       this.cancelOnNextTick = null;
+      const { children, debug } = this.props;
 
       // Berofe doing anything, we want to check that this._ref is avaliable in Waypoint
-      ensureRefIsUsedByChild(this.props.children, this._ref);
+      ensureRefIsUsedByChild(children, this._ref);
 
       this._handleScroll = this._handleScroll.bind(this);
       this.scrollableAncestor = this._findScrollableAncestor();
 
-      if (process.env.NODE_ENV !== 'production' && this.props.debug) {
+      if (process.env.NODE_ENV !== 'production' && debug) {
         debugLog('scrollableAncestor', this.scrollableAncestor);
       }
 
@@ -186,8 +195,15 @@ export class Waypoint extends React.PureComponent {
     const bounds = this._getBounds();
     const currentPosition = getCurrentPosition(bounds);
     const previousPosition = this._previousPosition;
+    const {
+      debug,
+      onPositionChange,
+      onEnter,
+      onLeave,
+      fireOnRapidScroll,
+    } = this.props;
 
-    if (process.env.NODE_ENV !== 'production' && this.props.debug) {
+    if (process.env.NODE_ENV !== 'production' && debug) {
       debugLog('currentPosition', currentPosition);
       debugLog('previousPosition', previousPosition);
     }
@@ -209,12 +225,12 @@ export class Waypoint extends React.PureComponent {
       viewportTop: bounds.viewportTop,
       viewportBottom: bounds.viewportBottom,
     };
-    this.props.onPositionChange.call(this, callbackArg);
+    onPositionChange.call(this, callbackArg);
 
     if (currentPosition === INSIDE) {
-      this.props.onEnter.call(this, callbackArg);
+      onEnter.call(this, callbackArg);
     } else if (previousPosition === INSIDE) {
-      this.props.onLeave.call(this, callbackArg);
+      onLeave.call(this, callbackArg);
     }
 
     const isRapidScrollDown = previousPosition === BELOW
@@ -222,10 +238,10 @@ export class Waypoint extends React.PureComponent {
     const isRapidScrollUp = previousPosition === ABOVE
       && currentPosition === BELOW;
 
-    if (this.props.fireOnRapidScroll && (isRapidScrollDown || isRapidScrollUp)) {
+    if (fireOnRapidScroll && (isRapidScrollDown || isRapidScrollUp)) {
       // If the scroll event isn't fired often enough to occur while the
       // waypoint was visible, we trigger both callbacks anyway.
-      this.props.onEnter.call(this, {
+      onEnter.call(this, {
         currentPosition: INSIDE,
         previousPosition,
         event,
@@ -234,7 +250,7 @@ export class Waypoint extends React.PureComponent {
         viewportTop: bounds.viewportTop,
         viewportBottom: bounds.viewportBottom,
       });
-      this.props.onLeave.call(this, {
+      onLeave.call(this, {
         currentPosition,
         previousPosition: INSIDE,
         event,
@@ -247,7 +263,7 @@ export class Waypoint extends React.PureComponent {
   }
 
   _getBounds() {
-    const horizontal = this.props.horizontal;
+    const { horizontal, debug } = this.props;
     const {
       left, top, right, bottom,
     } = this._ref.getBoundingClientRect();
@@ -267,7 +283,7 @@ export class Waypoint extends React.PureComponent {
         : this.scrollableAncestor.getBoundingClientRect().top;
     }
 
-    if (process.env.NODE_ENV !== 'production' && this.props.debug) {
+    if (process.env.NODE_ENV !== 'production' && debug) {
       debugLog('waypoint top', waypointTop);
       debugLog('waypoint bottom', waypointBottom);
       debugLog('scrollableAncestor height', contextHeight);
@@ -326,6 +342,7 @@ if (process.env.NODE_ENV !== 'production') {
     onLeave: PropTypes.func,
     onPositionChange: PropTypes.func,
     fireOnRapidScroll: PropTypes.bool,
+    // eslint-disable-next-line react/forbid-prop-types
     scrollableAncestor: PropTypes.any,
     horizontal: PropTypes.bool,
 
@@ -357,6 +374,7 @@ Waypoint.getWindow = () => {
   if (typeof window !== 'undefined') {
     return window;
   }
+  return undefined;
 };
 Waypoint.defaultProps = defaultProps;
 Waypoint.displayName = 'Waypoint';

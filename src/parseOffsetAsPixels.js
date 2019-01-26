@@ -17,4 +17,6 @@ export default function parseOffsetAsPixels(str) {
   } if (str.slice(-2) === 'px') {
     return parseFloat(str.slice(0, -2));
   }
+
+  return undefined;
 }

@@ -1,32 +1,33 @@
-/* eslint-disable react/no-multi-comp */
+/* eslint-disable react/no-multi-comp, react/no-render-return-value, react/no-find-dom-node */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Waypoint } from '../src/waypoint.jsx';
+import { Waypoint } from '../src/waypoint';
 
 import { errorMessage as notValidErrorMessage } from '../src/ensureChildrenIsValid';
 import { errorMessage as refNotUsedErrorMessage } from '../src/ensureRefIsUsedByChild';
 
 let div;
 
-const renderAttached = function (component) {
+function renderAttached(component) {
   div = document.createElement('div');
   document.body.appendChild(div);
   const renderedComponent = ReactDOM.render(component, div);
   return renderedComponent;
-};
+}
 
-const scrollNodeTo = function (node, scrollTop) {
+function scrollNodeTo(node, scrollTop) {
   if (node === window) {
     window.scroll(0, scrollTop);
   } else {
+    // eslint-disable-next-line no-param-reassign
     node.scrollTop = scrollTop;
   }
   const event = document.createEvent('Event');
   event.initEvent('scroll', false, false);
   node.dispatchEvent(event);
-};
+}
 
-describe('<Waypoint>', function () {
+describe('<Waypoint>', () => {
   beforeEach(() => {
     jasmine.clock().install();
     spyOn(console, 'log');
@@ -897,7 +898,8 @@ describe('<Waypoint>', function () {
     it('does not throw with a Stateful Component as a child', () => {
       class StatefulComponent extends React.Component {
         render() {
-          return <div ref={this.props.innerRef} />;
+          const { innerRef } = this.props;
+          return <div ref={innerRef} />;
         }
       }
 
@@ -906,6 +908,7 @@ describe('<Waypoint>', function () {
     });
 
     it('errors when a Stateful Component does not provide ref to Waypoint', () => {
+      // eslint-disable-next-line react/prefer-stateless-function
       class StatefulComponent extends React.Component {
         render() {
           return <div />;
@@ -917,7 +920,7 @@ describe('<Waypoint>', function () {
     });
 
     it('does not throw with a Stateless Component as a child', () => {
-      const StatelessComponent = props => <div ref={props.innerRef} />;
+      const StatelessComponent = ({ innerRef }) => <div ref={innerRef} />;
 
       this.props.children = <StatelessComponent />;
       expect(this.subject).not.toThrow();
@@ -1253,14 +1256,15 @@ describe('<Waypoint>', function () {
     beforeEach(() => {
       class Wrapper extends React.Component {
         render() {
-          const onEnter = () => {
-            this.props.onEnter();
+          const doOnEnter = () => {
+            const { onEnter } = this.props;
+            onEnter();
             this.forceUpdate();
           };
 
           return (
             <div style={{ margin: `${window.innerHeight * 2}px 0` }}>
-              <Waypoint onEnter={onEnter} />
+              <Waypoint onEnter={doOnEnter} />
             </div>
           );
         }
@@ -1396,18 +1400,19 @@ describe('<Waypoint>', function () {
 });
 
 // smoke tests for horizontal scrolling
-const scrollNodeToHorizontal = function (node, scrollLeft) {
+function scrollNodeToHorizontal(node, scrollLeft) {
   if (node === window) {
     window.scroll(scrollLeft, 0);
   } else {
+    // eslint-disable-next-line no-param-reassign
     node.scrollLeft = scrollLeft;
   }
   const event = document.createEvent('Event');
   event.initEvent('scroll', false, false);
   node.dispatchEvent(event);
-};
+}
 
-describe('<Waypoint> Horizontal', function () {
+describe('<Waypoint> Horizontal', () => {
   beforeEach(() => {
     jasmine.clock().install();
     document.body.style.margin = 'auto'; // should be no horizontal margin
