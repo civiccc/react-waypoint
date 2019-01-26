@@ -37,6 +37,9 @@ module.exports = (config) => {
           },
         ],
       },
+      resolve: {
+        extensions: ['.js', '.jsx', '.json'],
+      },
     },
 
     webpackMiddleware: {
