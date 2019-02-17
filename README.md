@@ -38,7 +38,7 @@ yarn add react-waypoint
 ## Usage
 
 ```jsx
-import { Waypoint } from 'react-waypoint';
+import Waypoint from 'react-waypoint';
 
 <Waypoint
   onEnter={this._handleWaypointEnter}
