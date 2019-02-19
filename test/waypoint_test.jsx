@@ -1,32 +1,33 @@
-/* eslint-disable react/no-multi-comp */
+/* eslint-disable react/no-multi-comp, react/no-render-return-value, react/no-find-dom-node */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Waypoint } from '../src/waypoint.jsx';
+import { Waypoint } from '../src/waypoint';
 
 import { errorMessage as notValidErrorMessage } from '../src/ensureChildrenIsValid';
 import { errorMessage as refNotUsedErrorMessage } from '../src/ensureRefIsUsedByChild';
 
 let div;
 
-const renderAttached = function(component) {
+function renderAttached(component) {
   div = document.createElement('div');
   document.body.appendChild(div);
   const renderedComponent = ReactDOM.render(component, div);
   return renderedComponent;
-};
+}
 
-const scrollNodeTo = function(node, scrollTop) {
+function scrollNodeTo(node, scrollTop) {
   if (node === window) {
     window.scroll(0, scrollTop);
   } else {
+    // eslint-disable-next-line no-param-reassign
     node.scrollTop = scrollTop;
   }
   const event = document.createEvent('Event');
   event.initEvent('scroll', false, false);
   node.dispatchEvent(event);
-};
+}
 
-describe('<Waypoint>', function() {
+describe('<Waypoint>', () => {
   beforeEach(() => {
     jasmine.clock().install();
     spyOn(console, 'log');
@@ -44,7 +45,7 @@ describe('<Waypoint>', function() {
       overflow: 'auto',
       position: 'relative',
       width: 100,
-      margin: this.margin, //Normalize the space above the viewport.
+      margin: this.margin, // Normalize the space above the viewport.
     };
 
     this.topSpacerHeight = 0;
@@ -56,7 +57,7 @@ describe('<Waypoint>', function() {
           <div style={{ height: this.topSpacerHeight }} />
           <Waypoint {...this.props} />
           <div style={{ height: this.bottomSpacerHeight }} />
-        </div>
+        </div>,
       );
 
       jasmine.clock().tick(1);
@@ -104,8 +105,8 @@ describe('<Waypoint>', function() {
     });
 
     it('calls the onPositionChange handler', () => {
-      expect(this.props.onPositionChange).
-        toHaveBeenCalledWith({
+      expect(this.props.onPositionChange)
+        .toHaveBeenCalledWith({
           currentPosition: Waypoint.inside,
           previousPosition: undefined,
           event: null,
@@ -144,8 +145,8 @@ describe('<Waypoint>', function() {
     });
 
     it('calls the onPositionChange handler', () => {
-      expect(this.props.onPositionChange).
-        toHaveBeenCalledWith({
+      expect(this.props.onPositionChange)
+        .toHaveBeenCalledWith({
           currentPosition: Waypoint.inside,
           previousPosition: undefined,
           event: null,
@@ -184,8 +185,8 @@ describe('<Waypoint>', function() {
     });
 
     it('calls the onPositionChange handler', () => {
-      expect(this.props.onPositionChange).
-        toHaveBeenCalledWith({
+      expect(this.props.onPositionChange)
+        .toHaveBeenCalledWith({
           currentPosition: Waypoint.inside,
           previousPosition: undefined,
           event: null,
@@ -225,8 +226,8 @@ describe('<Waypoint>', function() {
     });
 
     it('calls the onPositionChange handler', () => {
-      expect(this.props.onPositionChange).
-        toHaveBeenCalledWith({
+      expect(this.props.onPositionChange)
+        .toHaveBeenCalledWith({
           currentPosition: Waypoint.inside,
           previousPosition: undefined,
           event: null,
@@ -274,8 +275,8 @@ describe('<Waypoint>', function() {
     });
 
     it('the onLeave handler is called', () => {
-      expect(this.props.onLeave).
-        toHaveBeenCalledWith({
+      expect(this.props.onLeave)
+        .toHaveBeenCalledWith({
           currentPosition: Waypoint.above,
           previousPosition: Waypoint.inside,
           event: jasmine.any(Event),
@@ -291,8 +292,8 @@ describe('<Waypoint>', function() {
     });
 
     it('the onPositionChange is called', () => {
-      expect(this.props.onPositionChange).
-        toHaveBeenCalledWith({
+      expect(this.props.onPositionChange)
+        .toHaveBeenCalledWith({
           currentPosition: Waypoint.above,
           previousPosition: Waypoint.inside,
           event: jasmine.any(Event),
@@ -325,8 +326,8 @@ describe('<Waypoint>', function() {
 
     it('calls the onPositionChange handler', () => {
       this.subject();
-      expect(this.props.onPositionChange).
-        toHaveBeenCalledWith({
+      expect(this.props.onPositionChange)
+        .toHaveBeenCalledWith({
           currentPosition: Waypoint.below,
           previousPosition: undefined,
           event: null,
@@ -353,8 +354,8 @@ describe('<Waypoint>', function() {
         this.props.onPositionChange.calls.reset();
         scrollNodeTo(this.component, 100);
 
-        expect(this.props.onEnter).
-          toHaveBeenCalledWith({
+        expect(this.props.onEnter)
+          .toHaveBeenCalledWith({
             currentPosition: Waypoint.inside,
             previousPosition: Waypoint.below,
             event: jasmine.any(Event),
@@ -389,8 +390,8 @@ describe('<Waypoint>', function() {
     it('calls the onEnter handler when scrolling down past the threshold', () => {
       scrollNodeTo(this.subject(), 100);
 
-      expect(this.props.onEnter).
-        toHaveBeenCalledWith({
+      expect(this.props.onEnter)
+        .toHaveBeenCalledWith({
           currentPosition: Waypoint.inside,
           previousPosition: Waypoint.below,
           event: jasmine.any(Event),
@@ -404,8 +405,8 @@ describe('<Waypoint>', function() {
     it('calls the onPositionChange handler when scrolling down past the threshold', () => {
       scrollNodeTo(this.subject(), 100);
 
-      expect(this.props.onPositionChange).
-        toHaveBeenCalledWith({
+      expect(this.props.onPositionChange)
+        .toHaveBeenCalledWith({
           currentPosition: Waypoint.inside,
           previousPosition: Waypoint.below,
           event: jasmine.any(Event),
@@ -429,8 +430,8 @@ describe('<Waypoint>', function() {
       it('calls the onEnter handler when scrolling down past the threshold', () => {
         scrollNodeTo(this.subject(), 100);
 
-        expect(this.props.onEnter).
-          toHaveBeenCalledWith({
+        expect(this.props.onEnter)
+          .toHaveBeenCalledWith({
             currentPosition: Waypoint.inside,
             previousPosition: Waypoint.below,
             event: jasmine.any(Event),
@@ -444,8 +445,8 @@ describe('<Waypoint>', function() {
       it('calls the onPositionChange handler when scrolling down past the threshold', () => {
         scrollNodeTo(this.subject(), 100);
 
-        expect(this.props.onPositionChange).
-          toHaveBeenCalledWith({
+        expect(this.props.onPositionChange)
+          .toHaveBeenCalledWith({
             currentPosition: Waypoint.inside,
             previousPosition: Waypoint.below,
             event: jasmine.any(Event),
@@ -478,8 +479,8 @@ describe('<Waypoint>', function() {
 
       it('calls the onEnter handler', () => {
         this.scrollQuicklyPast();
-        expect(this.props.onEnter).
-          toHaveBeenCalledWith({
+        expect(this.props.onEnter)
+          .toHaveBeenCalledWith({
             currentPosition: Waypoint.inside,
             previousPosition: Waypoint.below,
             event: jasmine.any(Event),
@@ -492,8 +493,8 @@ describe('<Waypoint>', function() {
 
       it('calls the onLeave handler', () => {
         this.scrollQuicklyPast();
-        expect(this.props.onLeave).
-          toHaveBeenCalledWith({
+        expect(this.props.onLeave)
+          .toHaveBeenCalledWith({
             currentPosition: Waypoint.above,
             previousPosition: Waypoint.inside,
             event: jasmine.any(Event),
@@ -506,8 +507,8 @@ describe('<Waypoint>', function() {
 
       it('calls the onPositionChange handler', () => {
         this.scrollQuicklyPast();
-        expect(this.props.onPositionChange).
-          toHaveBeenCalledWith({
+        expect(this.props.onPositionChange)
+          .toHaveBeenCalledWith({
             currentPosition: Waypoint.above,
             previousPosition: Waypoint.below,
             event: jasmine.any(Event),
@@ -535,8 +536,8 @@ describe('<Waypoint>', function() {
 
         it('calls the onPositionChange handler', () => {
           this.scrollQuicklyPast();
-          expect(this.props.onPositionChange).
-            toHaveBeenCalledWith({
+          expect(this.props.onPositionChange)
+            .toHaveBeenCalledWith({
               currentPosition: Waypoint.above,
               previousPosition: Waypoint.below,
               event: jasmine.any(Event),
@@ -560,8 +561,8 @@ describe('<Waypoint>', function() {
           this.props.onPositionChange.calls.reset();
           scrollNodeTo(this.component, 211);
 
-          expect(this.props.onLeave).
-            toHaveBeenCalledWith({
+          expect(this.props.onLeave)
+            .toHaveBeenCalledWith({
               currentPosition: Waypoint.above,
               previousPosition: Waypoint.inside,
               event: jasmine.any(Event),
@@ -609,8 +610,8 @@ describe('<Waypoint>', function() {
           this.props.onPositionChange.calls.reset();
           scrollNodeTo(this.component, 90);
 
-          expect(this.props.onEnter).
-            toHaveBeenCalledWith({
+          expect(this.props.onEnter)
+            .toHaveBeenCalledWith({
               currentPosition: Waypoint.inside,
               previousPosition: Waypoint.below,
               event: jasmine.any(Event),
@@ -634,8 +635,8 @@ describe('<Waypoint>', function() {
           this.props.onPositionChange.calls.reset();
           scrollNodeTo(this.component, 90);
 
-          expect(this.props.onPositionChange).
-            toHaveBeenCalledWith({
+          expect(this.props.onPositionChange)
+            .toHaveBeenCalledWith({
               currentPosition: Waypoint.inside,
               previousPosition: Waypoint.below,
               event: jasmine.any(Event),
@@ -681,8 +682,8 @@ describe('<Waypoint>', function() {
           this.props.onPositionChange.calls.reset();
           scrollNodeTo(this.component, 90);
 
-          expect(this.props.onEnter).
-            toHaveBeenCalledWith({
+          expect(this.props.onEnter)
+            .toHaveBeenCalledWith({
               currentPosition: Waypoint.inside,
               previousPosition: Waypoint.below,
               event: jasmine.any(Event),
@@ -706,8 +707,8 @@ describe('<Waypoint>', function() {
           this.props.onPositionChange.calls.reset();
           scrollNodeTo(this.component, 90);
 
-          expect(this.props.onPositionChange).
-            toHaveBeenCalledWith({
+          expect(this.props.onPositionChange)
+            .toHaveBeenCalledWith({
               currentPosition: Waypoint.inside,
               previousPosition: Waypoint.below,
               event: jasmine.any(Event),
@@ -753,8 +754,8 @@ describe('<Waypoint>', function() {
           this.props.onPositionChange.calls.reset();
           scrollNodeTo(this.component, 90);
 
-          expect(this.props.onEnter).
-            toHaveBeenCalledWith({
+          expect(this.props.onEnter)
+            .toHaveBeenCalledWith({
               currentPosition: Waypoint.inside,
               previousPosition: Waypoint.below,
               event: jasmine.any(Event),
@@ -778,8 +779,8 @@ describe('<Waypoint>', function() {
           this.props.onPositionChange.calls.reset();
           scrollNodeTo(this.component, 90);
 
-          expect(this.props.onPositionChange).
-            toHaveBeenCalledWith({
+          expect(this.props.onPositionChange)
+            .toHaveBeenCalledWith({
               currentPosition: Waypoint.inside,
               previousPosition: Waypoint.below,
               event: jasmine.any(Event),
@@ -825,8 +826,8 @@ describe('<Waypoint>', function() {
           this.props.onPositionChange.calls.reset();
           scrollNodeTo(this.component, 90);
 
-          expect(this.props.onEnter).
-            toHaveBeenCalledWith({
+          expect(this.props.onEnter)
+            .toHaveBeenCalledWith({
               currentPosition: Waypoint.inside,
               previousPosition: Waypoint.below,
               event: jasmine.any(Event),
@@ -850,8 +851,8 @@ describe('<Waypoint>', function() {
           this.props.onPositionChange.calls.reset();
           scrollNodeTo(this.component, 90);
 
-          expect(this.props.onPositionChange).
-            toHaveBeenCalledWith({
+          expect(this.props.onPositionChange)
+            .toHaveBeenCalledWith({
               currentPosition: Waypoint.inside,
               previousPosition: Waypoint.below,
               event: jasmine.any(Event),
@@ -886,9 +887,9 @@ describe('<Waypoint>', function() {
       ];
 
       // eslint-disable-next-line no-console
-      console.error('NOTE: Expect an error log below. You can ignore it. ' +
-        "We're testing errors thrown and it seems hard to prevent things " +
-        'from being logged.');
+      console.error('NOTE: Expect an error log below. You can ignore it. '
+        + "We're testing errors thrown and it seems hard to prevent things "
+        + 'from being logged.');
       expect(this.subject).toThrowError(notValidErrorMessage);
 
       window.onerror = prevOnError;
@@ -897,7 +898,8 @@ describe('<Waypoint>', function() {
     it('does not throw with a Stateful Component as a child', () => {
       class StatefulComponent extends React.Component {
         render() {
-          return <div ref={this.props.innerRef} />;
+          const { innerRef } = this.props;
+          return <div ref={innerRef} />;
         }
       }
 
@@ -906,6 +908,7 @@ describe('<Waypoint>', function() {
     });
 
     it('errors when a Stateful Component does not provide ref to Waypoint', () => {
+      // eslint-disable-next-line react/prefer-stateless-function
       class StatefulComponent extends React.Component {
         render() {
           return <div />;
@@ -917,7 +920,7 @@ describe('<Waypoint>', function() {
     });
 
     it('does not throw with a Stateless Component as a child', () => {
-      const StatelessComponent = (props) => <div ref={props.innerRef} />;
+      const StatelessComponent = ({ innerRef }) => <div ref={innerRef} />;
 
       this.props.children = <StatelessComponent />;
       expect(this.subject).not.toThrow();
@@ -959,8 +962,8 @@ describe('<Waypoint>', function() {
     it('calls the onEnter handler when scrolled back up just past the bottom', () => {
       scrollNodeTo(this.scrollable, this.topSpacerHeight + 50);
 
-      expect(this.props.onEnter).
-        toHaveBeenCalledWith({
+      expect(this.props.onEnter)
+        .toHaveBeenCalledWith({
           currentPosition: Waypoint.inside,
           previousPosition: Waypoint.above,
           event: jasmine.any(Event),
@@ -1030,8 +1033,8 @@ describe('<Waypoint>', function() {
       });
 
       it('calls the onEnter handler', () => {
-        expect(this.props.onEnter).
-          toHaveBeenCalledWith({
+        expect(this.props.onEnter)
+          .toHaveBeenCalledWith({
             currentPosition: Waypoint.inside,
             previousPosition: Waypoint.above,
             event: jasmine.any(Event),
@@ -1047,8 +1050,8 @@ describe('<Waypoint>', function() {
       });
 
       it('calls the onPositionChange handler', () => {
-        expect(this.props.onPositionChange).
-          toHaveBeenCalledWith({
+        expect(this.props.onPositionChange)
+          .toHaveBeenCalledWith({
             currentPosition: Waypoint.inside,
             previousPosition: Waypoint.above,
             event: jasmine.any(Event),
@@ -1062,8 +1065,8 @@ describe('<Waypoint>', function() {
       it('calls the onLeave handler when scrolling up past the waypoint', () => {
         scrollNodeTo(this.scrollable, 99);
 
-        expect(this.props.onLeave).
-          toHaveBeenCalledWith({
+        expect(this.props.onLeave)
+          .toHaveBeenCalledWith({
             currentPosition: Waypoint.below,
             previousPosition: Waypoint.inside,
             event: jasmine.any(Event),
@@ -1083,8 +1086,8 @@ describe('<Waypoint>', function() {
       it('calls the onPositionChange handler when scrolling up past the waypoint', () => {
         scrollNodeTo(this.scrollable, 99);
 
-        expect(this.props.onPositionChange).
-          toHaveBeenCalledWith({
+        expect(this.props.onPositionChange)
+          .toHaveBeenCalledWith({
             currentPosition: Waypoint.below,
             previousPosition: Waypoint.inside,
             event: jasmine.any(Event),
@@ -1106,8 +1109,8 @@ describe('<Waypoint>', function() {
       });
 
       it('calls the onEnter handler', () => {
-        expect(this.props.onEnter).
-          toHaveBeenCalledWith({
+        expect(this.props.onEnter)
+          .toHaveBeenCalledWith({
             currentPosition: Waypoint.inside,
             previousPosition: Waypoint.above,
             event: jasmine.any(Event),
@@ -1119,8 +1122,8 @@ describe('<Waypoint>', function() {
       });
 
       it('calls the onLeave handler', () => {
-        expect(this.props.onLeave).
-          toHaveBeenCalledWith({
+        expect(this.props.onLeave)
+          .toHaveBeenCalledWith({
             currentPosition: Waypoint.below,
             previousPosition: Waypoint.inside,
             event: jasmine.any(Event),
@@ -1132,8 +1135,8 @@ describe('<Waypoint>', function() {
       });
 
       it('calls the onPositionChange handler', () => {
-        expect(this.props.onPositionChange).
-          toHaveBeenCalledWith({
+        expect(this.props.onPositionChange)
+          .toHaveBeenCalledWith({
             currentPosition: Waypoint.below,
             previousPosition: Waypoint.above,
             event: jasmine.any(Event),
@@ -1152,16 +1155,16 @@ describe('<Waypoint>', function() {
       const node = ReactDOM.findDOMNode(this.component);
       node.style.display = 'none';
       scrollNodeTo(this.component, 0);
-      expect(this.props.onLeave).
-      toHaveBeenCalledWith({
-        currentPosition: Waypoint.invisible,
-        previousPosition: Waypoint.inside,
-        event: jasmine.any(Event),
-        waypointTop: 0,
-        waypointBottom: 0,
-        viewportTop: 0,
-        viewportBottom: 0,
-      });
+      expect(this.props.onLeave)
+        .toHaveBeenCalledWith({
+          currentPosition: Waypoint.invisible,
+          previousPosition: Waypoint.inside,
+          event: jasmine.any(Event),
+          waypointTop: 0,
+          waypointBottom: 0,
+          viewportTop: 0,
+          viewportBottom: 0,
+        });
     });
   });
 
@@ -1191,8 +1194,8 @@ describe('<Waypoint>', function() {
 
     it('fires the onPositionChange handler on mount', () => {
       this.subject();
-      expect(this.props.onPositionChange).
-        toHaveBeenCalledWith({
+      expect(this.props.onPositionChange)
+        .toHaveBeenCalledWith({
           currentPosition: Waypoint.below,
           previousPosition: undefined,
           event: null,
@@ -1207,8 +1210,8 @@ describe('<Waypoint>', function() {
       this.subject();
       scrollNodeTo(window, this.topSpacerHeight - window.innerHeight / 2);
 
-      expect(this.props.onEnter).
-        toHaveBeenCalledWith({
+      expect(this.props.onEnter)
+        .toHaveBeenCalledWith({
           currentPosition: Waypoint.inside,
           previousPosition: Waypoint.below,
           event: jasmine.any(Event),
@@ -1223,8 +1226,8 @@ describe('<Waypoint>', function() {
       this.subject();
       scrollNodeTo(window, this.topSpacerHeight - window.innerHeight / 2);
 
-      expect(this.props.onPositionChange).
-        toHaveBeenCalledWith({
+      expect(this.props.onPositionChange)
+        .toHaveBeenCalledWith({
           currentPosition: Waypoint.inside,
           previousPosition: Waypoint.below,
           event: jasmine.any(Event),
@@ -1253,22 +1256,21 @@ describe('<Waypoint>', function() {
     beforeEach(() => {
       class Wrapper extends React.Component {
         render() {
-          const onEnter = () => {
-            this.props.onEnter();
+          const doOnEnter = () => {
+            const { onEnter } = this.props;
+            onEnter();
             this.forceUpdate();
           };
 
           return (
-            <div style={{ margin: window.innerHeight * 2 + 'px 0' }}>
-              <Waypoint onEnter={onEnter} />
+            <div style={{ margin: `${window.innerHeight * 2}px 0` }}>
+              <Waypoint onEnter={doOnEnter} />
             </div>
           );
         }
       }
 
-      this.subject = () => {
-        return renderAttached(<Wrapper {...this.props} />);
-      };
+      this.subject = () => renderAttached(<Wrapper {...this.props} />);
     });
 
     it('only calls onEnter once', () => {
@@ -1311,8 +1313,8 @@ describe('<Waypoint>', function() {
     });
 
     it('calls the onEnter handler', () => {
-      expect(this.props.onEnter).
-        toHaveBeenCalledWith({
+      expect(this.props.onEnter)
+        .toHaveBeenCalledWith({
           currentPosition: Waypoint.inside,
           previousPosition: undefined,
           event: null,
@@ -1328,8 +1330,8 @@ describe('<Waypoint>', function() {
     });
 
     it('calls the onPositionChange handler', () => {
-      expect(this.props.onPositionChange).
-        toHaveBeenCalledWith({
+      expect(this.props.onPositionChange)
+        .toHaveBeenCalledWith({
           currentPosition: Waypoint.inside,
           previousPosition: undefined,
           event: null,
@@ -1361,8 +1363,8 @@ describe('<Waypoint>', function() {
       it('the onLeave handler is called when scrolling past the waypoint', () => {
         scrollNodeTo(window, 25);
 
-        expect(this.props.onLeave).
-          toHaveBeenCalledWith({
+        expect(this.props.onLeave)
+          .toHaveBeenCalledWith({
             currentPosition: Waypoint.above,
             previousPosition: Waypoint.inside,
             event: jasmine.any(Event),
@@ -1382,8 +1384,8 @@ describe('<Waypoint>', function() {
       it('the onPositionChange handler is called when scrolling past the waypoint', () => {
         scrollNodeTo(window, 25);
 
-        expect(this.props.onPositionChange).
-          toHaveBeenCalledWith({
+        expect(this.props.onPositionChange)
+          .toHaveBeenCalledWith({
             currentPosition: Waypoint.above,
             previousPosition: Waypoint.inside,
             event: jasmine.any(Event),
@@ -1398,18 +1400,19 @@ describe('<Waypoint>', function() {
 });
 
 // smoke tests for horizontal scrolling
-const scrollNodeToHorizontal = function(node, scrollLeft) {
+function scrollNodeToHorizontal(node, scrollLeft) {
   if (node === window) {
     window.scroll(scrollLeft, 0);
   } else {
+    // eslint-disable-next-line no-param-reassign
     node.scrollLeft = scrollLeft;
   }
   const event = document.createEvent('Event');
   event.initEvent('scroll', false, false);
   node.dispatchEvent(event);
-};
+}
 
-describe('<Waypoint> Horizontal', function() {
+describe('<Waypoint> Horizontal', () => {
   beforeEach(() => {
     jasmine.clock().install();
     document.body.style.margin = 'auto'; // should be no horizontal margin
@@ -1417,7 +1420,7 @@ describe('<Waypoint> Horizontal', function() {
     this.props = {
       onEnter: jasmine.createSpy('onEnter'),
       onLeave: jasmine.createSpy('onLeave'),
-      horizontal: true
+      horizontal: true,
     };
 
     this.margin = 10;
@@ -1428,7 +1431,7 @@ describe('<Waypoint> Horizontal', function() {
       overflow: 'auto',
       whiteSpace: 'nowrap',
       width: this.parentWidth,
-      margin: this.margin, //Normalize the space left of the viewport.
+      margin: this.margin, // Normalize the space left of the viewport.
     };
 
     this.leftSpacerWidth = 0;
@@ -1440,7 +1443,7 @@ describe('<Waypoint> Horizontal', function() {
           <div style={{ width: this.leftSpacerWidth, display: 'inline-block' }} />
           <Waypoint {...this.props} />
           <div style={{ width: this.rightSpacerWidth, display: 'inline-block' }} />
-        </div>
+        </div>,
       );
 
       jasmine.clock().tick(1);

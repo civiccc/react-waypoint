@@ -1,4 +1,4 @@
-/* eslint-disable max-len, react/no-multi-comp */
+/* eslint-disable max-len, react/no-multi-comp, react/jsx-no-bind */
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
@@ -8,15 +8,18 @@ const WAYPOINT_COUNT = 1000;
 
 function Foo() {
   return (
-    <div className='foo'>
-      <svg version='1.1'
-        width='612px'
-        height='502.174px'
-        viewBox='0 65.326 612 502.174'
-        enableBackground='new 0 65.326 612 502.174'
+    <div className="foo">
+      <svg
+        version="1.1"
+        width="612px"
+        height="502.174px"
+        viewBox="0 65.326 612 502.174"
+        enableBackground="new 0 65.326 612 502.174"
       >
-        <ellipse fill='#C6C6C6' cx='283.5' cy='487.5' rx='259' ry='80'/>
-        <path id='bird' d='M210.333,65.331C104.367,66.105-12.349,150.637,1.056,276.449c4.303,40.393,18.533,63.704,52.171,79.03
+        <ellipse fill="#C6C6C6" cx="283.5" cy="487.5" rx="259" ry="80" />
+        <path
+          id="bird"
+          d="M210.333,65.331C104.367,66.105-12.349,150.637,1.056,276.449c4.303,40.393,18.533,63.704,52.171,79.03
                 c36.307,16.544,57.022,54.556,50.406,112.954c-9.935,4.88-17.405,11.031-19.132,20.015c7.531-0.17,14.943-0.312,22.59,4.341
                 c20.333,12.375,31.296,27.363,42.979,51.72c1.714,3.572,8.192,2.849,8.312-3.078c0.17-8.467-1.856-17.454-5.226-26.933
                 c-2.955-8.313,3.059-7.985,6.917-6.106c6.399,3.115,16.334,9.43,30.39,13.098c5.392,1.407,5.995-3.877,5.224-6.991
@@ -31,10 +34,10 @@ function Foo() {
                 c-15.893-41.125-68.176-93.328-92.13-132.085c-24.581-39.774-14.34-61.243-39.957-91.247
                 c-21.326-24.978-47.502-25.803-77.339-17.365c-23.461,6.634-39.234-7.117-52.98-31.273C318.42,87.525,265.838,64.927,210.333,65.331
                 z M445.731,203.01c6.12,0,11.112,4.919,11.112,11.038c0,6.119-4.994,11.111-11.112,11.111s-11.038-4.994-11.038-11.111
-                C434.693,207.929,439.613,203.01,445.731,203.01z'
+                C434.693,207.929,439.613,203.01,445.731,203.01z"
         />
       </svg>
-      <a href='https://google.com'>Birds</a>
+      <a href="https://google.com">Birds</a>
     </div>
   );
 }
@@ -60,13 +63,20 @@ class PerformanceTest extends Component {
   render() {
     const elements = [];
     for (let i = 0; i < WAYPOINT_COUNT; i++) {
+      // eslint-disable-next-line react/destructuring-assignment
+      const isActive = this.state[`active-${i}`];
+
       elements.push(
         <div key={i}>
-          <h2>Container {i}</h2>
-          {this.state[`active-${i}`] &&
-            <Foo />
+          <h2>
+Container
+            {i}
+          </h2>
+          {isActive
+            && <Foo />
           }
-          {!this.state[`active-${i}`] &&
+          {!isActive
+            && (
             <div
               style={{
                 height: 300,
@@ -74,12 +84,13 @@ class PerformanceTest extends Component {
                 borderBottom: '1px solid #ccc',
               }}
             />
+            )
           }
           <Waypoint
             onEnter={this.handleEnter.bind(this, i)}
             onLeave={this.handleLeave.bind(this, i)}
           />
-        </div>
+        </div>,
       );
     }
     return (
@@ -91,6 +102,6 @@ class PerformanceTest extends Component {
 }
 
 ReactDOM.render(
-  <PerformanceTest/>,
-  document.getElementById('app')
+  <PerformanceTest />,
+  document.getElementById('app'),
 );

@@ -1,4 +1,6 @@
-import { INVISIBLE, INSIDE, BELOW, ABOVE } from './constants';
+import {
+  INVISIBLE, INSIDE, BELOW, ABOVE,
+} from './constants';
 
 /**
  * @param {object} bounds An object with bounds data for the waypoint and
@@ -13,20 +15,20 @@ export default function getCurrentPosition(bounds) {
   }
 
   // top is within the viewport
-  if (bounds.viewportTop <= bounds.waypointTop &&
-      bounds.waypointTop <= bounds.viewportBottom) {
+  if (bounds.viewportTop <= bounds.waypointTop
+      && bounds.waypointTop <= bounds.viewportBottom) {
     return INSIDE;
   }
 
   // bottom is within the viewport
-  if (bounds.viewportTop <= bounds.waypointBottom &&
-      bounds.waypointBottom <= bounds.viewportBottom) {
+  if (bounds.viewportTop <= bounds.waypointBottom
+      && bounds.waypointBottom <= bounds.viewportBottom) {
     return INSIDE;
   }
 
   // top is above the viewport and bottom is below the viewport
-  if (bounds.waypointTop <= bounds.viewportTop &&
-      bounds.viewportBottom <= bounds.waypointBottom) {
+  if (bounds.waypointTop <= bounds.viewportTop
+      && bounds.viewportBottom <= bounds.waypointBottom) {
     return INSIDE;
   }
 

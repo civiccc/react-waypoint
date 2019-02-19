@@ -1,5 +1,5 @@
-export default function debugLog() {
+export default function debugLog(...args) {
   if (process.env.NODE_ENV !== 'production') {
-    console.log(arguments); // eslint-disable-line no-console
+    console.log(...args); // eslint-disable-line no-console
   }
 }

@@ -14,4 +14,6 @@ export default function parseOffsetAsPercentage(str) {
   if (str.slice(-1) === '%') {
     return parseFloat(str.slice(0, -1)) / 100;
   }
+
+  return undefined;
 }
