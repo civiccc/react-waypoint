@@ -1,3 +1,12 @@
+## 9.0.0
+
+- [Breaking] Require React 15.3+
+- [Breaking] Make Waypoint a named export instead of default export
+- Change constants into named exports for better minification
+- Fix removing propTypes in production builds
+- Ensure that children is valid only in dev
+- Fix isForwardRef call
+
 ## 8.1.0
 
 - Improve support for refs (#278)
