@@ -1,4 +1,4 @@
-import resolveScrollableAncestorProp from '../src/resolveScrollableAncestorProp';
+import resolveScrollableAncestorProp from '../../src/resolveScrollableAncestorProp';
 
 describe('resolveScrollableAncestorProp()', () => {
   it('converts "window" into `global.window`', () => {

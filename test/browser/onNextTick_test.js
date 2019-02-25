@@ -1,4 +1,4 @@
-import onNextTick from '../src/onNextTick';
+import onNextTick from '../../src/onNextTick';
 
 describe('onNextTick()', () => {
   beforeEach(() => {

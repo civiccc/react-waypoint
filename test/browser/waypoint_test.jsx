@@ -1,9 +1,9 @@
 /* eslint-disable react/no-multi-comp, react/no-render-return-value, react/no-find-dom-node */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Waypoint } from '../src/waypoint';
+import { Waypoint } from '../../src/waypoint';
 
-import { errorMessage as refNotUsedErrorMessage } from '../src/ensureRefIsUsedByChild';
+import { errorMessage as refNotUsedErrorMessage } from '../../src/ensureRefIsUsedByChild';
 
 let div;
 
