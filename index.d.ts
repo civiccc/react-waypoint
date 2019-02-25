@@ -1,13 +1,11 @@
 import * as React from 'react';
 
-declare class Waypoint extends React.Component<Waypoint.WaypointProps, {}> {
+export declare class Waypoint extends React.Component<Waypoint.WaypointProps, {}> {
   static above: string;
   static below: string;
   static inside: string;
   static invisible: string;
 }
-
-export Waypoint;
 
 declare namespace Waypoint {
     interface CallbackArgs {
