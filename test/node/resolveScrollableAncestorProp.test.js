@@ -2,6 +2,8 @@ import resolveScrollableAncestorProp from '../../src/resolveScrollableAncestorPr
 
 describe('resolveScrollableAncestorProp()', () => {
   it('converts "window" into `global.window`', () => {
+    global.window = {};
+
     expect(resolveScrollableAncestorProp('window')).toEqual(global.window);
   });
 

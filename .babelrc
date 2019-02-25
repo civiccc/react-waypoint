@@ -1,10 +1,13 @@
 {
-  "presets": [
-    [
-      "airbnb",
-      {
-        "modules": false
-      }
-    ]
-  ]
+  "env": {
+    "test": {
+      "presets": [["airbnb", { "modules": true }]]
+    },
+    "production": {
+      "presets": [["airbnb", { "modules": false }]]
+    },
+    "development": {
+      "presets": [["airbnb", { "modules": false }]]
+    }
+  }
 }
