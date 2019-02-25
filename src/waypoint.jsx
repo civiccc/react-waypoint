@@ -16,6 +16,8 @@ import getCurrentPosition from './getCurrentPosition';
 import onNextTick from './onNextTick';
 import resolveScrollableAncestorProp from './resolveScrollableAncestorProp';
 
+const hasWindow = typeof window !== 'undefined';
+
 const defaultProps = {
   debug: false,
   scrollableAncestor: undefined,
@@ -40,7 +42,7 @@ export class Waypoint extends React.PureComponent {
   }
 
   componentDidMount() {
-    if (!Waypoint.getWindow()) {
+    if (!hasWindow) {
       return;
     }
 
@@ -80,7 +82,7 @@ export class Waypoint extends React.PureComponent {
   }
 
   componentDidUpdate() {
-    if (!Waypoint.getWindow()) {
+    if (!hasWindow) {
       return;
     }
 
@@ -107,7 +109,7 @@ export class Waypoint extends React.PureComponent {
   }
 
   componentWillUnmount() {
-    if (!Waypoint.getWindow()) {
+    if (!hasWindow) {
       return;
     }
 
@@ -356,11 +358,5 @@ Waypoint.above = ABOVE;
 Waypoint.below = BELOW;
 Waypoint.inside = INSIDE;
 Waypoint.invisible = INVISIBLE;
-Waypoint.getWindow = () => {
-  if (typeof window !== 'undefined') {
-    return window;
-  }
-  return undefined;
-};
 Waypoint.defaultProps = defaultProps;
 Waypoint.displayName = 'Waypoint';
