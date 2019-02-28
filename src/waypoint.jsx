@@ -10,7 +10,6 @@ import {
   INVISIBLE, INSIDE, BELOW, ABOVE,
 } from './constants';
 import debugLog from './debugLog';
-import ensureChildrenIsValid from './ensureChildrenIsValid';
 import ensureRefIsUsedByChild from './ensureRefIsUsedByChild';
 import isDOMElement from './isDOMElement';
 import getCurrentPosition from './getCurrentPosition';
@@ -38,13 +37,6 @@ export class Waypoint extends React.PureComponent {
     this.refElement = (e) => {
       this._ref = e;
     };
-  }
-
-  componentWillMount() {
-    const { children } = this.props;
-    if (process.env.NODE_ENV !== 'production') {
-      ensureChildrenIsValid(children);
-    }
   }
 
   componentDidMount() {
@@ -85,12 +77,6 @@ export class Waypoint extends React.PureComponent {
 
       this._handleScroll(null);
     });
-  }
-
-  componentWillReceiveProps(newProps) {
-    if (process.env.NODE_ENV !== 'production') {
-      ensureChildrenIsValid(newProps.children);
-    }
   }
 
   componentDidUpdate() {
