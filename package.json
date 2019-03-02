@@ -40,6 +40,7 @@
   "devDependencies": {
     "@babel/cli": "^7.0.0",
     "@babel/core": "^7.0.0",
+    "@babel/plugin-transform-runtime": "^7.3.4",
     "@types/react": "^15.0.21",
     "babel-loader": "^8.0.0",
     "babel-preset-airbnb": "^3.2.0",
@@ -74,6 +75,7 @@
     "scrollspy"
   ],
   "dependencies": {
+    "@babel/runtime": "^7.3.4",
     "consolidated-events": "^1.1.0 || ^2.0.0",
     "prop-types": "^15.0.0",
     "react-is": "^16.6.3"
