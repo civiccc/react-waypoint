@@ -1,3 +1,10 @@
 {
-  "presets": [["airbnb", { "modules": false }]]
+  "presets": [
+    [
+      "airbnb",
+      {
+        "modules": false
+      }
+    ]
+  ]
 }
