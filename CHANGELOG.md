@@ -1,3 +1,8 @@
+## 9.0.1
+
+- Fix export in TypeScript types (#298)
+- Update babel 6 -> 7, rollup 0 -> 1 (#301)
+
 ## 9.0.0
 
 - [Breaking] Require React 15.3+
