@@ -3,7 +3,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Waypoint } from '../src/waypoint';
 
-import { errorMessage as notValidErrorMessage } from '../src/ensureChildrenIsValid';
 import { errorMessage as refNotUsedErrorMessage } from '../src/ensureRefIsUsedByChild';
 
 let div;
@@ -870,29 +869,6 @@ describe('<Waypoint>', () => {
     it('does not throw with a DOM Element as a child', () => {
       this.props.children = <div />;
       expect(this.subject).not.toThrow();
-    });
-
-    it('errors when multiple children are provided', () => {
-      // INFO: React 16 throws user errors again by it's own in dev mode, see:
-      // https://github.com/facebook/react/issues/10384#issuecomment-334142138
-      //
-      // This code ignores uncaught errors and prevents test from failing in React 16
-      const prevOnError = window.onerror;
-      window.onerror = () => undefined;
-
-      this.props.children = [
-        <div key={1} />,
-        <div key={2} />,
-        <div key={3} />,
-      ];
-
-      // eslint-disable-next-line no-console
-      console.error('NOTE: Expect an error log below. You can ignore it. '
-        + "We're testing errors thrown and it seems hard to prevent things "
-        + 'from being logged.');
-      expect(this.subject).toThrowError(notValidErrorMessage);
-
-      window.onerror = prevOnError;
     });
 
     it('does not throw with a Stateful Component as a child', () => {
