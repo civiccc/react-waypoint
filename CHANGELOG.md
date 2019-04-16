@@ -1,3 +1,7 @@
+## 9.0.2
+
+- Remove StrictMode warnings
+
 ## 9.0.1
 
 - Fix export in TypeScript types (#298)
