@@ -883,6 +883,22 @@ describe('<Waypoint>', () => {
       expect(this.subject).not.toThrow();
     });
 
+    it('does not throw with a Stateful Component that uses forwardRef as a child', () => {
+      class StatefulComponent extends React.Component {
+        render() {
+          const { forwardedRef } = this.props;
+          return <div ref={forwardedRef} />;
+        }
+      }
+
+      const ForwardedRefComponent = React.forwardRef((props, ref) => (
+        <StatefulComponent {...props} forwardedRef={ref} />
+      ));
+
+      this.props.children = <ForwardedRefComponent />;
+      expect(this.subject).not.toThrow();
+    });
+
     it('errors when a Stateful Component does not provide ref to Waypoint', () => {
       // eslint-disable-next-line react/prefer-stateless-function
       class StatefulComponent extends React.Component {
@@ -907,6 +923,91 @@ describe('<Waypoint>', () => {
 
       this.props.children = <StatelessComponent />;
       expect(this.subject).toThrowError(refNotUsedErrorMessage);
+    });
+
+    it('wraps a DOM element’s existing ref', () => {
+      const functionRef = jasmine.createSpy('functionRef');
+      this.props.children = <div ref={functionRef} />;
+      expect(this.subject).not.toThrow();
+      expect(functionRef).toHaveBeenCalledTimes(1);
+      expect(functionRef).toHaveBeenCalledWith(jasmine.any(Node));
+    });
+
+    it('wraps a stateful component’s existing ref', () => {
+      const functionRef = jasmine.createSpy('functionRef');
+
+      const ForwardedRefComponent = React.forwardRef((props, ref) => (
+        <div ref={ref} />
+      ));
+
+      this.props.children = <ForwardedRefComponent ref={functionRef} />;
+      expect(this.subject).not.toThrow();
+      expect(functionRef).toHaveBeenCalledTimes(1);
+      expect(functionRef).toHaveBeenCalledWith(jasmine.any(Node));
+    });
+  });
+
+  describe('when the Waypoint child has its own ref', () => {
+    beforeEach(() => {
+      // Contrive so that onEnter triggers a re-render
+      class Wrapper extends React.Component {
+        render() {
+          const { onEnter, ...rest } = this.props;
+          const doOnEnter = () => {
+            onEnter();
+            this.forceUpdate();
+          };
+
+          return (
+            <Waypoint onEnter={doOnEnter} {...rest} />
+          );
+        }
+      }
+
+      this.subject = () => {
+        const el = renderAttached(
+          <div style={this.parentStyle}>
+            <div style={{ height: this.topSpacerHeight }} />
+            <Wrapper {...this.props} />
+            <div style={{ height: this.bottomSpacerHeight }} />
+          </div>,
+        );
+
+        jasmine.clock().tick(1);
+        return el;
+      };
+
+      this.topSpacerHeight = 200;
+      this.bottomSpacerHeight = 200;
+    });
+
+    it('does not cause wrapped DOM refs to be called on every render', () => {
+      const functionRef = jasmine.createSpy('functionRef');
+      this.props.children = <div style={{ height: 80 }} ref={functionRef} />;
+
+      const scrollable = this.subject();
+
+      scrollNodeTo(scrollable, 200);
+      scrollNodeTo(scrollable, 0);
+
+      expect(functionRef).toHaveBeenCalledTimes(1);
+    });
+
+    it('does not cause wrapped forwarded refs to be called on every render', () => {
+      const functionRef = jasmine.createSpy('functionRef');
+
+      const ForwardedRefComponent = React.forwardRef((props, ref) => (
+        <div style={{ height: 80 }} ref={ref} />
+      ));
+
+      this.props.children = <ForwardedRefComponent ref={functionRef} />;
+
+      const scrollable = this.subject();
+
+      scrollNodeTo(scrollable, 200);
+      scrollNodeTo(scrollable, 0);
+
+      expect(functionRef).toHaveBeenCalledTimes(1);
     });
   });
 
