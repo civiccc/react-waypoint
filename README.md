@@ -19,6 +19,7 @@ Inspired by [Waypoints][waypoints], except this little library grooves the
 
 [waypoints]: https://github.com/imakewebthings/waypoints
 [react]: https://github.com/facebook/react
+[demo-page]: https://civiccc.github.io/react-waypoint/
 
 ## Installation
 
