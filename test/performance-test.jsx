@@ -69,14 +69,11 @@ class PerformanceTest extends Component {
       elements.push(
         <div key={i}>
           <h2>
-Container
+            Container
             {i}
           </h2>
-          {isActive
-            && <Foo />
-          }
-          {!isActive
-            && (
+          {isActive && <Foo />}
+          {!isActive && (
             <div
               style={{
                 height: 300,
@@ -84,8 +81,7 @@ Container
                 borderBottom: '1px solid #ccc',
               }}
             />
-            )
-          }
+          )}
           <Waypoint
             onEnter={this.handleEnter.bind(this, i)}
             onLeave={this.handleLeave.bind(this, i)}
@@ -93,15 +89,8 @@ Container
         </div>,
       );
     }
-    return (
-      <div>
-        {elements}
-      </div>
-    );
+    return <div>{elements}</div>;
   }
 }
 
-ReactDOM.render(
-  <PerformanceTest />,
-  document.getElementById('app'),
-);
+ReactDOM.render(<PerformanceTest />, document.getElementById('app'));
