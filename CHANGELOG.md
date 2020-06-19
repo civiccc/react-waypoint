@@ -1,3 +1,7 @@
+## 9.0.3
+
+- Make waypoints work with `overflow: overlay`
+
 ## 9.0.2
 
 - Remove StrictMode warnings
