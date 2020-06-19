@@ -25,7 +25,7 @@
     "postversion": "git commit package.json CHANGELOG.md -m \"Version $npm_package_version\" && npm run tag && git push && git push --tags && npm publish",
     "prepublish": "in-publish && safe-publish-latest && npm run build || not-in-publish",
     "pretest": "npm run --silent lint",
-    "preversion": "npm run test && npm run check-changelog && npm run check-only-changelog-changed",
+    "preversion": "npm run check-changelog && npm run check-only-changelog-changed",
     "tag": "git tag v$npm_package_version",
     "test": "npm run testonly",
     "testonly": "karma start --single-run",
