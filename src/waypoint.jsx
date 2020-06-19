@@ -157,7 +157,7 @@ export class Waypoint extends React.PureComponent {
         : style.getPropertyValue('overflow-y');
       const overflow = overflowDirec || style.getPropertyValue('overflow');
 
-      if (overflow === 'auto' || overflow === 'scroll') {
+      if (overflow === 'auto' || overflow === 'scroll' || overflow === 'overlay') {
         return node;
       }
     }
