@@ -1,18 +1,18 @@
 module.exports = {
-  'extends': 'eslint-config-airbnb',
-  'parserOptions': {
-    'ecmaVersion': 2018,
-    'sourceType': 'module',
-    'ecmaFeatures': {
-      'jsx': true,
+  extends: 'eslint-config-airbnb',
+  parserOptions: {
+    ecmaVersion: 2018,
+    sourceType: 'module',
+    ecmaFeatures: {
+      jsx: true,
     },
   },
-  'rules': {
+  rules: {
     'no-restricted-globals': 'off',
     'no-plusplus': 'off',
-    'no-underscore-dangle': 'off'
+    'no-underscore-dangle': 'off',
   },
-  'env': {
-    'browser': true,
+  env: {
+    browser: true,
   },
 };
