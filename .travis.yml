@@ -6,6 +6,8 @@ sudo: false
 node_js:
   - node
   - lts/*
+cache:
+  npm: false
 env:
   - REACT_VERSION=15.3
   - REACT_VERSION=16.0
