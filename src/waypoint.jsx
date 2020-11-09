@@ -22,6 +22,7 @@ const defaultProps = {
   children: undefined,
   topOffset: '0px',
   bottomOffset: '0px',
+  delay: 0,
   horizontal: false,
   onEnter() { },
   onLeave() { },
@@ -49,7 +50,7 @@ export class Waypoint extends React.PureComponent {
     // initial execution until the next tick.
     this.cancelOnNextTick = onNextTick(() => {
       this.cancelOnNextTick = null;
-      const { children, debug } = this.props;
+      const { children, debug, delay } = this.props;
 
       // Berofe doing anything, we want to check that this._ref is avaliable in Waypoint
       ensureRefIsUsedByChild(children, this._ref);
@@ -75,7 +76,9 @@ export class Waypoint extends React.PureComponent {
         { passive: true },
       );
 
-      this._handleScroll(null);
+      setTimeout(() => {
+        this._handleScroll(null);
+      }, delay);
     });
   }
 
@@ -324,6 +327,7 @@ if (process.env.NODE_ENV !== 'production') {
   Waypoint.propTypes = {
     children: PropTypes.element,
     debug: PropTypes.bool,
+    delay: PropTypes.number,
     onEnter: PropTypes.func,
     onLeave: PropTypes.func,
     onPositionChange: PropTypes.func,
