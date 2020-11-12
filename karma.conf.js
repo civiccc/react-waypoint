@@ -1,4 +1,3 @@
-/* global process */
 // Karma configuration
 
 module.exports = (config) => {
