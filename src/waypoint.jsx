@@ -36,6 +36,15 @@ export class Waypoint extends React.PureComponent {
 
     this.refElement = (e) => {
       this._ref = e;
+
+      const { children } = this.props;
+      if (children && children.ref && (isDOMElement(children) || isForwardRef(children))) {
+        if (typeof children.ref === 'function') {
+          children.ref(e);
+        } else {
+          children.ref.current = e;
+        }
+      }
     };
   }
 
@@ -302,18 +311,7 @@ export class Waypoint extends React.PureComponent {
     }
 
     if (isDOMElement(children) || isForwardRef(children)) {
-      const ref = (node) => {
-        this.refElement(node);
-        if (children.ref) {
-          if (typeof children.ref === 'function') {
-            children.ref(node);
-          } else {
-            children.ref.current = node;
-          }
-        }
-      };
-
-      return React.cloneElement(children, { ref });
+      return React.cloneElement(children, { ref: this.refElement });
     }
 
     return React.cloneElement(children, { innerRef: this.refElement });
