@@ -36,7 +36,7 @@
   "author": "Brigade Engineering",
   "license": "MIT",
   "peerDependencies": {
-    "react": "^15.3.0 || ^16.0.0"
+    "react": "^15.3.0 || ^16.0.0 || ^17.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",
@@ -80,7 +80,7 @@
   "dependencies": {
     "consolidated-events": "^1.1.0 || ^2.0.0",
     "prop-types": "^15.0.0",
-    "react-is": "^16.6.3"
+    "react-is": "^17.0.1"
   },
   "browserify": {
     "transform": [
