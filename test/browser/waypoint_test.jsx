@@ -1,9 +1,9 @@
 /* eslint-disable react/no-multi-comp, react/no-render-return-value, react/no-find-dom-node */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Waypoint } from '../src/waypoint';
+import { Waypoint } from '../../src/waypoint';
 
-import { errorMessage as refNotUsedErrorMessage } from '../src/ensureRefIsUsedByChild';
+import { errorMessage as refNotUsedErrorMessage } from '../../src/ensureRefIsUsedByChild';
 
 let div;
 
@@ -1260,11 +1260,6 @@ describe('<Waypoint>', () => {
         });
       });
     });
-  });
-
-  it('does not throw an error when window is undefined', () => {
-    spyOn(Waypoint, 'getWindow').and.returnValue(undefined);
-    expect(this.subject).not.toThrow();
   });
 
   describe('when the <body> itself has a margin', () => {

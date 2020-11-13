@@ -1,12 +1,12 @@
-import onNextTick from '../src/onNextTick';
+import onNextTick from '../../src/onNextTick';
 
 describe('onNextTick()', () => {
   beforeEach(() => {
-    jasmine.clock().install();
+    jest.useFakeTimers();
   });
 
   afterEach(() => {
-    jasmine.clock().uninstall();
+    jest.clearAllTimers();
   });
 
   it('does not call callbacks immediately', () => {
@@ -26,7 +26,7 @@ describe('onNextTick()', () => {
 
     expect(called).toEqual([]);
 
-    jasmine.clock().tick(1);
+    jest.advanceTimersByTime(1);
   });
 
   it('calls callbacks in order', () => {
@@ -44,7 +44,7 @@ describe('onNextTick()', () => {
       called.push(2);
     });
 
-    jasmine.clock().tick(1);
+    jest.advanceTimersByTime(1);
 
     expect(called).toEqual([0, 1, 2]);
   });
@@ -66,7 +66,7 @@ describe('onNextTick()', () => {
 
     unsub();
 
-    jasmine.clock().tick(1);
+    jest.advanceTimersByTime(1);
 
     expect(called).toEqual([0, 2]);
   });
@@ -90,7 +90,7 @@ describe('onNextTick()', () => {
     unsub();
     unsub();
 
-    jasmine.clock().tick(1);
+    jest.advanceTimersByTime(1);
 
     expect(called).toEqual([0, 2]);
   });
@@ -110,7 +110,7 @@ describe('onNextTick()', () => {
       called.push(2);
     });
 
-    jasmine.clock().tick(1);
+    jest.advanceTimersByTime(1);
 
     expect(called).toEqual([0, 1, 2]);
 
@@ -128,7 +128,7 @@ describe('onNextTick()', () => {
 
     unsub();
 
-    jasmine.clock().tick(1);
+    jest.advanceTimersByTime(1);
 
     expect(called).toEqual([0, 1, 2, 3, 4, 5]);
   });
