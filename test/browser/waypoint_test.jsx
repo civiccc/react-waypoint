@@ -1249,16 +1249,16 @@ describe('<Waypoint>', () => {
       this.subject = () => renderAttached(<Wrapper {...this.props} />);
     });
 
-    it('only calls onEnter once', () => {
+    it('only calls onEnter once', (done) => {
       this.subject();
 
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          scrollNodeTo(window, window.innerHeight);
-          expect(this.props.onEnter.calls.count()).toBe(1);
-          resolve();
-        });
-      });
+      setTimeout(() => {
+        scrollNodeTo(window, window.innerHeight);
+        expect(this.props.onEnter.calls.count()).toBe(1);
+        done();
+      }, 0);
+
+      jasmine.clock().tick(5000);
     });
   });
 
