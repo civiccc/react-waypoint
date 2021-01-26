@@ -4,6 +4,7 @@ const path = require('path');
 // test/performance-test.html to profile the performance footprint of the
 // component.
 module.exports = {
+  mode: 'production',
   entry: path.join(__dirname, 'test/performance-test.jsx'),
   output: {
     path: path.join(__dirname, 'build'),

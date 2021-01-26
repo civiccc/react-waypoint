@@ -59,7 +59,7 @@
     "karma-cli": "^2.0.0",
     "karma-firefox-launcher": "^2.1.0",
     "karma-jasmine": "^1.1.2",
-    "karma-webpack": "^3.0.5",
+    "karma-webpack": "^4.0.2",
     "loose-envify": "^1.4.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
@@ -67,7 +67,8 @@
     "rimraf": "^3.0.2",
     "rollup": "^2.33.2",
     "safe-publish-latest": "^1.1.1",
-    "webpack": "^2.3.3"
+    "webpack": "^4.46.0",
+    "webpack-cli": "^4.4.0"
   },
   "keywords": [
     "react",
