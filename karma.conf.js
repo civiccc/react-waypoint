@@ -27,12 +27,18 @@ module.exports = (config) => {
     },
 
     webpack: {
+      mode: 'development',
       module: {
-        loaders: [
+        rules: [
           {
             test: /\.jsx?$/,
-            loaders: ['babel-loader?cacheDirectory=true'],
             exclude: /node_modules/,
+            use: {
+              loader: 'babel-loader',
+              options: {
+                cacheDirectory: true,
+              },
+            },
           },
         ],
       },
