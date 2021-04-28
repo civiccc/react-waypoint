@@ -1,7 +1,7 @@
 # React Waypoint
 
 [![npm version](https://badge.fury.io/js/react-waypoint.svg)](http://badge.fury.io/js/react-waypoint)
-[![Build Status](https://travis-ci.org/brigade/react-waypoint.svg?branch=master)](https://travis-ci.org/brigade/react-waypoint)
+[![Build Status](https://travis-ci.org/civiccc/react-waypoint.svg?branch=master)](https://travis-ci.org/civiccc/react-waypoint)
 
 A React component to execute a function whenever you scroll to an element. Works
 in all containers that can scroll, including the window.
@@ -13,7 +13,7 @@ Inspired by [Waypoints][waypoints], except this little library grooves the
 [React][react] way.
 
 ## Demo
-![Demo of React Waypoint in action](https://raw.github.com/brigade/react-waypoint/master/react-waypoint-demo.gif)
+![Demo of React Waypoint in action](https://raw.github.com/civiccc/react-waypoint/master/react-waypoint-demo.gif)
 
 [View demo page][demo-page]
 

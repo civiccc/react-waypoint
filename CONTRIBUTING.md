@@ -33,4 +33,4 @@ version on npm.
 This project adheres to the [Open Code of Conduct][code-of-conduct]. By
 participating, you are expected to honor this code.
 
-[code-of-conduct]: https://github.com/brigade/code-of-conduct
+[code-of-conduct]: https://github.com/civiccc/code-of-conduct

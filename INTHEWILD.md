@@ -1,4 +1,4 @@
-Please use [pull requests](https://github.com/brigade/react-waypoint/pull/new/master) to add your organization and/or project to this document!
+Please use [pull requests](https://github.com/civiccc/react-waypoint/pull/new/master) to add your organization and/or project to this document!
 
 # Organizations
 

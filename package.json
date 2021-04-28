@@ -12,10 +12,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/brigade/react-waypoint.git"
+    "url": "https://github.com/civiccc/react-waypoint.git"
   },
-  "homepage": "https://github.com/brigade/react-waypoint",
-  "bugs": "https://github.com/brigade/react-waypoint/issues",
+  "homepage": "https://github.com/civiccc/react-waypoint",
+  "bugs": "https://github.com/civiccc/react-waypoint/issues",
   "scripts": {
     "build": "npm run clean && rollup -c",
     "check-changelog": "expr $(git status --porcelain 2>/dev/null| grep \"^\\s*M.*CHANGELOG.md\" | wc -l) >/dev/null || (echo 'Please edit CHANGELOG.md' && exit 1)",

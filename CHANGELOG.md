@@ -27,13 +27,13 @@
 
 ## 8.0.3
 
-- Defer `handleScroll` in `componentDidUpdate` ([#265](https://github.com/brigade/react-waypoint/pull/265))
-- Extend `React.PureComponent` instead of `React.Component` when available ([#264](https://github.com/brigade/react-waypoint/pull/264))
+- Defer `handleScroll` in `componentDidUpdate` ([#265](https://github.com/civiccc/react-waypoint/pull/265))
+- Extend `React.PureComponent` instead of `React.Component` when available ([#264](https://github.com/civiccc/react-waypoint/pull/264))
 
 ## 8.0.2
 
-- Allow consolidated-events ^2.0.0 ([#256](https://github.com/brigade/react-waypoint/pull/256))
-- Add message to better understand logged error message in tests ([#255](https://github.com/brigade/react-waypoint/pull/255))
+- Allow consolidated-events ^2.0.0 ([#256](https://github.com/civiccc/react-waypoint/pull/256))
+- Add message to better understand logged error message in tests ([#255](https://github.com/civiccc/react-waypoint/pull/255))
 
 ## 8.0.1
 
