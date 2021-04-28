@@ -130,7 +130,15 @@ enters or leaves the viewport. For details, see [Children](#children), below.
     ]),
 
     /**
-     * `bottomOffset` is like `topOffset`, but for the bottom of the container.
+     * `bottomOffset` can either be a number, in which case its a distance from the
+     * bottom of the container in pixels, or a string value. Valid string values are
+     * of the form "20px", which is parsed as pixels, or "20%", which is parsed
+     * as a percentage of the height of the containing element.
+     * For instance, if you pass "20%", and the containing element is 100px tall,
+     * then the waypoint will be triggered when it has been scrolled 20px beyond
+     * the bottom of the containing element.
+     * 
+     * Similar to `topOffset`, but for the bottom of the container.
      */
     bottomOffset: PropTypes.oneOfType([
       PropTypes.string,
