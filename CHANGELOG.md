@@ -1,3 +1,9 @@
+## 10.0.0
+
+- [Breaking] Remove `Waypoint.getWindow()`
+- Support React 17
+
+
 ## 9.0.3
 
 - Make waypoints work with `overflow: overlay`
