@@ -2,6 +2,7 @@
   "env": {
     "test": {
       "presets": [["airbnb", {
+        "looseClasses": true,
         "modules": true,
         "runtimeHelpersUseESModules": false,
         "runtimeVersion": "7.12.5",
@@ -11,6 +12,7 @@
 
     "cjs": {
       "presets": [["airbnb", {
+        "looseClasses": true,
         "modules": false,
         "runtimeHelpersUseESModules": false,
         "runtimeVersion": "7.12.5",
@@ -20,6 +22,7 @@
 
     "es": {
       "presets": [["airbnb", {
+        "looseClasses": true,
         "modules": false,
         "runtimeHelpersUseESModules": true,
         "runtimeVersion": "7.12.5",
@@ -29,6 +32,7 @@
 
     "development": {
       "presets": [["airbnb", {
+        "looseClasses": true,
         "modules": false,
         "runtimeVersion": "7.12.5",
         "transformRuntime": true
