@@ -1,8 +1,12 @@
+## 10.1.0
+
+- Classes are now compiled in loose mode, which should improve runtime performance.
+- Babel helpers now import from `@babel/runtime` instead of being inlined, which reduces bundle size.
+
 ## 10.0.0
 
 - [Breaking] Remove `Waypoint.getWindow()`
 - Support React 17
-
 
 ## 9.0.3
 
