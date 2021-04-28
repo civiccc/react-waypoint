@@ -3,19 +3,35 @@
     "test": {
       "presets": [["airbnb", {
         "modules": true,
-        "transformRuntime": false
+        "runtimeHelpersUseESModules": false,
+        "runtimeVersion": "7.12.5",
+        "transformRuntime": true
       }]]
     },
-    "production": {
+
+    "cjs": {
       "presets": [["airbnb", {
         "modules": false,
-        "transformRuntime": false
+        "runtimeHelpersUseESModules": false,
+        "runtimeVersion": "7.12.5",
+        "transformRuntime": true
       }]]
     },
+
+    "es": {
+      "presets": [["airbnb", {
+        "modules": false,
+        "runtimeHelpersUseESModules": true,
+        "runtimeVersion": "7.12.5",
+        "transformRuntime": true
+      }]]
+    },
+
     "development": {
       "presets": [["airbnb", {
         "modules": false,
-        "transformRuntime": false
+        "runtimeVersion": "7.12.5",
+        "transformRuntime": true
       }]]
     }
   }
