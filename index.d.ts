@@ -110,5 +110,10 @@ declare namespace Waypoint {
          * things down significantly, so it should only be used during development.
          */
         debug?: boolean;
+      
+        /**
+         * Since React 18 Children are no longer implied, therefore we specify them here
+         */
+        children?: React.ReactNode;
     }
 }
