@@ -12,5 +12,6 @@ env:
   - REACT_VERSION=15.3
   - REACT_VERSION=16.0
   - REACT_VERSION=17.0
+  - REACT_VERSION=18.0
 before_script:
   - npm install react-dom@^$REACT_VERSION react@^$REACT_VERSION react-test-renderer@^$REACT_VERSION
