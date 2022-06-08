@@ -1,3 +1,7 @@
+## 10.2.0
+
+- Add `children` prop to TypeScript definitions for `Waypoint` to support React v18.
+
 ## 10.1.0
 
 - Classes are now compiled in loose mode, which should improve runtime performance.
