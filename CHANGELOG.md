@@ -1,3 +1,7 @@
+## 10.3.0
+
+- Allow React v18 in `package.json`.
+
 ## 10.2.0
 
 - Add `children` prop to TypeScript definitions for `Waypoint` to support React v18.
